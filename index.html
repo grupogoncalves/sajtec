@@ -14,9 +14,9 @@
         :root {
             --primary: #0f172a;
             --primary-light: #1e293b;
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
-            --accent-muted: rgba(37, 99, 235, 0.12);
+            --accent: #60a5fa; 
+            --accent-hover: #3b82f6; 
+            --accent-muted: rgba(96, 165, 250, 0.12);
             --bg: #f1f5f9;
             --surface: #ffffff;
             --text: #1e293b;
@@ -38,1272 +38,431 @@
 
         *, *::before, *::after { box-sizing: border-box; }
 
-        body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: var(--bg);
-            margin: 0;
-            color: var(--text);
-            font-size: 15px;
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-        }
-
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); margin: 0; color: var(--text); font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
         .screen { display: none; animation: fadeIn 0.25s ease; }
         .screen.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
         /* ——— Auth ——— */
-        .auth-shell {
-            min-height: 100dvh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            background:
-                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(37, 99, 235, 0.35), transparent),
-                radial-gradient(ellipse 60% 40% at 100% 100%, rgba(15, 23, 42, 0.4), transparent),
-                linear-gradient(165deg, var(--primary) 0%, #020617 100%);
-        }
-
-        .auth-card {
-            width: 100%;
-            max-width: 400px;
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 32px 28px;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            text-align: center;
-        }
-
+        .auth-shell { min-height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 24px; background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(96, 165, 250, 0.35), transparent), radial-gradient(ellipse 60% 40% at 100% 100%, rgba(15, 23, 42, 0.4), transparent), linear-gradient(165deg, var(--primary) 0%, #020617 100%); }
+        .auth-card { width: 100%; max-width: 400px; background: var(--surface); border-radius: var(--radius-lg); padding: 32px 28px; box-shadow: var(--shadow-lg); border: 1px solid rgba(255, 255, 255, 0.08); text-align: center; }
         .auth-card--wait { border-top: 4px solid var(--warning); }
-
-        .auth-logo {
-            height: 44px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        .auth-title {
-            margin: 20px 0 8px;
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            color: var(--primary);
-        }
-
+        .auth-logo { height: 44px; width: auto; object-fit: contain; }
+        .auth-title { margin: 20px 0 8px; font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; color: var(--primary); }
         .auth-sub { margin: 0 0 20px; font-size: 0.875rem; color: var(--text-muted); }
 
         .field { margin-bottom: 16px; text-align: left; }
-
-        label, .label {
-            font-size: 0.6875rem;
-            font-weight: 600;
-            letter-spacing: 0.06em;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            display: block;
-            margin-bottom: 6px;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 11px 12px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-family: inherit;
-            font-size: 0.9375rem;
-            color: var(--text);
-            background: var(--surface);
-            transition: border-color var(--transition), box-shadow var(--transition);
-        }
-
-        input:hover, textarea:hover { border-color: #cbd5e1; }
-
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-muted);
-        }
-
-        input::placeholder, textarea::placeholder { color: #94a3b8; }
-
+        label, .label { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.06em; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 6px; }
+        input, textarea, select { width: 100%; padding: 11px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.9375rem; color: var(--text); background: var(--surface); transition: border-color var(--transition), box-shadow var(--transition); }
+        input:hover, textarea:hover, select:hover { border-color: #cbd5e1; }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-muted); }
         textarea { resize: vertical; min-height: 88px; }
+        input[readonly] { background-color: #f8fafc; color: #64748b; cursor: not-allowed; }
 
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 11px 20px;
-            border-radius: var(--radius-md);
-            border: none;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.9375rem;
-            font-weight: 600;
-            transition: background var(--transition), transform 0.1s ease, box-shadow var(--transition);
-        }
-
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 20px; border-radius: var(--radius-md); border: none; cursor: pointer; font-family: inherit; font-size: 0.9375rem; font-weight: 600; transition: background var(--transition), transform 0.1s ease, box-shadow var(--transition); }
         .btn:active { transform: scale(0.98); }
-
-        .btn-primary {
-            width: 100%;
-            background: var(--accent);
-            color: #fff;
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
-        }
-
+        .btn-primary { width: 100%; background: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(96, 165, 250, 0.35); }
         .btn-primary:hover { background: var(--accent-hover); }
-
-        .btn-primary:focus-visible {
-            outline: none;
-            box-shadow: 0 0 0 3px var(--accent-muted), 0 2px 8px rgba(37, 99, 235, 0.35);
-        }
-
-        .btn-secondary {
-            width: 100%;
-            background: var(--text-muted);
-            color: #fff;
-        }
-
+        .btn-secondary { width: 100%; background: var(--text-muted); color: #fff; }
         .btn-secondary:hover { background: #475569; }
+        .btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
 
-        .auth-footer {
-            margin-top: 20px;
-            font-size: 0.8125rem;
-            color: var(--text-muted);
-        }
-
-        .auth-footer a {
-            color: var(--accent);
-            font-weight: 600;
-            text-decoration: none;
-        }
-
+        .auth-footer { margin-top: 20px; font-size: 0.8125rem; color: var(--text-muted); }
+        .auth-footer a { color: var(--accent); font-weight: 600; text-decoration: none; }
         .auth-footer a:hover { text-decoration: underline; }
-
-        .auth-wait-icon {
-            font-size: 2.5rem;
-            color: var(--warning);
-            margin-bottom: 12px;
-        }
-
-        .auth-wait-text { font-size: 0.9375rem; color: #475569; line-height: 1.6; margin: 0 0 20px; }
 
         /* ——— App layout ——— */
         .app-container { display: none; min-height: 100dvh; }
-
         .app-container.is-visible { display: flex; }
-
-        .sidebar {
-            width: var(--sidebar-w);
-            background: var(--primary);
-            color: #f8fafc;
-            position: fixed;
-            inset: 0 auto 0 0;
-            height: 100dvh;
-            display: flex;
-            flex-direction: column;
-            z-index: 100;
-            border-right: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .sidebar-header {
-            padding: 20px 16px;
-            background: #fff;
-            text-align: center;
-            border-bottom: 1px solid var(--border);
-        }
-
+        .sidebar { width: var(--sidebar-w); background: var(--primary); color: #f8fafc; position: fixed; inset: 0 auto 0 0; height: 100dvh; display: flex; flex-direction: column; z-index: 100; border-right: 1px solid rgba(255, 255, 255, 0.06); }
+        .sidebar-header { padding: 20px 16px; background: #fff; text-align: center; border-bottom: 1px solid var(--border); }
         .sidebar-header img { max-width: 150px; height: auto; vertical-align: middle; }
-
         .nav-menu { flex: 1; padding: 12px; overflow-y: auto; }
-
-        .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            width: 100%;
-            padding: 12px 14px;
-            margin-bottom: 4px;
-            color: #94a3b8;
-            text-decoration: none;
-            border: none;
-            background: transparent;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.875rem;
-            font-weight: 500;
-            text-align: left;
-            transition: background var(--transition), color var(--transition);
-        }
-
+        .nav-link { display: flex; align-items: center; gap: 10px; width: 100%; padding: 12px 14px; margin-bottom: 4px; color: #94a3b8; text-decoration: none; border: none; background: transparent; border-radius: var(--radius-md); cursor: pointer; font-family: inherit; font-size: 0.875rem; font-weight: 500; text-align: left; transition: background var(--transition), color var(--transition); }
         .nav-link:hover { background: rgba(255, 255, 255, 0.06); color: #e2e8f0; }
-
-        .nav-link:focus-visible {
-            outline: none;
-            box-shadow: inset 0 0 0 2px var(--accent);
-        }
-
-        .nav-link.active-link {
-            background: var(--accent);
-            color: #fff;
-        }
-
+        .nav-link.active-link { background: var(--accent); color: #fff; }
         .nav-link i { width: 1.1em; text-align: center; opacity: 0.9; }
 
-        .user-panel {
-            margin: 12px;
-            padding: 14px;
-            background: rgba(255, 255, 255, 0.06);
-            border-radius: var(--radius-md);
-        }
-
-        .user-panel .user-name {
-            display: block;
-            font-size: 0.8125rem;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-            margin-bottom: 10px;
-            color: #e2e8f0;
-        }
-
-        .btn-logout {
-            width: 100%;
-            padding: 9px;
-            background: var(--danger-bg);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.25);
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            transition: background var(--transition);
-        }
-
+        .user-panel { margin: 12px; padding: 14px; background: rgba(255, 255, 255, 0.06); border-radius: var(--radius-md); }
+        .user-panel .user-name { display: block; font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.04em; margin-bottom: 10px; color: #e2e8f0; text-transform: uppercase;}
+        .btn-logout { width: 100%; padding: 9px; background: var(--danger-bg); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.25); border-radius: var(--radius-sm); cursor: pointer; font-family: inherit; font-size: 0.8125rem; font-weight: 600; }
         .btn-logout:hover { background: rgba(239, 68, 68, 0.2); color: #fecaca; }
 
-        .main-content {
-            margin-left: var(--sidebar-w);
-            padding: clamp(20px, 4vw, 36px);
-            min-height: 100dvh;
-            flex: 1;
-            width: 100%;
-            max-width: 1200px;
-        }
-
-        .page-title {
-            margin: 0 0 20px;
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            color: var(--primary);
-        }
-
-        .card {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: clamp(20px, 3vw, 28px);
-            box-shadow: var(--shadow-sm);
-            margin-bottom: 20px;
-            border: 1px solid var(--border);
-        }
-
+        .main-content { margin-left: var(--sidebar-w); padding: clamp(20px, 4vw, 36px); min-height: 100dvh; flex: 1; width: 100%; max-width: 1200px; }
+        .page-title { margin: 0 0 20px; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; color: var(--primary); }
+        .card { background: var(--surface); border-radius: var(--radius-lg); padding: clamp(20px, 3vw, 28px); box-shadow: var(--shadow-sm); margin-bottom: 20px; border: 1px solid var(--border); }
         .card h2.page-title { margin-top: 0; }
 
         .form-grid-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; }
         .form-grid-equal { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .form-grid-3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 16px;
-        }
+        .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        .form-grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; }
 
-        @media (max-width: 900px) {
-            .form-grid-3 { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 900px) { .form-grid-3, .form-grid-4 { grid-template-columns: 1fr; } }
+        @media (max-width: 720px) { .form-grid-2, .form-grid-equal { grid-template-columns: 1fr; } }
 
-        @media (max-width: 720px) {
-            .form-grid-2, .form-grid-equal { grid-template-columns: 1fr; }
-        }
-
-        .items-table-wrap {
-            width: 100%;
-            overflow-x: auto;
-            margin-bottom: 10px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-        }
-
-        .items-table { width: 100%; border-collapse: collapse; min-width: 560px; }
+        .items-table-wrap { width: 100%; overflow-x: auto; margin-bottom: 10px; border: 1px solid var(--border); border-radius: var(--radius-md); }
+        .items-table { width: 100%; border-collapse: collapse; min-width: 700px; }
         .items-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-        .items-table tr:last-child td { border-bottom: none; }
-        .items-table input,
-        .items-table select { margin-bottom: 0; }
+        .items-table thead th { text-align: left; font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); padding: 10px; background: #f8fafc; border-bottom: 1px solid var(--border); }
+        
+        .items-table .i-q { width: 60px; text-align: center; }
+        .items-table .i-preco { width: 120px; text-align: right; }
+        .items-table .t-subtotal { font-weight: 600; color: var(--primary); text-align: right; padding-right: 15px;}
 
-        .items-table .i-g-select {
-            width: 100%;
-            max-width: 280px;
-            padding: 9px 10px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-family: inherit;
-            font-size: 0.875rem;
-            background: var(--surface);
-        }
-
-        .items-table .i-g-select:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-muted);
-        }
-
-        .items-table .i-g-outro {
-            width: 100%;
-            max-width: 280px;
-            margin-top: 6px;
-        }
-
-        .items-table thead th {
-            text-align: left;
-            font-size: 0.6875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            padding: 10px;
-            background: #f8fafc;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .btn-add-item {
-            width: 100%;
-            padding: 10px;
-            border: 1px dashed #cbd5e1;
-            background: #f8fafc;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-            transition: border-color var(--transition), background var(--transition), color var(--transition);
-        }
-
-        .btn-add-item:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-            background: var(--accent-muted);
-        }
-
-        .btn-icon-remove {
-            color: var(--danger);
-            border: none;
-            background: none;
-            cursor: pointer;
-            padding: 6px;
-            border-radius: var(--radius-sm);
-            line-height: 1;
-        }
-
+        .btn-add-item { width: 100%; padding: 10px; border: 1px dashed #cbd5e1; background: #f8fafc; border-radius: var(--radius-sm); cursor: pointer; font-family: inherit; font-size: 0.875rem; font-weight: 500; color: var(--text-muted); margin-bottom: 20px; transition: border-color var(--transition), background var(--transition), color var(--transition); }
+        .btn-add-item:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-muted); }
+        
+        .btn-icon-remove, .btn-icon-edit { border: none; background: none; cursor: pointer; padding: 6px; border-radius: var(--radius-sm); line-height: 1; }
+        .btn-icon-remove { color: var(--danger); }
         .btn-icon-remove:hover { background: var(--danger-bg); }
+        .btn-icon-edit { color: var(--accent); }
+        .btn-icon-edit:hover { background: var(--accent-muted); }
+        
+        .btn-del-nota { background: none; border: none; color: #ef4444; cursor: pointer; padding: 2px 4px; font-size: 0.75rem; border-radius: 4px; opacity: 0.6; transition: opacity 0.2s; }
+        .btn-del-nota:hover { background: #fef2f2; opacity: 1; }
 
-        .toolbar-preview {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
+        .toolbar-preview { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px; }
         .toolbar-preview .btn { width: auto; min-width: 160px; }
 
-        .btn-print { box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25); }
-
         /* Preview proposta — documento */
-        .preview-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            padding: 8px 12px 28px;
-            background:
-                radial-gradient(ellipse 120% 80% at 50% -30%, rgba(37, 99, 235, 0.08), transparent 55%),
-                linear-gradient(180deg, #e8eef5 0%, #f1f5f9 45%, #f8fafc 100%);
-            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-        }
+        .preview-wrapper { display: flex; flex-direction: column; align-items: center; width: 100%; padding: 8px 12px 28px; background: radial-gradient(ellipse 120% 80% at 50% -30%, rgba(96, 165, 250, 0.08), transparent 55%), linear-gradient(180deg, #e8eef5 0%, #f1f5f9 45%, #f8fafc 100%); border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
+        .preview-container { --p-doc-ink: #0f172a; --p-doc-muted: #64748b; --p-doc-line: #e2e8f0; position: relative; width: 100%; max-width: 720px; background: #fff; padding: 0; box-shadow: 0 1px 0 rgba(15, 23, 42, 0.06), 0 24px 48px -12px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(15, 23, 42, 0.04); border-radius: 12px; border: none; box-sizing: border-box; min-height: 880px; overflow: hidden; }
+        .preview-container::before { content: ""; display: block; height: 4px; background: linear-gradient(90deg, #1e3a5f 0%, var(--accent) 45%, #38bdf8 100%); }
+        .p-inner { padding: clamp(28px, 4.5vw, 44px) clamp(22px, 4vw, 40px) clamp(32px, 5vw, 48px); }
+        .p-header { display: flex; justify-content: space-between; align-items: stretch; gap: clamp(16px, 4vw, 28px); padding-bottom: 28px; margin-bottom: 28px; border-bottom: 1px solid var(--p-doc-line); }
+        .p-logo { height: 48px; width: auto; max-width: 160px; object-fit: contain; }
+        .p-header-doc { flex: 1; text-align: right; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 6px; }
+        .p-doc-eyebrow { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+        .p-doc-title { margin: 0; font-size: clamp(1.5rem, 4vw, 1.85rem); font-weight: 800; letter-spacing: -0.03em; color: var(--p-doc-ink); line-height: 1.1; }
+        .p-doc-meta { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 4px; padding: 8px 14px; background: #f8fafc; border: 1px solid var(--p-doc-line); border-radius: 999px; font-size: 0.8125rem; color: var(--p-doc-muted); }
+        
+        .p-client-section { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
+        .p-client-card { background: linear-gradient(180deg, #fafbfc 0%, #f4f7fa 100%); padding: 16px 18px; border-radius: 10px; border: 1px solid var(--p-doc-line); border-left: 3px solid var(--accent); }
+        .p-client-card--alt { border-left-color: #334155; text-align: right;}
+        .p-kv { display: block; margin-bottom: 10px;}
+        .p-kv-label { display: block; font-size: 0.625rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--p-doc-muted); margin-bottom: 4px; }
+        .p-kv-value { display: block; font-size: 0.875rem; font-weight: 500; color: var(--p-doc-ink); line-height: 1.45; }
 
-        .preview-container {
-            --p-doc-ink: #0f172a;
-            --p-doc-muted: #64748b;
-            --p-doc-line: #e2e8f0;
-            position: relative;
-            width: 100%;
-            max-width: 720px;
-            background: #fff;
-            padding: 0;
-            box-shadow:
-                0 1px 0 rgba(15, 23, 42, 0.06),
-                0 24px 48px -12px rgba(15, 23, 42, 0.12),
-                0 0 0 1px rgba(15, 23, 42, 0.04);
-            border-radius: 12px;
-            border: none;
-            box-sizing: border-box;
-            min-height: 880px;
-            overflow: hidden;
-        }
+        .p-table-wrap { margin-bottom: 28px; border: 1px solid var(--p-doc-line); border-radius: 10px; overflow: hidden; }
+        .p-table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+        .p-table th { background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 100%); color: #ffffff; padding: 12px 14px; text-align: left; font-size: 0.625rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border: none; }
+        .p-table th.col-num { text-align: center; width: 5%; }
+        .p-table th.col-val { text-align: right; width: 18%; }
+        .p-table td { padding: 12px 14px; border-bottom: 1px solid #f1f5f9; vertical-align: top; color: var(--p-doc-ink); line-height: 1.45; }
+        .p-table td.col-num { text-align: center; font-weight: 600; color: var(--p-doc-muted); }
+        .p-table td.col-val { text-align: right; font-weight: 500;}
 
-        .preview-container::before {
-            content: "";
-            display: block;
-            height: 4px;
-            background: linear-gradient(90deg, #1e3a5f 0%, var(--accent) 45%, #38bdf8 100%);
-        }
+        .p-total-wrap { display: flex; justify-content: flex-end; margin-bottom: 28px; }
+        .p-total-box { position: relative; min-width: 220px; padding: 20px 28px; border-radius: 10px; text-align: right; color: #ffffff; background: linear-gradient(135deg, #87ceeb 0%, #60a5fa 55%, #3b82f6 100%); box-shadow: 0 8px 24px -6px rgba(96, 165, 250, 0.4); }
+        .p-total-box::before { content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 3px; border-radius: 2px; background: linear-gradient(180deg, #38bdf8, var(--accent)); }
+        .p-total-box small { display: block; opacity: 0.88; font-size: 0.625rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; }
+        .p-total-box strong { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
 
-        .p-inner {
-            padding: clamp(28px, 4.5vw, 44px) clamp(22px, 4vw, 40px) clamp(32px, 5vw, 48px);
-        }
-
-        .p-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: stretch;
-            gap: clamp(16px, 4vw, 28px);
-            padding-bottom: 28px;
-            margin-bottom: 28px;
-            border-bottom: 1px solid var(--p-doc-line);
-        }
-
-        .p-brand {
-            flex: 0 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 0;
-            margin: 0;
-            background: none;
-            border: none;
-            border-radius: 0;
-            align-self: flex-start;
-        }
-
-        .p-logo {
-            height: 48px;
-            width: auto;
-            max-width: 160px;
-            object-fit: contain;
-        }
-
-        .p-header-doc {
-            flex: 1;
-            text-align: right;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .p-doc-eyebrow {
-            font-size: 0.6875rem;
-            font-weight: 700;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: var(--accent);
-        }
-
-        .p-doc-title {
-            margin: 0;
-            font-size: clamp(1.5rem, 4vw, 1.85rem);
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            color: var(--p-doc-ink);
-            line-height: 1.1;
-        }
-
-        .p-doc-meta {
-            display: inline-flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 10px 14px;
-            margin-top: 4px;
-            padding: 8px 14px;
-            background: #f8fafc;
-            border: 1px solid var(--p-doc-line);
-            border-radius: 999px;
-            font-size: 0.8125rem;
-            color: var(--p-doc-muted);
-        }
-
-        .p-doc-meta strong {
-            color: var(--p-doc-ink);
-            font-weight: 700;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .p-doc-sep {
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: #cbd5e1;
-            flex-shrink: 0;
-        }
-
-        .p-doc-date {
-            font-weight: 500;
-            color: var(--p-doc-ink);
-        }
-
-        .p-client-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-            margin-bottom: 28px;
-        }
-
-        @media (max-width: 560px) {
-            .p-client-section { grid-template-columns: 1fr; }
-        }
-
-        .p-client-card {
-            background: linear-gradient(180deg, #fafbfc 0%, #f4f7fa 100%);
-            padding: 16px 18px;
-            border-radius: 10px;
-            border: 1px solid var(--p-doc-line);
-            border-left: 3px solid var(--accent);
-            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
-        }
-
-        .p-client-card--alt {
-            border-left-color: #334155;
-        }
-
-        .p-client-card.p-client-right {
-            text-align: right;
-        }
-
-        .p-kv-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .p-kv { display: block; }
-
-        .p-kv-label {
-            display: block;
-            font-size: 0.625rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--p-doc-muted);
-            margin-bottom: 4px;
-        }
-
-        .p-kv-value {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--p-doc-ink);
-            line-height: 1.45;
-            word-break: break-word;
-        }
-
-        .p-client-card.p-client-right .p-kv-label,
-        .p-client-card.p-client-right .p-kv-value {
-            text-align: right;
-        }
-
-        @media (max-width: 560px) {
-            .p-client-card.p-client-right { text-align: left; }
-            .p-client-card.p-client-right .p-kv-value { text-align: left; }
-        }
-
-        .p-section-title {
-            margin: 0 0 12px;
-            font-size: 0.6875rem;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--p-doc-muted);
-        }
-
-        .p-table-wrap {
-            margin-bottom: 28px;
-            border: 1px solid var(--p-doc-line);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
-        }
-
-        .p-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.8125rem;
-        }
-
-        .p-table th {
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-            color: #f8fafc;
-            padding: 12px 14px;
-            text-align: left;
-            font-size: 0.625rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            border: none;
-        }
-
-        .p-table th:first-child { width: 4.5rem; text-align: center; }
-        .p-table td:first-child { text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--p-doc-muted); }
-
-        .p-table td {
-            padding: 12px 14px;
-            border-bottom: 1px solid #f1f5f9;
-            vertical-align: top;
-            color: var(--p-doc-ink);
-            line-height: 1.45;
-        }
-
-        .p-table tbody tr:nth-child(even) td { background: #fafbfc; }
-        .p-table tbody tr:last-child td { border-bottom: none; }
-        .p-table tbody tr:hover td { background: #f0f9ff !important; }
-
-        .p-total-wrap {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 28px;
-        }
-
-        .p-total-box {
-            position: relative;
-            min-width: 220px;
-            padding: 20px 28px;
-            border-radius: 10px;
-            text-align: right;
-            color: #fff;
-            background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 55%, #172554 100%);
-            box-shadow: 0 8px 24px -6px rgba(15, 23, 42, 0.35);
-        }
-
-        .p-total-box::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 12px;
-            bottom: 12px;
-            width: 3px;
-            border-radius: 2px;
-            background: linear-gradient(180deg, #38bdf8, var(--accent));
-        }
-
-        .p-total-box small {
-            display: block;
-            opacity: 0.88;
-            font-size: 0.625rem;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-
-        .p-total-box strong {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .p-obs-section {
-            margin-bottom: 8px;
-        }
-
-        .p-obs-box {
-            margin: 0;
-            padding: 16px 18px;
-            background: #f8fafc;
-            border: 1px solid var(--p-doc-line);
-            border-radius: 10px;
-            border-left: 3px solid #94a3b8;
-            font-size: 0.8125rem;
-            line-height: 1.65;
-            color: #475569;
-            white-space: pre-wrap;
-        }
-
-        .p-doc-footer {
-            margin-top: 32px;
-            padding-top: 20px;
-            border-top: 1px solid var(--p-doc-line);
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 8px 16px;
-            font-size: 0.6875rem;
-            color: var(--p-doc-muted);
-        }
-
-        .p-doc-footer strong {
-            color: var(--p-doc-ink);
-            font-weight: 600;
-        }
-
-        .p-doc-footer-note { font-style: italic; opacity: 0.9; }
-
-        .status-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 999px;
-            font-size: 0.6875rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-        }
-
-        .status-pendente { background: #fef3c7; color: #92400e; }
-        .status-aprovado { background: #dcfce7; color: #166534; }
-
-        .user-row {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .user-row:last-child { border-bottom: none; }
-
-        .user-row--pending { background: #fffbeb; }
-
-        .user-row-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-
-        .btn-approve {
-            background: var(--success);
-            color: #fff;
-            border: none;
-            padding: 8px 14px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-        }
-
-        .btn-approve:hover { filter: brightness(1.08); }
-
-        .btn-delete-user {
-            color: var(--danger);
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            padding: 6px 8px;
-            border-radius: var(--radius-sm);
-        }
-
-        .btn-delete-user:hover { background: var(--danger-bg); }
-
-        .btn-edit-user {
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--accent);
-            padding: 8px 14px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            transition: background var(--transition), border-color var(--transition);
-        }
-
-        .btn-edit-user:hover {
-            background: var(--accent-muted);
-            border-color: transparent;
-        }
-
-        .user-edit-panel {
-            margin-bottom: 22px;
-            padding: 20px 22px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            background: #f8fafc;
-        }
-
-        .user-edit-title {
-            margin: 0 0 16px;
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            color: var(--primary);
-        }
-
-        .user-edit-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 4px;
-        }
-
-        .badge-perfil-adm {
-            display: inline-block;
-            margin-left: 6px;
-            padding: 4px 10px;
-            border-radius: 999px;
-            font-size: 0.625rem;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            background: #e0e7ff;
-            color: #3730a3;
-        }
-
-        .badge-perfil-op {
-            display: inline-block;
-            margin-left: 6px;
-            padding: 4px 10px;
-            border-radius: 999px;
-            font-size: 0.625rem;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            background: #f1f5f9;
-            color: #475569;
-        }
-
+        .p-obs-box { padding: 16px 18px; background: #f8fafc; border: 1px solid var(--p-doc-line); border-radius: 10px; border-left: 3px solid #94a3b8; font-size: 0.8125rem; line-height: 1.65; color: #475569; white-space: pre-wrap; }
+        
         .history-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
-        .history-table th {
-            text-align: left;
-            padding: 12px 10px;
-            background: #f8fafc;
-            border-bottom: 2px solid var(--border);
-            font-size: 0.6875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-        }
-
+        .history-table th { text-align: left; padding: 12px 10px; background: #f8fafc; border-bottom: 2px solid var(--border); font-size: 0.6875rem; text-transform: uppercase; color: var(--text-muted); }
         .history-table td { padding: 14px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
 
-        .history-table tr:hover td { background: #fafafa; }
+        /* Estilos Dashboard / BI */
+        .bi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .bi-card { background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: var(--radius-md); padding: 16px; box-shadow: var(--shadow-sm); }
+        .bi-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 8px; }
+        .bi-value { font-size: 1.5rem; font-weight: 800; color: var(--primary); letter-spacing: -0.02em; }
 
-        .btn-table {
-            padding: 8px 14px;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            color: var(--accent);
-            transition: background var(--transition), border-color var(--transition);
-        }
-
+        /* Estilos Usuários e CRM */
+        .user-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 16px; border-bottom: 1px solid var(--border); }
+        .badge-perfil-adm { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 0.625rem; font-weight: 700; text-transform: uppercase; background: #e0e7ff; color: #3730a3; }
+        .badge-perfil-op { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 0.625rem; font-weight: 700; text-transform: uppercase; background: #f1f5f9; color: #475569; }
+        .btn-table { padding: 8px 14px; border: 1px solid var(--border); background: var(--surface); border-radius: var(--radius-sm); cursor: pointer; font-size: 0.8125rem; font-weight: 600; color: var(--accent); transition: all 0.2s; }
         .btn-table:hover { background: var(--accent-muted); border-color: transparent; }
 
-        .history-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: flex-end;
-            align-items: center;
-        }
+        .status-badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; }
+        .status-pendente { background: #fef3c7; color: #92400e; }
+        .status-aprovado { background: #dcfce7; color: #166534; }
+        .status-todas { background: #e2e8f0; color: #475569; }
 
-        .btn-table--muted {
-            color: var(--text-muted);
-        }
-
-        .btn-table--success {
-            color: #fff;
-            background: var(--success);
-            border-color: var(--success);
-        }
-
-        .btn-table--success:hover {
-            filter: brightness(1.06);
-            background: var(--success);
-        }
-
-        .btn-table--danger {
-            color: #fff;
-            background: var(--danger);
-            border-color: var(--danger);
-        }
-
-        .btn-table--danger:hover {
-            filter: brightness(1.05);
-            background: var(--danger);
-        }
-
-        .toolbar-preview .btn.btn-success-outline {
-            width: auto;
-            min-width: 160px;
-            background: #fff;
-            color: var(--success);
-            border: 2px solid var(--success);
-            box-shadow: none;
-        }
-
-        .toolbar-preview .btn.btn-success-outline:hover {
-            background: #f0fdf4;
-        }
-
-        .toolbar-preview .btn.btn-danger-outline {
-            width: auto;
-            min-width: 160px;
-            background: #fff;
-            color: var(--danger);
-            border: 2px solid var(--danger);
-            box-shadow: none;
-        }
-
-        .toolbar-preview .btn.btn-danger-outline:hover {
-            background: #fef2f2;
-        }
-
-        .skip-link {
-            position: absolute;
-            left: -9999px;
-            z-index: 9999;
-            padding: 12px 16px;
-            background: var(--accent);
-            color: #fff;
-            font-weight: 600;
-            border-radius: var(--radius-sm);
-        }
-
-        .skip-link:focus { left: 12px; top: 12px; }
-
-        @media (max-width: 900px) {
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-                flex-direction: row;
-                flex-wrap: wrap;
-                align-items: center;
-                padding: 8px;
-            }
-
-            .sidebar-header { border: none; padding: 8px 12px; flex: 0 0 auto; }
-            .nav-menu { display: flex; flex: 1; flex-wrap: wrap; padding: 8px; gap: 4px; }
-            .nav-link { width: auto; margin-bottom: 0; }
-            .user-panel { margin: 8px; display: flex; align-items: center; gap: 12px; flex: 1 1 100%; }
-            .user-panel .user-name { margin-bottom: 0; flex: 1; }
-            .user-panel .btn-logout { width: auto; min-width: 100px; }
-
-            .main-content { margin-left: 0; }
-        }
+        .perm-check-label { text-transform:none; font-weight:500; display:flex; align-items:center; gap:6px; cursor:pointer; color:var(--text); }
+        .crm-panel { background: #fafafa; border: 1px solid var(--border); padding: 20px; border-radius: var(--radius-md); margin-bottom: 20px; }
+        .crm-panel textarea { background: #fff; border-color: #cbd5e1; }
+        
+        .nota-bubble { background: #fff; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
+        .nota-meta { font-size: 0.6875rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; border-bottom: 1px solid #f1f5f9; padding-bottom: 4px; }
+        .nota-texto { font-size: 0.8125rem; color: var(--text); white-space: pre-wrap; line-height: 1.5; }
 
         @media print {
             .no-print { display: none !important; }
             .sidebar { display: none !important; }
             .main-content { margin: 0 !important; padding: 0 !important; max-width: none !important; }
-            .preview-wrapper {
-                background: none !important;
-                padding: 0 !important;
-            }
-            .preview-container {
-                width: 100% !important;
-                max-width: none !important;
-                box-shadow: none !important;
-                border: none !important;
-                border-radius: 0 !important;
-                padding: 0 !important;
-            }
-            .preview-container::before { height: 3px; }
-            .p-inner { padding: 10mm 12mm 12mm !important; }
-            .p-table tbody tr:nth-child(even) td { background: transparent !important; }
-            .p-table tbody tr:hover td { background: transparent !important; }
-
+            .preview-wrapper { background: none !important; padding: 0 !important; }
+            .preview-container { width: 100% !important; max-width: none !important; box-shadow: none !important; border: none !important; border-radius: 0 !important; padding: 0 !important; }
             @page { size: A4; margin: 12mm; }
         }
     </style>
 </head>
 <body>
-    <a class="skip-link" href="#main-app">Ir para o conteúdo principal</a>
-
-    <div id="screen-login" class="screen active" role="region" aria-label="Acesso ao portal">
+    <div id="screen-login" class="screen active">
         <div class="auth-shell">
             <div class="auth-card" id="box-login">
                 <img class="auth-logo" src="https://i.ibb.co/WNbXMgmb/Captura-de-tela-2026-05-12-143019.png" alt="SAJTEC">
                 <h1 class="auth-title">Acesso ao Portal</h1>
                 <p class="auth-sub">Entre com suas credenciais para continuar.</p>
-                <div class="field">
-                    <label for="l-user">Usuário</label>
-                    <input type="text" id="l-user" name="username" autocomplete="username" placeholder="Usuário">
-                </div>
-                <div class="field">
-                    <label for="l-pass">Senha</label>
-                    <input type="password" id="l-pass" name="password" autocomplete="current-password" placeholder="Senha">
-                </div>
+                <div class="field"><label>Usuário</label><input type="text" id="l-user"></div>
+                <div class="field"><label>Senha</label><input type="password" id="l-pass"></div>
                 <button type="button" class="btn btn-primary" onclick="f_login()">Entrar</button>
-                <p class="auth-footer">Não tem conta? <a href="#" onclick="event.preventDefault(); toggleLogin('register')">Cadastre-se</a></p>
+                <p class="auth-footer">Não tem conta? <a href="#" onclick="toggleLogin('register')">Cadastre-se</a></p>
             </div>
-
             <div class="auth-card" id="box-register" hidden>
                 <img class="auth-logo" src="https://i.ibb.co/WNbXMgmb/Captura-de-tela-2026-05-12-143019.png" alt="SAJTEC">
                 <h1 class="auth-title">Criar conta</h1>
-                <p class="auth-sub">Solicite acesso. Um administrador irá analisar seu cadastro.</p>
-                <div class="field">
-                    <label for="r-user">Nome de usuário</label>
-                    <input type="text" id="r-user" autocomplete="username" placeholder="Nome de usuário">
-                </div>
-                <div class="field">
-                    <label for="r-pass">Senha</label>
-                    <input type="password" id="r-pass" autocomplete="new-password" placeholder="Crie uma senha">
-                </div>
+                <div class="field"><label>Usuário</label><input type="text" id="r-user"></div>
+                <div class="field"><label>Senha</label><input type="password" id="r-pass"></div>
                 <button type="button" class="btn btn-primary" onclick="f_register()">Solicitar acesso</button>
-                <p class="auth-footer"><a href="#" onclick="event.preventDefault(); toggleLogin('login')">Voltar ao login</a></p>
+                <p class="auth-footer"><a href="#" onclick="toggleLogin('login')">Voltar ao login</a></p>
             </div>
-
             <div class="auth-card auth-card--wait" id="box-wait" hidden>
-                <i class="fa fa-clock auth-wait-icon" aria-hidden="true"></i>
                 <h1 class="auth-title">Cadastro recebido</h1>
-                <p class="auth-wait-text">
-                    Seu cadastro foi enviado para análise.
-                    <strong>Aguarde a liberação</strong> de um administrador para acessar o portal.
-                </p>
-                <button type="button" class="btn btn-secondary" onclick="toggleLogin('login')">Entendi — voltar ao login</button>
+                <p class="auth-wait-text">Aguarde a liberação de um administrador.</p>
+                <button type="button" class="btn btn-secondary" onclick="toggleLogin('login')">Voltar</button>
             </div>
         </div>
     </div>
 
-    <div class="app-container" id="app-main" aria-hidden="true">
-        <aside class="sidebar no-print" aria-label="Menu principal">
-            <div class="sidebar-header">
-                <img src="https://i.ibb.co/WNbXMgmb/Captura-de-tela-2026-05-12-143019.png" alt="SAJTEC" width="140" height="auto">
-            </div>
+    <div class="app-container" id="app-main">
+        <aside class="sidebar no-print">
+            <div class="sidebar-header"><img src="https://i.ibb.co/WNbXMgmb/Captura-de-tela-2026-05-12-143019.png" alt="SAJTEC"></div>
             <nav class="nav-menu">
-                <button type="button" class="nav-link active-link" id="nav-new" onclick="location.reload()" aria-current="page">
-                    <i class="fa fa-plus" aria-hidden="true"></i> Nova proposta
-                </button>
-                <button type="button" class="nav-link" id="nav-history-pend" onclick="showScreen('screen-history')">
-                    <i class="fa fa-history" aria-hidden="true"></i> Histórico Pendentes
-                </button>
-                <button type="button" class="nav-link" id="nav-approved" onclick="showScreen('screen-approved')">
-                    <i class="fa fa-check-circle" aria-hidden="true"></i> Propostas Aprovadas
-                </button>
-                <button type="button" class="nav-link" id="menu-users" hidden onclick="showScreen('screen-users')">
-                    <i class="fa fa-users-cog" aria-hidden="true"></i> Gestão de usuários
-                </button>
+                <button class="nav-link active-link" id="nav-new" onclick="location.reload()" hidden><i class="fa fa-plus"></i> Nova proposta</button>
+                <button class="nav-link" id="nav-clientes" onclick="showScreen('screen-clientes')" hidden><i class="fa fa-address-book"></i> Clientes</button>
+                <button class="nav-link" id="nav-produtos" onclick="showScreen('screen-produtos')" hidden><i class="fa fa-box"></i> Produtos</button>
+                <button class="nav-link" id="nav-history-pend" onclick="showScreen('screen-history')" hidden><i class="fa fa-clock"></i> Pendentes</button>
+                <button class="nav-link" id="nav-approved" onclick="showScreen('screen-approved')" hidden><i class="fa fa-check-circle"></i> Aprovadas</button>
+                <button class="nav-link" id="nav-relatorios" onclick="showScreen('screen-relatorios')" hidden><i class="fa fa-chart-bar"></i> Relatórios</button>
+                <button class="nav-link" id="menu-users" onclick="showScreen('screen-users')" hidden><i class="fa fa-users-cog"></i> Usuários</button>
             </nav>
             <div class="user-panel">
                 <span class="user-name" id="user-tag">LUCAS</span>
-                <button type="button" class="btn-logout" onclick="f_logout()">Sair</button>
+                <button class="btn-logout" onclick="f_logout()">Sair</button>
             </div>
         </aside>
 
         <main class="main-content" id="main-app">
-            <div id="screen-form" class="screen active">
-                <div class="card no-print">
-                    <h2 class="page-title">Gerar orçamento</h2>
-                    <div class="form-grid-2">
-                        <div class="field">
-                            <label for="f-id">Nº proposta</label>
-                            <input type="text" id="f-id" readonly aria-readonly="true">
-                        </div>
-                        <div class="field">
-                            <label for="f-cnpj">CNPJ <span style="font-weight:400; text-transform:none; letter-spacing:0; color:#94a3b8;">(Enter para buscar)</span></label>
-                            <input type="text" id="f-cnpj" inputmode="numeric" autocomplete="off" placeholder="00.000.000/0000-00" onkeydown="if(event.key==='Enter'){event.preventDefault();buscarCNPJ(this.value);}">
-                        </div>
+            
+            <div id="screen-clientes" class="screen">
+                <div class="card">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                        <h2 class="page-title" style="margin:0;">Carteira de Clientes (CRM)</h2>
+                        <button class="btn btn-primary" style="width:auto;" onclick="abrirNovoClienteCRM()">+ Cadastrar Cliente</button>
                     </div>
-                    <div class="field">
-                        <label for="f-cli">Razão social</label>
-                        <input type="text" id="f-cli" autocomplete="organization">
-                    </div>
-                    <div class="field">
-                        <label for="f-end">Endereço</label>
-                        <input type="text" id="f-end" autocomplete="street-address">
-                    </div>
-                    <div class="form-grid-equal">
-                        <div class="field">
-                            <label for="f-bairro">Bairro</label>
-                            <input type="text" id="f-bairro">
+                    
+                    <div id="crm-detalhe" class="crm-panel" hidden>
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+                            <div>
+                                <h3 style="margin:0 0 4px 0; color:var(--primary);" id="crm-nome">Nome do Cliente</h3>
+                                <div style="font-size:0.8125rem; color:var(--text-muted);" id="crm-meta">CNPJ: 000 | Cidade</div>
+                            </div>
+                            <button class="btn btn-secondary" style="width:auto; padding:6px 12px; font-size:0.8125rem;" onclick="fecharCRM()">Fechar Ficha</button>
                         </div>
-                        <div class="field">
-                            <label for="f-cidade">Cidade</label>
-                            <input type="text" id="f-cidade">
+                        
+                        <div class="form-grid-2">
+                            <div>
+                                <label style="font-size:0.75rem; color:var(--text); font-weight:700; margin-bottom:8px; display:block;">Histórico de Interações</label>
+                                
+                                <div id="crm-notas-list" style="background:#f1f5f9; border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px; height:200px; overflow-y:auto; margin-bottom:12px;">
+                                    </div>
+                                
+                                <div style="background:#fff; border:1px solid var(--border); padding:12px; border-radius:var(--radius-sm);">
+                                    <textarea id="crm-nova-nota" rows="2" placeholder="Nova anotação (ex: Contato via WhatsApp, envio de catálogo...)" style="margin-bottom:8px;"></textarea>
+                                    <button class="btn btn-primary" style="width:100%; padding:8px;" onclick="adicionarNotaCRM()"><i class="fa fa-plus"></i> Anexar à Ficha</button>
+                                </div>
+                            </div>
+                            <div>
+                                <label style="font-size:0.75rem; color:var(--text); font-weight:700; margin-bottom:8px; display:block;">Histórico de Propostas</label>
+                                <div class="items-table-wrap" style="max-height: 350px; overflow-y:auto; margin:0;">
+                                    <table class="items-table" style="min-width: 100%;">
+                                        <tbody id="crm-historico-body"></tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-grid-equal">
-                        <div class="field">
-                            <label for="f-email">E-mail</label>
-                            <input type="email" id="f-email" autocomplete="email">
-                        </div>
-                        <div class="field">
-                            <label for="f-tel">Telefone</label>
-                            <input type="tel" id="f-tel" autocomplete="tel">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label for="f-total">Total (R$)</label>
-                        <input type="text" id="f-total" inputmode="decimal" oninput="maskMoney(this)" placeholder="0,00">
-                    </div>
-                    <div class="field">
-                        <label for="f-obs">Observações</label>
-                        <textarea id="f-obs" rows="3" placeholder="Condições comerciais, prazos, etc."></textarea>
                     </div>
 
                     <div class="items-table-wrap">
                         <table class="items-table">
                             <thead>
                                 <tr>
-                                    <th scope="col" style="width:1%">Qtd</th>
-                                    <th scope="col">Grupo (pré-seleção)</th>
-                                    <th scope="col">Descrição</th>
-                                    <th scope="col" style="width:1%" aria-label="Remover"></th>
+                                    <th>Cliente</th>
+                                    <th>CNPJ</th>
+                                    <th>Cidade</th>
+                                    <th>Contato</th>
+                                    <th style="width: 130px;">Ações</th>
                                 </tr>
                             </thead>
+                            <tbody id="lista-clientes-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="screen-produtos" class="screen">
+                <div class="card">
+                    <h2 class="page-title">Cadastro de Produtos</h2>
+                    <div class="form-grid-3">
+                        <input type="hidden" id="prod-id">
+                        <div class="field"><label>Nome / Descrição</label><input type="text" id="prod-nome" placeholder="Ex: Módulo Solar 550W"></div>
+                        <div class="field"><label>Marca</label><input type="text" id="prod-marca"></div>
+                        <div class="field"><label>Modelo</label><input type="text" id="prod-modelo"></div>
+                        <div class="field"><label>NCM</label><input type="text" id="prod-ncm"></div>
+                        <div class="field"><label>Preço Padrão (R$)</label><input type="text" id="prod-preco" oninput="maskMoney(this)" placeholder="0,00"></div>
+                        <div class="field" style="display:flex; align-items:flex-end; gap:8px;">
+                            <button class="btn btn-primary" id="btn-salvar-prod" onclick="f_salvar_produto()">Salvar Produto</button>
+                            <button class="btn btn-secondary" id="btn-cancelar-prod" style="display:none;" onclick="f_cancelar_edicao_produto()">Cancelar</button>
+                        </div>
+                    </div>
+                    <div class="items-table-wrap" style="margin-top: 20px;">
+                        <table class="items-table">
+                            <thead><tr><th>Descrição</th><th>Marca</th><th>Modelo</th><th>NCM</th><th style="text-align:right;">Preço</th><th>Ações</th></tr></thead>
+                            <tbody id="lista-produtos-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="screen-form" class="screen active">
+                <div class="card no-print">
+                    <h2 class="page-title">Gerar orçamento</h2>
+                    <div class="form-grid-2">
+                        <div class="field"><label>Nº proposta</label><input type="text" id="f-id" readonly></div>
+                        <div class="field">
+                            <label>CNPJ</label>
+                            <div style="display:flex; gap:8px;">
+                                <input type="text" id="f-cnpj" placeholder="Digite o CNPJ" onkeydown="if(event.key==='Enter'){event.preventDefault();buscarCNPJ(this.value);}">
+                                <button type="button" id="btn-busca-cnpj" class="btn btn-secondary" style="width:auto; padding:0 16px;" onclick="buscarCNPJ(document.getElementById('f-cnpj').value)" title="Buscar CNPJ na Receita Federal">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field"><label>Razão social</label><input type="text" id="f-cli"></div>
+                    <div class="field"><label>Endereço</label><input type="text" id="f-end"></div>
+                    <div class="form-grid-equal">
+                        <div class="field"><label>Bairro</label><input type="text" id="f-bairro"></div>
+                        <div class="field"><label>Cidade</label><input type="text" id="f-cidade"></div>
+                    </div>
+                    <div class="form-grid-equal">
+                        <div class="field"><label>E-mail</label><input type="text" id="f-email"></div>
+                        <div class="field"><label>Telefone</label><input type="text" id="f-tel"></div>
+                    </div>
+                    
+                    <div class="items-table-wrap" style="margin-top: 20px;">
+                        <table class="items-table">
+                            <thead><tr><th scope="col">Qtd</th><th scope="col">Produto / Descrição</th><th scope="col" style="text-align: right;">Preço Unit. (R$)</th><th scope="col" style="text-align: right;">Subtotal</th><th scope="col"></th></tr></thead>
                             <tbody id="items-body"></tbody>
                         </table>
                     </div>
                     <button type="button" class="btn-add-item" onclick="addItemRow()">+ Adicionar item</button>
-                    <button type="button" class="btn btn-primary" onclick="f_gerar_visual()">Gerar visualização</button>
+
+                    <div class="form-grid-2" style="align-items: flex-start;">
+                        <div class="field"><label>Observações</label><textarea id="f-obs" rows="3"></textarea></div>
+                        <div class="field"><label>Total Automático (R$)</label><input type="text" id="f-total" readonly style="font-weight: bold; font-size: 1.2rem; color: var(--primary);"></div>
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary" id="btn-gerar-proposta" onclick="f_gerar_visual()">Gerar Proposta e Cadastrar Cliente</button>
                 </div>
             </div>
 
             <div id="screen-preview" class="screen">
                 <div class="no-print toolbar-preview">
-                    <button type="button" class="btn btn-secondary" onclick="voltarDaPreview()">Voltar</button>
-                    <button type="button" class="btn btn-secondary" style="background:#e2e8f0; color:var(--primary);" onclick="reabrir(window._previewPropostaId)">Editar Dados</button>
-                    <button type="button" class="btn btn-primary btn-print" onclick="window.print()">Imprimir proposta</button>
-                    <button type="button" class="btn btn-danger-outline" id="btn-excluir-proposta" onclick="excluirPropostaAtual()">Excluir proposta</button>
-                    <button type="button" class="btn btn-success-outline" id="btn-aprovar-proposta" hidden onclick="f_aprovar_proposta()">Aprovar proposta</button>
-                    <button type="button" class="btn btn-warning" id="btn-retornar-proposta" hidden onclick="f_retornar_proposta()">Retornar para Pendente</button>
+                    <button class="btn btn-secondary" onclick="voltarDaPreview()">Voltar</button>
+                    <button class="btn btn-secondary" style="background:#e2e8f0; color:var(--primary);" onclick="reabrir(window._previewPropostaId)">Editar</button>
+                    <button class="btn btn-primary btn-print" onclick="window.print()">Imprimir</button>
+                    <button class="btn btn-success-outline" id="btn-aprovar-proposta" hidden onclick="f_aprovar_proposta()">Aprovar</button>
+                    <button class="btn btn-danger-outline" id="btn-excluir-proposta" hidden onclick="excluirPropostaAtual()">Excluir</button>
                 </div>
                 <div class="preview-wrapper">
-                    <article class="preview-container" aria-label="Pré-visualização do orçamento">
+                    <article class="preview-container">
                         <div class="p-inner">
                             <header class="p-header">
-                                <div class="p-brand">
-                                    <img src="https://i.ibb.co/WNbXMgmb/Captura-de-tela-2026-05-12-143019.png" class="p-logo" alt="SAJTEC">
-                                </div>
-                                <div class="p-header-doc">
-                                    <span class="p-doc-eyebrow">Proposta comercial</span>
-                                    <h2 class="p-doc-title">Orçamento</h2>
-                                    <div class="p-doc-meta" role="group" aria-label="Identificação do documento">
-                                        <span class="p-doc-num">Nº <strong id="p-id"></strong></span>
-                                        <span class="p-doc-sep" aria-hidden="true"></span>
-                                        <span class="p-doc-date" id="p-data"></span>
-                                    </div>
-                                </div>
+                                <div class="p-brand"><img src="https://i.ibb.co/WNbXMgmb/Captura-de-tela-2026-05-12-143019.png" class="p-logo"></div>
+                                <div class="p-header-doc"><span class="p-doc-eyebrow">Proposta comercial</span><h2 class="p-doc-title">Orçamento</h2><div class="p-doc-meta">Nº <strong id="p-id"></strong> | <span id="p-data"></span></div></div>
                             </header>
                             <div class="p-client-section">
-                                <div class="p-client-card">
-                                    <div class="p-kv-grid">
-                                        <div class="p-kv">
-                                            <span class="p-kv-label">Cliente</span>
-                                            <span class="p-kv-value" id="p-cli"></span>
-                                        </div>
-                                        <div class="p-kv">
-                                            <span class="p-kv-label">CNPJ</span>
-                                            <span class="p-kv-value" id="p-cnpj"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="p-client-card p-client-card--alt p-client-right">
-                                    <div class="p-kv-grid">
-                                        <div class="p-kv">
-                                            <span class="p-kv-label">Endereço</span>
-                                            <span class="p-kv-value" id="p-end"></span>
-                                        </div>
-                                        <div class="p-kv">
-                                            <span class="p-kv-label">Contato</span>
-                                            <span class="p-kv-value" id="p-contato"></span>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div class="p-client-card"><div class="p-kv"><span class="p-kv-label">Cliente</span><span class="p-kv-value" id="p-cli"></span></div><div class="p-kv"><span class="p-kv-label">CNPJ</span><span class="p-kv-value" id="p-cnpj"></span></div></div>
+                                <div class="p-client-card p-client-card--alt"><div class="p-kv"><span class="p-kv-label">Endereço</span><span class="p-kv-value" id="p-end"></span></div><div class="p-kv"><span class="p-kv-label">Contato</span><span class="p-kv-value" id="p-contato"></span></div></div>
                             </div>
                             <div class="p-table-wrap">
-                                <table class="p-table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Qtd</th>
-                                            <th scope="col">Grupo</th>
-                                            <th scope="col">Descrição</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="p-items"></tbody>
-                                </table>
+                                <table class="p-table"><thead><tr><th class="col-num">Qtd</th><th>Descrição</th><th class="col-val">Val. Unit.</th><th class="col-val">Subtotal</th></tr></thead><tbody id="p-items"></tbody></table>
                             </div>
-                            <div class="p-total-wrap">
-                                <div class="p-total-box">
-                                    <small>Total estimado</small>
-                                    <strong>R$ <span id="p-total"></span></strong>
-                                </div>
-                            </div>
-                            <section class="p-obs-section" aria-labelledby="p-obs-heading">
-                                <h3 class="p-section-title" id="p-obs-heading">Observações</h3>
-                                <div class="p-obs-box" id="p-obs"></div>
-                            </section>
-                            <footer class="p-doc-footer">
-                                <span><strong>SAJTEC</strong> · portal de vendas</span>
-                                <span class="p-doc-footer-note">Valores e prazos sujeitos a confirmação formal da proposta.</span>
-                            </footer>
+                            <div class="p-total-wrap"><div class="p-total-box"><small>Total estimado</small><strong>R$ <span id="p-total"></span></strong></div></div>
+                            <div class="p-obs-box" id="p-obs"></div>
                         </div>
                     </article>
                 </div>
             </div>
 
-            <div id="screen-history" class="screen">
+            <div id="screen-history" class="screen"><div class="card"><h2 class="page-title">Propostas Pendentes</h2><div id="history-content"></div></div></div>
+            <div id="screen-approved" class="screen"><div class="card"><h2 class="page-title" style="color:var(--success);"><i class="fa fa-check-circle"></i> Propostas Aprovadas</h2><div id="approved-content"></div></div></div>
+            
+            <div id="screen-relatorios" class="screen">
                 <div class="card">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-                        <h2 class="page-title" style="margin:0;">Orçamentos Pendentes</h2>
-                        <button type="button" class="btn btn-secondary" style="width:auto;" onclick="showScreen('screen-form')"><i class="fa fa-arrow-left"></i> Voltar à proposta</button>
+                    <h2 class="page-title"><i class="fa fa-chart-bar"></i> Relatórios e Desempenho</h2>
+                    
+                    <div class="form-grid-4" style="background:#f8fafc; padding:16px; border:1px solid var(--border); border-radius:var(--radius-md); margin-bottom:24px;">
+                        <div class="field"><label>Data Início</label><input type="date" id="filtro-data-ini"></div>
+                        <div class="field"><label>Data Fim</label><input type="date" id="filtro-data-fim"></div>
+                        <div class="field">
+                            <label>Status</label>
+                            <select id="filtro-status">
+                                <option value="todos">Todos</option>
+                                <option value="aprovado" selected>Aprovadas</option>
+                                <option value="pendente">Pendentes</option>
+                            </select>
+                        </div>
+                        <div class="field" style="display:flex; align-items:flex-end;">
+                            <button class="btn btn-primary" onclick="f_gerar_relatorio()">Atualizar Painel</button>
+                        </div>
                     </div>
-                    <div id="history-content"></div>
-                </div>
-            </div>
 
-            <div id="screen-approved" class="screen">
-                <div class="card">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-                        <h2 class="page-title" style="margin:0;color:var(--success);"><i class="fa fa-file-signature"></i> Propostas Aprovadas</h2>
-                        <button type="button" class="btn btn-secondary" style="width:auto;" onclick="showScreen('screen-form')"><i class="fa fa-arrow-left"></i> Voltar à proposta</button>
+                    <div class="bi-grid" id="bi-dashboard">
+                        <div class="bi-card"><div class="bi-title">Valor Total (Período)</div><div class="bi-value" id="bi-receita">R$ 0,00</div></div>
+                        <div class="bi-card"><div class="bi-title">Qtd. Propostas</div><div class="bi-value" id="bi-qtd">0</div></div>
+                        <div class="bi-card"><div class="bi-title">Ticket Médio</div><div class="bi-value" id="bi-ticket">R$ 0,00</div></div>
+                        <div class="bi-card"><div class="bi-title">Maior Valor</div><div class="bi-value" id="bi-maior">R$ 0,00</div></div>
                     </div>
-                    <div id="approved-content"></div>
+
+                    <div id="relatorio-content">Use os filtros acima para exibir os dados.</div>
                 </div>
             </div>
 
             <div id="screen-users" class="screen">
                 <div class="card">
-                    <h2 class="page-title">Controle de acessos</h2>
+                    <h2 class="page-title">Gestão de Usuários</h2>
                     <div id="user-edit-panel" class="user-edit-panel no-print" hidden>
                         <h3 class="user-edit-title">Editar usuário: <span id="edit-user-display"></span></h3>
                         <input type="hidden" id="edit-user-login" value="">
+                        
                         <div class="form-grid-3">
-                            <div class="field">
-                                <label for="edit-user-pass">Nova senha</label>
-                                <input type="password" id="edit-user-pass" autocomplete="new-password" placeholder="Deixe em branco para manter a senha atual">
-                            </div>
-                            <div class="field">
-                                <label for="edit-user-status">Status do acesso</label>
-                                <select id="edit-user-status">
-                                    <option value="pendente">Pendente</option>
-                                    <option value="aprovado">Aprovado</option>
-                                </select>
-                            </div>
-                            <div class="field">
-                                <label for="edit-user-perfil">Perfil</label>
-                                <select id="edit-user-perfil">
-                                    <option value="operador">Operador</option>
-                                    <option value="administrador">Administrador</option>
-                                </select>
+                            <div class="field"><label>Nova senha</label><input type="password" id="edit-user-pass" placeholder="Deixe em branco para manter a atual"></div>
+                            <div class="field"><label>Status</label><select id="edit-user-status"><option value="pendente">Pendente</option><option value="aprovado">Aprovado</option></select></div>
+                            <div class="field"><label>Perfil Base</label><select id="edit-user-perfil"><option value="operador">Operador</option><option value="administrador">Administrador</option></select></div>
+                        </div>
+
+                        <div class="field" style="margin-top: 10px;">
+                            <label>Permissões de Acesso (Abas do Sistema)</label>
+                            <div style="display: flex; gap: 18px; flex-wrap: wrap; font-size: 0.875rem; background: #fff; padding: 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);">
+                                <label class="perm-check-label"><input type="checkbox" id="perm-nova"> Nova proposta</label>
+                                <label class="perm-check-label"><input type="checkbox" id="perm-cli"> Clientes</label>
+                                <label class="perm-check-label"><input type="checkbox" id="perm-prod"> Produtos</label>
+                                <label class="perm-check-label"><input type="checkbox" id="perm-pend"> Pendentes</label>
+                                <label class="perm-check-label"><input type="checkbox" id="perm-aprov"> Aprovadas</label>
+                                <label class="perm-check-label"><input type="checkbox" id="perm-relat"> Relatórios</label>
+                                <label class="perm-check-label"><input type="checkbox" id="perm-user"> Usuários</label>
                             </div>
                         </div>
-                        <div class="user-edit-actions">
-                            <button type="button" class="btn btn-secondary" style="width:auto;min-width:120px" onclick="fecharEdicaoUsuario()">Cancelar</button>
-                            <button type="button" class="btn btn-primary" style="width:auto;min-width:180px" onclick="salvarEdicaoUsuario()">Salvar alterações</button>
+                        <div style="display:flex; gap:10px; margin-top:12px;">
+                            <button type="button" class="btn btn-secondary" style="width:auto; min-width:120px;" onclick="fecharEdicaoUsuario()">Cancelar</button>
+                            <button type="button" class="btn btn-primary" style="width:auto; min-width:180px;" onclick="salvarEdicaoUsuario()">Salvar alterações</button>
                         </div>
                     </div>
                     <div id="users-list-complex"></div>
@@ -1314,283 +473,218 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, set, get, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, set, get, onValue, remove, update, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
         const firebaseConfig = { apiKey: "AIzaSyAfC1XVrU6sPB8-lGOjfO4qdz6G8VQI6-4", authDomain: "sajtec-410bd.firebaseapp.com", databaseURL: "https://sajtec-410bd-default-rtdb.firebaseio.com", projectId: "sajtec-410bd" };
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        window.db = db;
-        window.dbRef = ref;
-        window.dbSet = set;
-        window.dbGet = get;
-        window.dbRemove = remove;
-        window.dbUpdate = update;
-        onValue(ref(db, 'propostas'), snap => renderHistory(snap.val()));
+        
+        window.db = db; window.dbRef = ref; window.dbSet = set; window.dbGet = get; window.dbRemove = remove; window.dbUpdate = update; window.dbPush = push;
+        
+        onValue(ref(db, 'propostas'), snap => {
+            window._propostas = snap.val() || {};
+            renderHistory(window._propostas);
+            if(window._activeCliId) atualizarTabelaCRM(window._activeCliId);
+        });
+        
+        onValue(ref(db, 'clientes'), snap => {
+            window._clientes = snap.val() || {};
+            renderClientesTable();
+            if(window._activeCliId && document.getElementById('crm-detalhe').hidden === false) {
+                renderNotasCRM(window._activeCliId);
+            }
+        });
+
         onValue(ref(db, 'usuarios'), snap => renderUsers(snap.val()));
+        onValue(ref(db, 'produtos'), snap => { window._produtos = snap.val() || {}; renderProdutosTable(); atualizarSelectsProdutos(); });
     </script>
 
     <script>
-        function escapeHtml(s) {
-            if (s == null) return '';
-            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        window._produtos = {}; window._propostas = {}; window._clientes = {};
+        window._previewPropostaId = null; window._activeCliId = null; window._previewOrigin = 'form';
+
+        function escapeHtml(s) { return s == null ? '' : String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+        function parseDinheiro(str) { return parseFloat((str||'0').replace(/\./g, '').replace(',', '.')) || 0; }
+        function formatDinheiro(num) { return num.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
+        function maskMoney(i) { let v = i.value.replace(/\D/g, ''); v = (v / 100).toFixed(2) + ''; i.value = v.replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.'); }
+        
+        function convertDateStr(dateStr) {
+            if(!dateStr) return new Date(0);
+            const parts = dateStr.split('/');
+            if(parts.length === 3) return new Date(parts[2], parts[1] - 1, parts[0]);
+            return new Date(dateStr);
         }
 
-        function escapeAttr(s) {
-            return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/`/g, '&#96;');
+        // ================= GESTÃO DE CLIENTES (CRM) =================
+        function gerarIdCliente(cnpj, nome) {
+            const cleanCnpj = (cnpj||'').replace(/\D/g, '');
+            if(cleanCnpj) return 'cli_' + cleanCnpj;
+            const cleanNome = (nome||'').normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+            return 'cli_' + (cleanNome || Date.now());
         }
 
-        function currentLoggedUser() { return (sessionStorage.getItem('saj_user') || '').toLowerCase(); }
-
-        function userPerfilFromRecord(d, username) {
-            const login = String(username || '').toLowerCase();
-            const p = d && d.perfil;
-            if (p === 'administrador' || p === 'operador') return p;
-            if (['admin', 'lucas'].includes(login)) return 'administrador';
-            return 'operador';
-        }
-
-        function isAdministrator() { return sessionStorage.getItem('saj_perfil') === 'administrador'; }
-
-        function normProposalStatus(s) { return s === 'aprovado' ? 'aprovado' : 'pendente'; }
-
-        window._previewOrigin = 'form';
-        window._previewPropostaId = null;
-
-        function fillPreviewFromData(data) {
-            document.getElementById('p-id').textContent = data.id;
-            document.getElementById('p-cli').textContent = data.cli || '';
-            document.getElementById('p-cnpj').textContent = data.cnpj || '';
+        window.abrirNovoClienteCRM = async function() {
+            const nome = prompt("Digite o Nome ou Razão Social do novo cliente:");
+            if(!nome) return;
+            const cnpj = prompt("Digite o CNPJ (deixe em branco se não tiver):") || '';
+            const id = gerarIdCliente(cnpj, nome);
             
-            // Layout de endereço com Bairro e Cidade
-            const endCompleto = [
-                data.end,
-                data.bairro,
-                data.cidade
-            ].filter(Boolean).join(', ');
-            
-            document.getElementById('p-end').textContent = endCompleto || '';
-            document.getElementById('p-contato').textContent = `${data.email || ''} | ${data.tel || ''}`;
-            document.getElementById('p-total').textContent = data.total || '';
-            document.getElementById('p-data').textContent = data.data || '';
-            document.getElementById('p-obs').textContent = data.obs || '';
-            document.getElementById('p-items').innerHTML = (data.items || []).map(i => `<tr><td>${escapeHtml(i.q)}</td><td>${escapeHtml(i.g)}</td><td>${escapeHtml(i.d)}</td></tr>`).join('');
-            window._previewPropostaId = String(data.id);
-            atualizarStatusPropostaUI(normProposalStatus(data.propostaStatus));
+            const cliData = {
+                nome: nome,
+                cnpj: cnpj,
+                ultima_att: new Date().toLocaleDateString('pt-BR')
+            };
+
+            await window.dbUpdate(window.dbRef(window.db, 'clientes/' + id), cliData);
+            abrirCRM(id);
         }
 
-        function atualizarStatusPropostaUI(st) {
-            const btnApr = document.getElementById('btn-aprovar-proposta');
-            const btnRet = document.getElementById('btn-retornar-proposta');
+        function renderClientesTable() {
+            const tbody = document.getElementById('lista-clientes-body');
+            if(!tbody) return;
             const isAdmin = isAdministrator();
             
-            if (btnApr) btnApr.hidden = !(isAdmin && st !== 'aprovado');
-            if (btnRet) btnRet.hidden = !(isAdmin && st === 'aprovado');
+            const html = Object.entries(window._clientes).map(([id, c]) => `
+                <tr>
+                    <td><strong>${escapeHtml(c.nome)}</strong></td>
+                    <td>${escapeHtml(c.cnpj || '-')}</td>
+                    <td>${escapeHtml(c.cidade || '-')}</td>
+                    <td>${escapeHtml(c.tel || c.email || '-')}</td>
+                    <td>
+                        <div style="display:flex; gap:6px;">
+                            <button class="btn-table" onclick="abrirCRM('${id}')">Ver Ficha</button>
+                            ${isAdmin ? `<button class="btn-icon-remove" onclick="f_del_cliente('${id}')" title="Excluir Ficha"><i class="fa fa-trash"></i></button>` : ''}
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+            tbody.innerHTML = html || '<tr><td colspan="5">Nenhum cliente cadastrado.</td></tr>';
+        }
+
+        window.f_del_cliente = async function(id) {
+            if(!isAdministrator()) return alert('Sem permissão.');
+            if(!confirm('ATENÇÃO: Deseja realmente excluir este cliente e TODAS as suas anotações? As propostas dele continuarão existindo no sistema, mas perderão o vínculo com a ficha CRM.')) return;
+            await window.dbRemove(window.dbRef(window.db, 'clientes/' + id));
+            if(window._activeCliId === id) fecharCRM();
+        }
+
+        function abrirCRM(id) {
+            const c = window._clientes[id];
+            if(!c) return;
+            window._activeCliId = id;
+            document.getElementById('crm-detalhe').hidden = false;
+            document.getElementById('crm-nome').textContent = c.nome;
+            document.getElementById('crm-meta').textContent = `CNPJ: ${c.cnpj || '-'} | Cidade: ${c.cidade || '-'} | Contato: ${c.tel || '-'}`;
             
-            const btnExc = document.getElementById('btn-excluir-proposta');
-            if (btnExc) btnExc.hidden = !isAdmin;
+            renderNotasCRM(id);
+            atualizarTabelaCRM(id);
+            document.getElementById('crm-detalhe').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function voltarDaPreview() {
-            if (window._previewOrigin === 'history') showScreen('screen-history');
-            else if (window._previewOrigin === 'approved') showScreen('screen-approved');
-            else showScreen('screen-form');
+        function fecharCRM() {
+            window._activeCliId = null;
+            document.getElementById('crm-detalhe').hidden = true;
         }
 
-        async function abrirGerenciar(id, origin = 'history') {
-            const s = await window.dbGet(window.dbRef(window.db, 'propostas/' + id));
-            const p = s.val();
-            if (!p) return alert('Proposta não encontrada.');
-            window._previewOrigin = origin;
-            fillPreviewFromData(p);
-            showScreen('screen-preview');
-        }
-
-        async function f_aprovar_proposta() {
-            const id = window._previewPropostaId || document.getElementById('p-id').textContent;
-            if (!id) return;
-            if (!isAdministrator()) return alert('Acesso negado.');
-            await window.dbUpdate(window.dbRef(window.db, 'propostas/' + id), { propostaStatus: 'aprovado' });
-            atualizarStatusPropostaUI('aprovado');
-        }
-
-        async function f_retornar_proposta() {
-            const id = window._previewPropostaId || document.getElementById('p-id').textContent;
-            if (!id) return;
-            if (!isAdministrator()) return alert('Acesso negado.');
-            if (!confirm('Deseja retornar esta proposta para o estado Pendente?')) return;
-            await window.dbUpdate(window.dbRef(window.db, 'propostas/' + id), { propostaStatus: 'pendente' });
-            atualizarStatusPropostaUI('pendente');
-        }
-
-        async function f_quick_status(id, status) {
-            if (!isAdministrator()) return alert('Acesso negado.');
-            await window.dbUpdate(window.dbRef(window.db, 'propostas/' + id), { propostaStatus: status });
-        }
-
-        async function excluirProposta(id) {
-            if (!id || !isAdministrator()) return;
-            if (!confirm('Excluir permanentemente?')) return;
-            await window.dbRemove(window.dbRef(window.db, 'propostas/' + id));
-            showScreen('screen-history');
-        }
-
-        async function excluirPropostaAtual() {
-            const id = window._previewPropostaId || document.getElementById('p-id').textContent;
-            await excluirProposta(id);
-        }
-
-        function toggleLogin(box) {
-            document.getElementById('box-login').hidden = box !== 'login';
-            document.getElementById('box-register').hidden = box !== 'register';
-            document.getElementById('box-wait').hidden = box !== 'wait';
-        }
-
-        async function f_register() {
-            const user = document.getElementById('r-user').value.toLowerCase().trim();
-            const pass = document.getElementById('r-pass').value.trim();
-            if (!user || !pass) return alert('Preencha os campos');
-            const snap = await window.dbGet(window.dbRef(window.db, 'usuarios/' + user));
-            if (snap.exists()) return alert('Já existe.');
-            await window.dbSet(window.dbRef(window.db, 'usuarios/' + user), { user, pass, status: 'pendente', perfil: 'operador' });
-            toggleLogin('wait');
-        }
-
-        async function f_login() {
-            const user = document.getElementById('l-user').value.toLowerCase().trim();
-            const pass = document.getElementById('l-pass').value.trim();
-            const snap = await window.dbGet(window.dbRef(window.db, 'usuarios/' + user));
-            if (!snap.exists()) return alert('Não existe.');
-            const d = snap.val();
-            if (d.pass !== pass) return alert('Senha errada.');
-            if (d.status !== 'aprovado' && !['lucas', 'admin'].includes(user)) return toggleLogin('wait');
-            sessionStorage.setItem('saj_user', user);
-            sessionStorage.setItem('saj_perfil', userPerfilFromRecord(d, user));
-            location.reload();
-        }
-
-        function renderUsers(obj) {
-            const el = document.getElementById('users-list-complex');
-            if (!obj) return el.innerHTML = 'Nenhum usuário.';
-            el.innerHTML = Object.values(obj).map(u => {
-                const pending = u.status === 'pendente';
-                const perfil = userPerfilFromRecord(u, u.user);
-                return `
-            <div class="user-row ${pending ? 'user-row--pending' : ''}">
-                <div>
-                    <strong>${escapeHtml(String(u.user).toUpperCase())}</strong>
-                    <span class="${perfil === 'administrador' ? 'badge-perfil-adm' : 'badge-perfil-op'}">${perfil}</span>
-                    <span style="color:#94a3b8;"> · Senha: ${escapeHtml(u.pass)}</span><br>
-                    <span class="status-badge status-${u.status}">${u.status}</span>
-                </div>
-                <div class="user-row-actions">
-                    <button class="btn-edit-user" onclick="abrirEdicaoUsuario('${escapeAttr(u.user)}')">Editar</button>
-                    ${pending ? `<button class="btn-approve" onclick="f_aprovar_u('${escapeAttr(u.user)}')">Aprovar</button>` : ''}
-                    <button class="btn-delete-user" onclick="f_del_user('${escapeAttr(u.user)}')">Excluir</button>
-                </div>
-            </div>`;
-            }).join('');
-        }
-
-        async function f_aprovar_u(u) { await window.dbUpdate(window.dbRef(window.db, 'usuarios/' + u), { status: 'aprovado' }); }
-        async function f_del_user(u) { if (confirm('Excluir?')) await window.dbRemove(window.dbRef(window.db, 'usuarios/' + u)); }
-
-        async function abrirEdicaoUsuario(login) {
-            const snap = await window.dbGet(window.dbRef(window.db, 'usuarios/' + login));
-            const u = snap.val();
-            const panel = document.getElementById('user-edit-panel');
-            panel.hidden = false;
-            document.getElementById('edit-user-login').value = login;
-            document.getElementById('edit-user-display').textContent = login.toUpperCase();
-            document.getElementById('edit-user-status').value = u.status;
-            document.getElementById('edit-user-perfil').value = userPerfilFromRecord(u, login);
-            panel.scrollIntoView();
-        }
-
-        function fecharEdicaoUsuario() { document.getElementById('user-edit-panel').hidden = true; }
-
-        async function salvarEdicaoUsuario() {
-            const login = document.getElementById('edit-user-login').value;
-            const status = document.getElementById('edit-user-status').value;
-            const perfil = document.getElementById('edit-user-perfil').value;
-            const newPass = document.getElementById('edit-user-pass').value.trim();
-            const updates = { status, perfil };
-            if (newPass) updates.pass = newPass;
-            await window.dbUpdate(window.dbRef(window.db, 'usuarios/' + login), updates);
-            fecharEdicaoUsuario();
-        }
-
-        async function buscarCNPJ(cnpj) {
-            const clean = cnpj.replace(/\D/g, '');
-            if (clean.length !== 14) return;
-            try {
-                const r = await fetch(`https://publica.cnpj.ws/cnpj/${clean}`);
-                const d = await r.json();
-                document.getElementById('f-cli').value = d.razao_social || '';
-                const est = d.estabelecimento || {};
-                document.getElementById('f-end').value = [est.logradouro, est.numero].filter(Boolean).join(', ');
-                // NOVOS CAMPOS AUTOMÁTICOS
-                document.getElementById('f-bairro').value = est.bairro || '';
-                document.getElementById('f-cidade').value = d.estabelecimento.cidade.nome || '';
-            } catch (e) { alert('Erro ao buscar CNPJ.'); }
-        }
-
-        function showScreen(id) {
-            // Se tentar entrar na tela de usuários sem ser admin, bloqueia
-            if (id === 'screen-users' && !isAdministrator()) {
-                alert('Acesso restrito a administradores.');
+        window.renderNotasCRM = function(cliId) {
+            const c = window._clientes[cliId];
+            const listEl = document.getElementById('crm-notas-list');
+            if (!c || !c.notas) {
+                listEl.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:20px; font-style:italic;">Nenhuma anotação vinculada a este cliente.</div>';
                 return;
             }
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            updateActiveNav(id);
+            
+            const isAdmin = isAdministrator();
+            const notasArray = Object.entries(c.notas).map(([notaId, n]) => ({notaId, ...n})).sort((a,b) => b.timestamp - a.timestamp);
+            
+            listEl.innerHTML = notasArray.map(n => `
+                <div class="nota-bubble">
+                    <div class="nota-meta">
+                        <span><strong><i class="fa fa-user" style="margin-right:4px;"></i>${escapeHtml(n.usuario).toUpperCase()}</strong></span>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span>${escapeHtml(n.data)}</span>
+                            ${isAdmin ? `<button class="btn-del-nota" onclick="f_del_nota_crm('${cliId}', '${n.notaId}')" title="Excluir anotação"><i class="fa fa-trash"></i></button>` : ''}
+                        </div>
+                    </div>
+                    <div class="nota-texto">${escapeHtml(n.texto)}</div>
+                </div>
+            `).join('');
         }
 
-        function updateActiveNav(id) {
-            const navMap = { 'screen-form': 'nav-new', 'screen-history': 'nav-history-pend', 'screen-approved': 'nav-approved', 'screen-users': 'menu-users' };
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.toggle('active-link', link.id === navMap[id]);
-            });
+        window.f_del_nota_crm = async function(cliId, notaId) {
+            if(!isAdministrator()) return;
+            if(!confirm('Excluir esta anotação permanentemente?')) return;
+            await window.dbRemove(window.dbRef(window.db, `clientes/${cliId}/notas/${notaId}`));
         }
 
-        const GRUPO_OUTRO = '__outro__';
-        function getGrupoSelectInnerHtml() {
-            return `<option value="">Selecione...</option>
-                <optgroup label="Solar">
-                    <option value="Módulo">Módulo</option>
-                    <option value="Inversor">Inversor</option>
-                    <option value="Cabo">Cabo</option>
-                    <option value="Conector">Conector</option>
-                    <option value="Estrutura">Estrutura para telhado</option>
-                </optgroup>
-                <option value="${GRUPO_OUTRO}">Outro...</option>`;
+        window.adicionarNotaCRM = async function() {
+            if(!window._activeCliId) return;
+            const textarea = document.getElementById('crm-nova-nota');
+            const texto = textarea.value.trim();
+            if(!texto) return alert('A nota não pode estar vazia.');
+
+            const user = sessionStorage.getItem('saj_user') || 'Desconhecido';
+            const agora = new Date();
+            
+            const nota = {
+                texto: texto,
+                usuario: user,
+                data: agora.toLocaleString('pt-BR'),
+                timestamp: agora.getTime()
+            };
+
+            const notasRef = window.dbRef(window.db, 'clientes/' + window._activeCliId + '/notas');
+            await window.dbPush(notasRef, nota);
+            
+            textarea.value = '';
         }
 
-        function toggleGrupoOutro(sel) {
-            const out = sel.closest('td').querySelector('.i-g-outro');
-            out.style.display = sel.value === GRUPO_OUTRO ? 'block' : 'none';
+        function atualizarTabelaCRM(cliId) {
+            const tbody = document.getElementById('crm-historico-body');
+            const propostasCli = Object.values(window._propostas).filter(p => p.cliId === cliId || gerarIdCliente(p.cnpj, p.cli) === cliId).reverse();
+            
+            if(propostasCli.length === 0) {
+                tbody.innerHTML = '<tr><td>Nenhuma proposta vinculada.</td></tr>'; return;
+            }
+            
+            tbody.innerHTML = propostasCli.map(p => `
+                <tr>
+                    <td style="font-size:0.8125rem;">
+                        <strong>#${p.id}</strong> - ${p.data}<br>
+                        <span style="color:var(--primary); font-weight:600;">R$ ${p.total}</span> 
+                        <span class="status-badge status-${p.propostaStatus}" style="font-size:0.6rem; padding:2px 6px;">${p.propostaStatus}</span>
+                    </td>
+                    <td style="text-align:right;"><button class="btn-icon-edit" onclick="abrirGerenciar('${p.id}', 'clientes')"><i class="fa fa-eye"></i></button></td>
+                </tr>
+            `).join('');
         }
 
-        function addItemRow(q = 1, g = '', d = '') {
-            const tr = document.getElementById('items-body').insertRow();
-            tr.innerHTML = `<td><input type="number" class="i-q" value="${q}" style="width:64px"></td>
-                <td><select class="i-g-select" onchange="toggleGrupoOutro(this)">${getGrupoSelectInnerHtml()}</select>
-                    <input type="text" class="i-g-outro" style="display:none;margin-top:5px" placeholder="Qual?"></td>
-                <td><input type="text" class="i-d" value="${escapeAttr(d)}"></td>
-                <td><button class="btn-icon-remove" onclick="this.closest('tr').remove()"><i class="fa fa-times"></i></button></td>`;
-            const sel = tr.querySelector('.i-g-select');
-            if (g && Array.from(sel.options).some(o => o.value === g)) sel.value = g;
-            else if (g) { sel.value = GRUPO_OUTRO; tr.querySelector('.i-g-outro').style.display = 'block'; tr.querySelector('.i-g-outro').value = g; }
-        }
+        // ================= GERAÇÃO DE PROPOSTA E CADASTRO AUTO DE CLIENTE =================
+        window.f_gerar_visual = async function() {
+            const items = Array.from(document.querySelectorAll('#items-body tr')).map(tr => {
+                const sel = tr.querySelector('.i-prod');
+                const isCustom = sel.value === 'custom';
+                const desc = isCustom ? tr.querySelector('.i-d-custom').value : (sel.options[sel.selectedIndex]?.text || '');
+                return { q: tr.querySelector('.i-q').value, prodId: sel.value, desc: desc, preco: tr.querySelector('.i-preco').value, subtotal: tr.querySelector('.v-sub').textContent };
+            }).filter(i => i.desc.trim() !== '' || i.preco !== '0,00');
 
-        async function f_gerar_visual() {
-            const items = Array.from(document.querySelectorAll('#items-body tr')).map(tr => ({
-                q: tr.querySelector('.i-q').value,
-                g: tr.querySelector('.i-g-select').value === GRUPO_OUTRO ? tr.querySelector('.i-g-outro').value : tr.querySelector('.i-g-select').value,
-                d: tr.querySelector('.i-d').value
-            }));
+            if(items.length === 0) return alert('Adicione ao menos um item na proposta.');
+            
+            const nomeCli = document.getElementById('f-cli').value.trim();
+            if(!nomeCli) return alert('A Razão Social ou Nome do cliente é obrigatório para cadastrar.');
+
+            const btnSalvar = document.getElementById('btn-gerar-proposta');
+            const textoOriginal = btnSalvar.innerHTML;
+            btnSalvar.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Salvando no Sistema...';
+            btnSalvar.disabled = true;
+
+            const cnpjCli = document.getElementById('f-cnpj').value.trim();
+            const cliId = gerarIdCliente(cnpjCli, nomeCli);
+
             const data = {
                 id: document.getElementById('f-id').value,
-                cli: document.getElementById('f-cli').value,
-                cnpj: document.getElementById('f-cnpj').value,
+                cliId: cliId,
+                cli: nomeCli,
+                cnpj: cnpjCli,
                 end: document.getElementById('f-end').value,
                 bairro: document.getElementById('f-bairro').value,
                 cidade: document.getElementById('f-cidade').value,
@@ -1599,89 +693,309 @@
                 tel: document.getElementById('f-tel').value,
                 obs: document.getElementById('f-obs').value,
                 data: new Date().toLocaleDateString('pt-BR'),
-                items, propostaStatus: 'pendente'
+                items, 
+                propostaStatus: 'pendente'
             };
-            await window.dbSet(window.dbRef(window.db, 'propostas/' + data.id), data);
-            fillPreviewFromData(data);
-            showScreen('screen-preview');
+            
+            try {
+                const cliData = { 
+                    nome: nomeCli, 
+                    cnpj: cnpjCli, 
+                    end: data.end, 
+                    bairro: data.bairro, 
+                    cidade: data.cidade, 
+                    email: data.email, 
+                    tel: data.tel, 
+                    ultima_att: data.data 
+                };
+                
+                // Grava a proposta e o cliente na nuvem de forma imediata (upsert)
+                await Promise.all([
+                    window.dbSet(window.dbRef(window.db, 'propostas/' + data.id), data),
+                    window.dbUpdate(window.dbRef(window.db, 'clientes/' + cliId), cliData)
+                ]);
+
+                fillPreviewFromData(data);
+                window._previewOrigin = 'form';
+                showScreen('screen-preview');
+                
+            } catch (err) {
+                console.error("Erro no salvamento: ", err);
+                alert("Erro ao salvar os dados! Verifique sua conexão com a internet.");
+            } finally {
+                btnSalvar.innerHTML = textoOriginal;
+                btnSalvar.disabled = false;
+            }
         }
 
-        function renderHistory(obj) {
-            const hPend = document.getElementById('history-content');
-            const hAppr = document.getElementById('approved-content');
-            if (!obj) { hPend.innerHTML = hAppr.innerHTML = 'Nada aqui.'; return; }
-            const list = Object.values(obj).reverse();
-            const isAdmin = isAdministrator();
+        // ================= RELATÓRIOS E DASHBOARD =================
+        function f_gerar_relatorio() {
+            const dataIni = document.getElementById('filtro-data-ini').value;
+            const dataFim = document.getElementById('filtro-data-fim').value;
+            const status = document.getElementById('filtro-status').value;
+            
+            const ini = dataIni ? new Date(dataIni + 'T00:00:00') : new Date('2000-01-01');
+            const fim = dataFim ? new Date(dataFim + 'T23:59:59') : new Date('2100-01-01');
 
-            const buildT = (arr, type) => {
-                if (!arr.length) return 'Vazio.';
-                return `<table class="history-table">
-                    <thead><tr><th>#ID</th><th>Cliente</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
-                    <tbody>${arr.map(p => `<tr>
+            let filtradas = Object.values(window._propostas).filter(p => {
+                const pd = convertDateStr(p.data);
+                const passData = pd >= ini && pd <= fim;
+                const passStatus = status === 'todos' || p.propostaStatus === status;
+                return passData && passStatus;
+            });
+
+            let totalRev = 0, maxSale = 0;
+            filtradas.forEach(p => {
+                const v = parseDinheiro(p.total);
+                totalRev += v;
+                if(v > maxSale) maxSale = v;
+            });
+            const avg = filtradas.length > 0 ? totalRev / filtradas.length : 0;
+
+            document.getElementById('bi-receita').textContent = 'R$ ' + formatDinheiro(totalRev);
+            document.getElementById('bi-qtd').textContent = filtradas.length;
+            document.getElementById('bi-ticket').textContent = 'R$ ' + formatDinheiro(avg);
+            document.getElementById('bi-maior').textContent = 'R$ ' + formatDinheiro(maxSale);
+
+            const tbody = document.getElementById('relatorio-content');
+            if(filtradas.length === 0) {
+                tbody.innerHTML = '<div style="padding:16px; text-align:center; color:var(--text-muted);">Nenhum dado encontrado para os filtros selecionados.</div>';
+                return;
+            }
+
+            const htmlTable = `<table class="history-table">
+                <thead><tr><th>Data</th><th>Nº</th><th>Cliente</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
+                <tbody>${filtradas.sort((a,b) => convertDateStr(b.data) - convertDateStr(a.data)).map(p => `
+                    <tr>
+                        <td>${p.data}</td>
                         <td><strong>#${p.id}</strong></td>
                         <td>${escapeHtml(p.cli)}</td>
                         <td>R$ ${p.total}</td>
-                        <td><span class="status-badge status-${normProposalStatus(p.propostaStatus)}">${normProposalStatus(p.propostaStatus)}</span></td>
-                        <td><div class="history-actions">
-                            <button class="btn-table btn-table--muted" onclick="reabrir('${p.id}')">Editar</button>
-                            <button class="btn-table" onclick="abrirGerenciar('${p.id}', '${type}')">Gerenciar</button>
-                            ${isAdmin && normProposalStatus(p.propostaStatus) === 'pendente' ? `<button class="btn-table btn-table--success" onclick="f_quick_status('${p.id}', 'aprovado')">Aprovar</button>` : ''}
-                            ${isAdmin && normProposalStatus(p.propostaStatus) === 'aprovado' ? `<button class="btn-table btn-table--danger" onclick="f_quick_status('${p.id}', 'pendente')">Retornar</button>` : ''}
-                        </div></td></tr>`).join('')}</tbody></table>`;
-            };
+                        <td><span class="status-badge status-${p.propostaStatus === 'aprovado'?'aprovado':(p.propostaStatus === 'pendente'?'pendente':'todas')}">${p.propostaStatus}</span></td>
+                        <td><button class="btn-table" onclick="abrirGerenciar('${p.id}', 'relatorios')">Ver</button></td>
+                    </tr>
+                `).join('')}</tbody></table>`;
+            
+            tbody.innerHTML = htmlTable;
+        }
 
-            hPend.innerHTML = buildT(list.filter(p => normProposalStatus(p.propostaStatus) === 'pendente'), 'history');
-            hAppr.innerHTML = buildT(list.filter(p => normProposalStatus(p.propostaStatus) === 'aprovado'), 'approved');
+        // ================= TABELAS HISTÓRICO PADRÃO =================
+        function renderHistory(obj) {
+            const hPend = document.getElementById('history-content');
+            const hAppr = document.getElementById('approved-content');
+            if (!obj) { hPend.innerHTML = hAppr.innerHTML = 'Nenhuma proposta.'; return; }
+            const list = Object.values(obj).reverse();
+
+            const buildT = (arr, origin) => {
+                if (!arr.length) return 'Vazio.';
+                return `<table class="history-table">
+                    <thead><tr><th>Data</th><th>#ID</th><th>Cliente</th><th>Valor</th><th>Ações</th></tr></thead>
+                    <tbody>${arr.map(p => `<tr><td>${p.data}</td><td><strong>#${p.id}</strong></td><td>${escapeHtml(p.cli)}</td><td>R$ ${p.total}</td>
+                        <td><button class="btn-table" onclick="abrirGerenciar('${p.id}', '${origin}')">Visualizar</button></td></tr>`).join('')}</tbody></table>`;
+            };
+            hPend.innerHTML = buildT(list.filter(p => p.propostaStatus === 'pendente'), 'history');
+            hAppr.innerHTML = buildT(list.filter(p => p.propostaStatus === 'aprovado'), 'approved');
+        }
+
+        // ================= ITENS E PRODUTOS (MANUTENÇÃO) =================
+        async function f_salvar_produto() {
+            const perms = JSON.parse(sessionStorage.getItem('saj_perms') || '{}');
+            if (!perms.prod) return alert('Você não tem permissão para gerenciar produtos.');
+            const idForm = document.getElementById('prod-id').value;
+            const nome = document.getElementById('prod-nome').value.trim();
+            if(!nome) return alert('Digite o nome do produto');
+            const id = idForm ? idForm : ('prod_' + Date.now());
+            await window.dbSet(window.dbRef(window.db, 'produtos/' + id), { nome, marca: document.getElementById('prod-marca').value.trim(), modelo: document.getElementById('prod-modelo').value.trim(), ncm: document.getElementById('prod-ncm').value.trim(), preco: document.getElementById('prod-preco').value.trim() || '0,00' });
+            f_cancelar_edicao_produto();
+        }
+        function f_editar_produto(id) {
+            const p = window._produtos[id]; if(!p) return;
+            document.getElementById('prod-id').value = id; document.getElementById('prod-nome').value = p.nome || ''; document.getElementById('prod-marca').value = p.marca || ''; document.getElementById('prod-modelo').value = p.modelo || ''; document.getElementById('prod-ncm').value = p.ncm || ''; document.getElementById('prod-preco').value = p.preco || '';
+            document.getElementById('btn-salvar-prod').textContent = 'Atualizar'; document.getElementById('btn-cancelar-prod').style.display = 'inline-flex'; document.getElementById('screen-produtos').scrollIntoView();
+        }
+        function f_cancelar_edicao_produto() {
+            ['id','nome','marca','modelo','ncm','preco'].forEach(k => document.getElementById('prod-'+k).value = '');
+            document.getElementById('btn-salvar-prod').textContent = 'Salvar Produto'; document.getElementById('btn-cancelar-prod').style.display = 'none';
+        }
+        async function f_del_produto(id) { if(confirm('Excluir?')) await window.dbRemove(window.dbRef(window.db, 'produtos/' + id)); }
+
+        function renderProdutosTable() {
+            const tbody = document.getElementById('lista-produtos-body'); if(!tbody) return;
+            const perms = JSON.parse(sessionStorage.getItem('saj_perms') || '{}');
+            tbody.innerHTML = Object.entries(window._produtos).map(([id, p]) => `<tr><td>${escapeHtml(p.nome)}</td><td>${escapeHtml(p.marca||'-')}</td><td>${escapeHtml(p.modelo||'-')}</td><td>${escapeHtml(p.ncm||'-')}</td><td style="text-align:right">R$ ${p.preco}</td><td>${perms.prod ? `<div style="display:flex; gap:6px;"><button class="btn-icon-edit" onclick="f_editar_produto('${id}')"><i class="fa fa-pen"></i></button><button class="btn-icon-remove" onclick="f_del_produto('${id}')"><i class="fa fa-trash"></i></button></div>` : '-'}</td></tr>`).join('') || '<tr><td colspan="6">Vazio</td></tr>';
+        }
+
+        function addItemRow(q = 1, prodId = '', customDesc = '', preco = '0,00', subtotal = '0,00') {
+            const tr = document.getElementById('items-body').insertRow();
+            let optionsHtml = `<option value="">Selecione...</option><option value="custom">-- Outro (Digitar manualmente) --</option>`;
+            Object.entries(window._produtos).forEach(([id, p]) => { optionsHtml += `<option value="${id}">${escapeHtml([p.nome, p.marca, p.modelo].filter(Boolean).join(' - '))}</option>`; });
+            tr.innerHTML = `<td><input type="number" class="i-q" value="${q}" min="1" oninput="calcLinha(this)"></td><td><select class="i-prod" onchange="mudouProduto(this)">${optionsHtml}</select><input type="text" class="i-d-custom" value="${escapeHtml(customDesc)}" style="display:none; margin-top:5px;"></td><td><input type="text" class="i-preco" value="${preco}" oninput="maskMoney(this); calcLinha(this)"></td><td class="t-subtotal">R$ <span class="v-sub">${subtotal}</span></td><td><button class="btn-icon-remove" onclick="removerLinha(this)"><i class="fa fa-times"></i></button></td>`;
+            const sel = tr.querySelector('.i-prod');
+            if (prodId && prodId !== 'custom') sel.value = prodId; else if (customDesc) { sel.value = 'custom'; tr.querySelector('.i-d-custom').style.display = 'block'; }
+        }
+        function removerLinha(btn) { btn.closest('tr').remove(); calcTotalProposta(); }
+        function atualizarSelectsProdutos() {
+            document.querySelectorAll('.i-prod').forEach(sel => {
+                const valAtual = sel.value; let html = `<option value="">Selecione...</option><option value="custom">-- Outro --</option>`;
+                Object.entries(window._produtos).forEach(([id, p]) => { html += `<option value="${id}">${escapeHtml([p.nome, p.marca, p.modelo].filter(Boolean).join(' - '))}</option>`; });
+                sel.innerHTML = html; if(valAtual && (window._produtos[valAtual] || valAtual === 'custom')) sel.value = valAtual;
+            });
+        }
+        function mudouProduto(sel) {
+            const tr = sel.closest('tr'); const customInput = tr.querySelector('.i-d-custom'); const precoInput = tr.querySelector('.i-preco');
+            if (sel.value === 'custom') customInput.style.display = 'block'; else { customInput.style.display = 'none'; customInput.value = ''; if (sel.value && window._produtos[sel.value]) precoInput.value = window._produtos[sel.value].preco; }
+            calcLinha(sel);
+        }
+        function calcLinha(el) {
+            const tr = el.closest('tr');
+            const sub = (parseFloat(tr.querySelector('.i-q').value) || 0) * parseDinheiro(tr.querySelector('.i-preco').value);
+            tr.querySelector('.v-sub').textContent = formatDinheiro(sub); calcTotalProposta();
+        }
+        function calcTotalProposta() {
+            let total = 0; document.querySelectorAll('#items-body tr').forEach(tr => { total += (parseFloat(tr.querySelector('.i-q').value) || 0) * parseDinheiro(tr.querySelector('.i-preco').value); });
+            document.getElementById('f-total').value = formatDinheiro(total);
+        }
+
+        // ================= CONTROLE DE TELAS E PREVIEW =================
+        function showScreen(id) {
+            const perms = JSON.parse(sessionStorage.getItem('saj_perms') || '{}');
+            const reqPerms = { 'screen-form': 'nova', 'screen-clientes': 'cli', 'screen-produtos': 'prod', 'screen-history': 'pend', 'screen-approved': 'aprov', 'screen-relatorios': 'relat', 'screen-users': 'user' };
+            if (reqPerms[id] && perms[reqPerms[id]] === false) return alert('Você não tem permissão para acessar esta aba.');
+            
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active-link'));
+            const navMap = { 'screen-form': 'nav-new', 'screen-clientes': 'nav-clientes', 'screen-produtos': 'nav-produtos', 'screen-history': 'nav-history-pend', 'screen-approved': 'nav-approved', 'screen-relatorios': 'nav-relatorios', 'screen-users': 'menu-users' };
+            if(navMap[id]) document.getElementById(navMap[id]).classList.add('active-link');
+
+            if(id === 'screen-relatorios') f_gerar_relatorio();
+        }
+
+        function voltarDaPreview() {
+            if(window._previewOrigin === 'clientes') showScreen('screen-clientes');
+            else if(window._previewOrigin === 'relatorios') showScreen('screen-relatorios');
+            else if(window._previewOrigin === 'history') showScreen('screen-history');
+            else if(window._previewOrigin === 'approved') showScreen('screen-approved');
+            else showScreen('screen-form');
+        }
+
+        function fillPreviewFromData(data) {
+            document.getElementById('p-id').textContent = data.id; document.getElementById('p-cli').textContent = data.cli || ''; document.getElementById('p-cnpj').textContent = data.cnpj || ''; document.getElementById('p-end').textContent = [data.end, data.bairro, data.cidade].filter(Boolean).join(', '); document.getElementById('p-contato').textContent = `${data.email || ''} | ${data.tel || ''}`; document.getElementById('p-total').textContent = data.total || '0,00'; document.getElementById('p-data').textContent = data.data || ''; document.getElementById('p-obs').textContent = data.obs || '';
+            document.getElementById('p-items').innerHTML = (data.items || []).map(i => `<tr><td class="col-num">${escapeHtml(i.q)}</td><td>${escapeHtml(i.desc)}</td><td class="col-val">R$ ${escapeHtml(i.preco)}</td><td class="col-val">R$ ${escapeHtml(i.subtotal)}</td></tr>`).join('');
+            window._previewPropostaId = String(data.id);
+            const perms = JSON.parse(sessionStorage.getItem('saj_perms') || '{}');
+            document.getElementById('btn-excluir-proposta').hidden = !(perms.aprov || perms.user);
+            document.getElementById('btn-aprovar-proposta').hidden = !((perms.aprov || perms.user) && data.propostaStatus !== 'aprovado');
         }
 
         async function reabrir(id) {
-            const s = await window.dbGet(window.dbRef(window.db, 'propostas/' + id));
-            const p = s.val();
-            if (!p) return;
-            document.getElementById('f-id').value = p.id;
-            document.getElementById('f-cli').value = p.cli;
-            document.getElementById('f-cnpj').value = p.cnpj;
-            document.getElementById('f-end').value = p.end;
-            document.getElementById('f-bairro').value = p.bairro || '';
-            document.getElementById('f-cidade').value = p.cidade || '';
-            document.getElementById('f-total').value = p.total;
-            document.getElementById('f-email').value = p.email || '';
-            document.getElementById('f-tel').value = p.tel || '';
-            document.getElementById('f-obs').value = p.obs || '';
-            document.getElementById('items-body').innerHTML = '';
-            (p.items || []).forEach(i => addItemRow(i.q, i.g, i.d));
+            const p = window._propostas[id]; if (!p) return;
+            document.getElementById('f-id').value = p.id; ['cli', 'cnpj', 'end', 'bairro', 'cidade', 'email', 'tel', 'obs'].forEach(k => document.getElementById('f-'+k).value = p[k] || '');
+            document.getElementById('items-body').innerHTML = ''; (p.items || []).forEach(i => addItemRow(i.q, i.prodId, i.desc, i.preco, i.subtotal)); calcTotalProposta();
             showScreen('screen-form');
         }
 
-        function maskMoney(i) {
-            let v = i.value.replace(/\D/g, '');
-            v = (v / 100).toFixed(2) + '';
-            v = v.replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-            i.value = v;
+        async function abrirGerenciar(id, origin = 'history') {
+            const p = window._propostas[id]; if(!p) return;
+            window._previewOrigin = origin; fillPreviewFromData(p); showScreen('screen-preview');
+        }
+        async function f_aprovar_proposta() { await window.dbUpdate(window.dbRef(window.db, 'propostas/' + window._previewPropostaId), { propostaStatus: 'aprovado' }); voltarDaPreview(); }
+        async function excluirPropostaAtual() { if (confirm('Excluir proposta?')) { await window.dbRemove(window.dbRef(window.db, 'propostas/' + window._previewPropostaId)); voltarDaPreview(); } }
+
+        async function buscarCNPJ(cnpj) {
+            const clean = cnpj.replace(/\D/g, ''); 
+            if (clean.length !== 14) { alert('CNPJ inválido. Digite os 14 números.'); return; }
+            try {
+                const btnBusca = document.getElementById('btn-busca-cnpj');
+                if(btnBusca) btnBusca.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+
+                const r = await fetch(`https://publica.cnpj.ws/cnpj/${clean}`);
+                if(!r.ok) throw new Error('Falha');
+                const d = await r.json();
+                
+                document.getElementById('f-cli').value = d.razao_social || ''; const est = d.estabelecimento || {};
+                document.getElementById('f-end').value = [est.logradouro, est.numero].filter(Boolean).join(', '); 
+                document.getElementById('f-bairro').value = est.bairro || ''; document.getElementById('f-cidade').value = est.cidade ? est.cidade.nome : '';
+                if(btnBusca) btnBusca.innerHTML = '<i class="fa fa-search"></i>';
+            } catch (e) { 
+                alert('Erro ao buscar CNPJ. Verifique se o número está correto.'); 
+                const btnBusca = document.getElementById('btn-busca-cnpj');
+                if(btnBusca) btnBusca.innerHTML = '<i class="fa fa-search"></i>';
+            }
         }
 
+        // ================= GESTÃO DE USUÁRIOS E PERMISSÕES =================
+        function renderUsers(obj) {
+            const el = document.getElementById('users-list-complex'); if (!obj) { el.innerHTML = 'Vazio.'; return; }
+            el.innerHTML = Object.values(obj).map(u => `<div class="user-row ${u.status === 'pendente' ? 'user-row--pending' : ''}"><div><strong>${escapeHtml(String(u.user).toUpperCase())}</strong><span class="${u.perfil === 'administrador' ? 'badge-perfil-adm' : 'badge-perfil-op'}">${u.perfil||'operador'}</span><br><span class="status-badge status-${u.status}">${u.status}</span></div><div class="user-row-actions"><button class="btn-edit-user" onclick="abrirEdicaoUsuario('${escapeHtml(u.user)}')">Editar</button>${u.status === 'pendente' ? `<button class="btn-approve" onclick="f_aprovar_u('${escapeHtml(u.user)}')">Liberar</button>` : ''}<button class="btn-delete-user" onclick="f_del_user('${escapeHtml(u.user)}')">Excluir</button></div></div>`).join('');
+        }
+        async function f_aprovar_u(u) { await window.dbUpdate(window.dbRef(window.db, 'usuarios/' + u), { status: 'aprovado', perfil: 'operador', permissoes: { nova: true, cli: true, prod: false, pend: true, aprov: true, relat: false, user: false } }); }
+        async function f_del_user(u) { if (confirm('Excluir?')) await window.dbRemove(window.dbRef(window.db, 'usuarios/' + u)); }
+        async function abrirEdicaoUsuario(login) {
+            const snap = await window.dbGet(window.dbRef(window.db, 'usuarios/' + login)); const u = snap.val();
+            document.getElementById('user-edit-panel').hidden = false; document.getElementById('edit-user-login').value = login; document.getElementById('edit-user-display').textContent = login.toUpperCase(); document.getElementById('edit-user-status').value = u.status || 'pendente'; document.getElementById('edit-user-perfil').value = u.perfil || 'operador'; document.getElementById('edit-user-pass').value = '';
+            const isAdmin = u.perfil === 'administrador'; const p = u.permissoes || { nova: true, cli: isAdmin, prod: isAdmin, pend: true, aprov: true, relat: isAdmin, user: isAdmin };
+            ['nova','cli','prod','pend','aprov','relat','user'].forEach(k => document.getElementById('perm-'+k).checked = (p[k] !== false));
+            document.getElementById('user-edit-panel').scrollIntoView({ behavior: 'smooth' });
+        }
+        function fecharEdicaoUsuario() { document.getElementById('user-edit-panel').hidden = true; }
+        async function salvarEdicaoUsuario() {
+            const login = document.getElementById('edit-user-login').value; const newPass = document.getElementById('edit-user-pass').value.trim();
+            const permissoes = {}; ['nova','cli','prod','pend','aprov','relat','user'].forEach(k => permissoes[k] = document.getElementById('perm-'+k).checked);
+            const updates = { status: document.getElementById('edit-user-status').value, perfil: document.getElementById('edit-user-perfil').value, permissoes };
+            if (newPass) updates.pass = newPass; 
+            await window.dbUpdate(window.dbRef(window.db, 'usuarios/' + login), updates); fecharEdicaoUsuario();
+        }
+
+        // ================= AUTENTICAÇÃO E INIT =================
+        function toggleLogin(box) { ['login', 'register', 'wait'].forEach(b => document.getElementById('box-'+b).hidden = box !== b); }
+        async function f_login() {
+            const u = document.getElementById('l-user').value.toLowerCase().trim(); const p = document.getElementById('l-pass').value.trim();
+            const snap = await window.dbGet(window.dbRef(window.db, 'usuarios/' + u)); if (!snap.exists() || snap.val().pass !== p) return alert('Credenciais inválidas.');
+            const d = snap.val(); if (d.status !== 'aprovado' && !['admin', 'lucas'].includes(u)) return toggleLogin('wait');
+            
+            let perms = d.permissoes;
+            if (!perms) { const a = d.perfil === 'administrador'; perms = { nova: true, cli: a, prod: a, pend: true, aprov: true, relat: a, user: a }; }
+            if (['admin', 'lucas'].includes(u)) perms = { nova: true, cli: true, prod: true, pend: true, aprov: true, relat: true, user: true };
+
+            sessionStorage.setItem('saj_user', u); sessionStorage.setItem('saj_perfil', d.perfil || 'operador'); sessionStorage.setItem('saj_perms', JSON.stringify(perms)); location.reload();
+        }
         function f_logout() { sessionStorage.clear(); location.reload(); }
+
+        function isAdministrator() { 
+            const u = sessionStorage.getItem('saj_user');
+            return sessionStorage.getItem('saj_perfil') === 'administrador' || ['admin', 'lucas'].includes(u); 
+        }
 
         window.onload = () => {
             const u = sessionStorage.getItem('saj_user');
             if (u) {
-                document.getElementById('screen-login').classList.remove('active');
-                document.getElementById('app-main').classList.add('is-visible');
-                document.getElementById('user-tag').textContent = u.toUpperCase();
-                document.getElementById('f-id').value = Math.floor(1000 + Math.random() * 9000);
+                document.getElementById('screen-login').classList.remove('active'); document.getElementById('app-main').classList.add('is-visible');
+                document.getElementById('user-tag').textContent = u.toUpperCase(); document.getElementById('f-id').value = Math.floor(1000 + Math.random() * 9000);
                 
-                // Se for administrador, mostra o menu de gestão de usuários
-                if (isAdministrator()) {
-                    document.getElementById('menu-users').hidden = false;
-                } else {
-                    // Garante que a tela de gestão de usuários seja ocultada caso o operador tente acessar forçadamente
-                    const screenUsers = document.getElementById('screen-users');
-                    if (screenUsers) screenUsers.innerHTML = ''; 
+                const perms = JSON.parse(sessionStorage.getItem('saj_perms') || '{}');
+                ['nova','cli','produtos','history-pend','approved','relatorios'].forEach(k => {
+                    let map = {'nova':'nova', 'cli':'clientes', 'produtos':'produtos', 'history-pend':'history-pend', 'approved':'approved', 'relatorios':'relatorios'};
+                    const el = document.getElementById('nav-' + k); if(el) el.hidden = !perms[map[k] === 'clientes' ? 'cli' : map[k] === 'history-pend' ? 'pend' : map[k] === 'approved' ? 'aprov' : map[k] === 'relatorios' ? 'relat' : map[k] === 'produtos' ? 'prod' : 'nova'];
+                });
+                document.getElementById('menu-users').hidden = !perms.user;
+
+                if (!perms.nova) {
+                    document.getElementById('screen-form').classList.remove('active');
+                    if(perms.cli) showScreen('screen-clientes'); else if(perms.prod) showScreen('screen-produtos'); else if(perms.pend) showScreen('screen-history'); else if(perms.aprov) showScreen('screen-approved'); else if(perms.relat) showScreen('screen-relatorios'); else if(perms.user) showScreen('screen-users');
                 }
-                
                 addItemRow();
+
+                const hoje = new Date();
+                const dia1 = new Date(hoje.getFullYear(), hoje.getMonth(), 1).toISOString().split('T')[0];
+                const ultimoDia = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).toISOString().split('T')[0];
+                document.getElementById('filtro-data-ini').value = dia1;
+                document.getElementById('filtro-data-fim').value = ultimoDia;
             }
         };
+        
+        // Exportando explicitamente funções de UI para o escopo global para garantir que onclick funcione perfeitamente
+        window.f_gerar_visual = f_gerar_visual; window.fecharEdicaoUsuario = fecharEdicaoUsuario; window.salvarEdicaoUsuario = salvarEdicaoUsuario; window.abrirEdicaoUsuario = abrirEdicaoUsuario; window.f_aprovar_u = f_aprovar_u; window.f_del_user = f_del_user; window.f_editar_produto = f_editar_produto; window.f_cancelar_edicao_produto = f_cancelar_edicao_produto; window.abrirCRM = abrirCRM; window.fecharCRM = fecharCRM; window.f_gerar_relatorio = f_gerar_relatorio; window.abrirGerenciar = abrirGerenciar; window.buscarCNPJ = buscarCNPJ;
     </script>
 </body>
 </html>
