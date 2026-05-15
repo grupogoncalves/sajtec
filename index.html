@@ -43,13 +43,16 @@
         .screen.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
-        /* ——— Auth ——— */
+        /* ——— Auth e Modais ——— */
         .auth-shell { min-height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 24px; background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(96, 165, 250, 0.35), transparent), radial-gradient(ellipse 60% 40% at 100% 100%, rgba(15, 23, 42, 0.4), transparent), linear-gradient(165deg, var(--primary) 0%, #020617 100%); }
         .auth-card { width: 100%; max-width: 400px; background: var(--surface); border-radius: var(--radius-lg); padding: 32px 28px; box-shadow: var(--shadow-lg); border: 1px solid rgba(255, 255, 255, 0.08); text-align: center; }
         .auth-card--wait { border-top: 4px solid var(--warning); }
         .auth-logo { height: 44px; width: auto; object-fit: contain; }
         .auth-title { margin: 20px 0 8px; font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; color: var(--primary); }
         .auth-sub { margin: 0 0 20px; font-size: 0.875rem; color: var(--text-muted); }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.7); display: none; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(4px); }
+        .modal-box { background: var(--surface); padding: 30px; border-radius: var(--radius-lg); width: 100%; max-width: 360px; box-shadow: var(--shadow-lg); text-align: center; animation: fadeIn 0.2s ease; }
 
         .field { margin-bottom: 16px; text-align: left; }
         label, .label { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.06em; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 6px; }
@@ -182,6 +185,11 @@
         .status-pendente { background: #fef3c7; color: #92400e; }
         .status-aprovado { background: #dcfce7; color: #166534; }
         .status-todas { background: #e2e8f0; color: #475569; }
+        
+        /* Status OS - Cores de Kanban */
+        .status-os-pendente { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; font-weight: 700; padding: 4px 8px; border-radius: 999px; font-size: 0.6875rem; text-transform: uppercase;}
+        .status-os-separando { background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe; font-weight: 700; padding: 4px 8px; border-radius: 999px; font-size: 0.6875rem; text-transform: uppercase;}
+        .status-os-despachado { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; font-weight: 700; padding: 4px 8px; border-radius: 999px; font-size: 0.6875rem; text-transform: uppercase;}
 
         .perm-check-label { text-transform:none; font-weight:500; display:flex; align-items:center; gap:6px; cursor:pointer; color:var(--text); }
         .crm-panel { background: #fafafa; border: 1px solid var(--border); padding: 20px; border-radius: var(--radius-md); margin-bottom: 20px; }
@@ -190,6 +198,9 @@
         .nota-bubble { background: #fff; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
         .nota-meta { font-size: 0.6875rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; border-bottom: 1px solid #f1f5f9; padding-bottom: 4px; }
         .nota-texto { font-size: 0.8125rem; color: var(--text); white-space: pre-wrap; line-height: 1.5; }
+
+        /* Estilo Checkbox Nativo OS */
+        .check-os { width: 22px; height: 22px; cursor: pointer; accent-color: var(--accent); }
 
         @media print {
             .no-print { display: none !important; }
@@ -202,6 +213,21 @@
     </style>
 </head>
 <body>
+    
+    <div id="modal-auth-os" class="modal-overlay">
+        <div class="modal-box">
+            <h2 class="auth-title" style="margin-top:0;">Autorização de OS</h2>
+            <p class="auth-sub" id="os-auth-msg">Digite sua senha para confirmar.</p>
+            <div class="field">
+                <input type="password" id="os-auth-senha" placeholder="Sua Senha do Sistema">
+            </div>
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button class="btn btn-secondary" onclick="fecharModalAuthOS()">Cancelar</button>
+                <button class="btn btn-primary" id="btn-confirm-os" onclick="confirmarAuthOS()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
     <div id="screen-login" class="screen active">
         <div class="auth-shell">
             <div class="auth-card" id="box-login">
@@ -238,6 +264,7 @@
                 <button class="nav-link" id="nav-produtos" onclick="showScreen('screen-produtos')" hidden><i class="fa fa-box"></i> Produtos</button>
                 <button class="nav-link" id="nav-history-pend" onclick="showScreen('screen-history')" hidden><i class="fa fa-clock"></i> Pendentes</button>
                 <button class="nav-link" id="nav-approved" onclick="showScreen('screen-approved')" hidden><i class="fa fa-check-circle"></i> Aprovadas</button>
+                <button class="nav-link" id="nav-os" onclick="showScreen('screen-os')" hidden><i class="fa fa-truck-fast"></i> Ordem de Serviço</button>
                 <button class="nav-link" id="nav-relatorios" onclick="showScreen('screen-relatorios')" hidden><i class="fa fa-chart-bar"></i> Relatórios</button>
                 <button class="nav-link" id="menu-users" onclick="showScreen('screen-users')" hidden><i class="fa fa-users-cog"></i> Usuários</button>
             </nav>
@@ -269,8 +296,7 @@
                             <div>
                                 <label style="font-size:0.75rem; color:var(--text); font-weight:700; margin-bottom:8px; display:block;">Histórico de Interações</label>
                                 
-                                <div id="crm-notas-list" style="background:#f1f5f9; border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px; height:200px; overflow-y:auto; margin-bottom:12px;">
-                                    </div>
+                                <div id="crm-notas-list" style="background:#f1f5f9; border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px; height:200px; overflow-y:auto; margin-bottom:12px;"></div>
                                 
                                 <div style="background:#fff; border:1px solid var(--border); padding:12px; border-radius:var(--radius-sm);">
                                     <textarea id="crm-nova-nota" rows="2" placeholder="Nova anotação (ex: Contato via WhatsApp, envio de catálogo...)" style="margin-bottom:8px;"></textarea>
@@ -290,15 +316,7 @@
 
                     <div class="items-table-wrap">
                         <table class="items-table">
-                            <thead>
-                                <tr>
-                                    <th>Cliente</th>
-                                    <th>CNPJ</th>
-                                    <th>Cidade</th>
-                                    <th>Contato</th>
-                                    <th style="width: 130px;">Ações</th>
-                                </tr>
-                            </thead>
+                            <thead><tr><th>Cliente</th><th>CNPJ</th><th>Cidade</th><th>Contato</th><th style="width: 130px;">Ações</th></tr></thead>
                             <tbody id="lista-clientes-body"></tbody>
                         </table>
                     </div>
@@ -338,9 +356,7 @@
                             <label>CNPJ</label>
                             <div style="display:flex; gap:8px;">
                                 <input type="text" id="f-cnpj" placeholder="Digite o CNPJ" onkeydown="if(event.key==='Enter'){event.preventDefault();buscarCNPJ(this.value);}">
-                                <button type="button" id="btn-busca-cnpj" class="btn btn-secondary" style="width:auto; padding:0 16px;" onclick="buscarCNPJ(document.getElementById('f-cnpj').value)" title="Buscar CNPJ na Receita Federal">
-                                    <i class="fa fa-search"></i>
-                                </button>
+                                <button type="button" id="btn-busca-cnpj" class="btn btn-secondary" style="width:auto; padding:0 16px;" onclick="buscarCNPJ(document.getElementById('f-cnpj').value)" title="Buscar CNPJ na Receita Federal"><i class="fa fa-search"></i></button>
                             </div>
                         </div>
                     </div>
@@ -376,8 +392,8 @@
                 <div class="no-print toolbar-preview">
                     <button class="btn btn-secondary" onclick="voltarDaPreview()">Voltar</button>
                     <button class="btn btn-secondary" style="background:#e2e8f0; color:var(--primary);" onclick="reabrir(window._previewPropostaId)">Editar</button>
-                    <button class="btn btn-primary btn-print" onclick="window.print()">Imprimir</button>
-                    <button class="btn btn-success-outline" id="btn-aprovar-proposta" hidden onclick="f_aprovar_proposta()">Aprovar</button>
+                    <button class="btn btn-primary btn-print" onclick="window.print()">Imprimir Proposta</button>
+                    <button class="btn btn-success-outline" id="btn-aprovar-proposta" hidden onclick="f_aprovar_proposta()">Aprovar Proposta</button>
                     <button class="btn btn-danger-outline" id="btn-excluir-proposta" hidden onclick="excluirPropostaAtual()">Excluir</button>
                 </div>
                 <div class="preview-wrapper">
@@ -400,14 +416,60 @@
                     </article>
                 </div>
             </div>
+            
+            <div id="screen-preview-os" class="screen">
+                <div class="no-print toolbar-preview">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-os')"><i class="fa fa-arrow-left"></i> Voltar para Lista OS</button>
+                    <button class="btn btn-primary btn-print" onclick="window.print()"><i class="fa fa-print"></i> Imprimir Romaneio</button>
+                    <button class="btn btn-success-outline" id="btn-os-separar" onclick="iniciarAutorizacaoOS('separando')"><i class="fa fa-box-open"></i> Iniciar Separação</button>
+                    <button class="btn btn-success" id="btn-os-despachar" onclick="iniciarAutorizacaoOS('despachado')"><i class="fa fa-truck"></i> Marcar Despachado</button>
+                </div>
+                <div class="preview-wrapper">
+                    <article class="preview-container">
+                        <div class="p-inner">
+                            <header class="p-header">
+                                <div class="p-brand"><img src="https://i.ibb.co/WNbXMgmb/Captura-de-tela-2026-05-12-143019.png" class="p-logo"></div>
+                                <div class="p-header-doc"><span class="p-doc-eyebrow" style="color:var(--primary);">Ordem de Serviço</span><h2 class="p-doc-title">Romaneio de Separação</h2><div class="p-doc-meta">Ref. Proposta Nº <strong id="pos-id"></strong> | <span id="pos-data"></span></div></div>
+                            </header>
+                            <div class="p-client-section">
+                                <div class="p-client-card"><div class="p-kv"><span class="p-kv-label">Cliente Destino</span><span class="p-kv-value" id="pos-cli"></span></div><div class="p-kv"><span class="p-kv-label">Contato</span><span class="p-kv-value" id="pos-contato"></span></div></div>
+                                <div class="p-client-card p-client-card--alt" style="border-left-color:var(--primary);"><div class="p-kv"><span class="p-kv-label">Endereço de Entrega</span><span class="p-kv-value" id="pos-end"></span></div></div>
+                            </div>
+                            
+                            <div class="p-table-wrap">
+                                <table class="p-table">
+                                    <thead><tr><th class="col-num">Qtd</th><th>Produto / Descrição</th><th style="width:10%; text-align:center;">Check</th></tr></thead>
+                                    <tbody id="pos-items"></tbody>
+                                </table>
+                            </div>
+                            
+                            <div style="margin-top:40px; border-top:1px dashed #cbd5e1; padding-top:20px; display:flex; justify-content:space-between; font-size:0.875rem;">
+                                <div id="pos-footer-separador"><strong>Separado por:</strong> ___________________________</div>
+                                <div id="pos-footer-despacho"><strong>Despachado por:</strong> ___________________________</div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
 
             <div id="screen-history" class="screen"><div class="card"><h2 class="page-title">Propostas Pendentes</h2><div id="history-content"></div></div></div>
             <div id="screen-approved" class="screen"><div class="card"><h2 class="page-title" style="color:var(--success);"><i class="fa fa-check-circle"></i> Propostas Aprovadas</h2><div id="approved-content"></div></div></div>
             
+            <div id="screen-os" class="screen">
+                <div class="card">
+                    <h2 class="page-title"><i class="fa fa-truck-fast"></i> Gestão de Expedição (Ordem de Serviço)</h2>
+                    <div class="items-table-wrap">
+                        <table class="history-table">
+                            <thead><tr><th>Data Aprov.</th><th>#Pedido</th><th>Cliente</th><th>Status OS</th><th>Ações</th></tr></thead>
+                            <tbody id="os-content-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <div id="screen-relatorios" class="screen">
                 <div class="card">
                     <h2 class="page-title"><i class="fa fa-chart-bar"></i> Relatórios e Desempenho</h2>
-                    
                     <div class="form-grid-4" style="background:#f8fafc; padding:16px; border:1px solid var(--border); border-radius:var(--radius-md); margin-bottom:24px;">
                         <div class="field"><label>Data Início</label><input type="date" id="filtro-data-ini"></div>
                         <div class="field"><label>Data Fim</label><input type="date" id="filtro-data-fim"></div>
@@ -419,18 +481,14 @@
                                 <option value="pendente">Pendentes</option>
                             </select>
                         </div>
-                        <div class="field" style="display:flex; align-items:flex-end;">
-                            <button class="btn btn-primary" onclick="f_gerar_relatorio()">Atualizar Painel</button>
-                        </div>
+                        <div class="field" style="display:flex; align-items:flex-end;"><button class="btn btn-primary" onclick="f_gerar_relatorio()">Atualizar Painel</button></div>
                     </div>
-
                     <div class="bi-grid" id="bi-dashboard">
                         <div class="bi-card"><div class="bi-title">Valor Total (Período)</div><div class="bi-value" id="bi-receita">R$ 0,00</div></div>
                         <div class="bi-card"><div class="bi-title">Qtd. Propostas</div><div class="bi-value" id="bi-qtd">0</div></div>
                         <div class="bi-card"><div class="bi-title">Ticket Médio</div><div class="bi-value" id="bi-ticket">R$ 0,00</div></div>
                         <div class="bi-card"><div class="bi-title">Maior Valor</div><div class="bi-value" id="bi-maior">R$ 0,00</div></div>
                     </div>
-
                     <div id="relatorio-content">Use os filtros acima para exibir os dados.</div>
                 </div>
             </div>
@@ -456,6 +514,7 @@
                                 <label class="perm-check-label"><input type="checkbox" id="perm-prod"> Produtos</label>
                                 <label class="perm-check-label"><input type="checkbox" id="perm-pend"> Pendentes</label>
                                 <label class="perm-check-label"><input type="checkbox" id="perm-aprov"> Aprovadas</label>
+                                <label class="perm-check-label"><input type="checkbox" id="perm-os"> Ordem de Serviço</label>
                                 <label class="perm-check-label"><input type="checkbox" id="perm-relat"> Relatórios</label>
                                 <label class="perm-check-label"><input type="checkbox" id="perm-user"> Usuários</label>
                             </div>
@@ -483,6 +542,7 @@
         onValue(ref(db, 'propostas'), snap => {
             window._propostas = snap.val() || {};
             renderHistory(window._propostas);
+            renderOS(window._propostas);
             if(window._activeCliId) atualizarTabelaCRM(window._activeCliId);
         });
         
@@ -501,6 +561,7 @@
     <script>
         window._produtos = {}; window._propostas = {}; window._clientes = {};
         window._previewPropostaId = null; window._activeCliId = null; window._previewOrigin = 'form';
+        window._pendingOsStatus = null;
 
         function escapeHtml(s) { return s == null ? '' : String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
         function parseDinheiro(str) { return parseFloat((str||'0').replace(/\./g, '').replace(',', '.')) || 0; }
@@ -523,449 +584,320 @@
         }
 
         window.abrirNovoClienteCRM = async function() {
-            const nome = prompt("Digite o Nome ou Razão Social do novo cliente:");
-            if(!nome) return;
+            const nome = prompt("Digite o Nome ou Razão Social do novo cliente:"); if(!nome) return;
             const cnpj = prompt("Digite o CNPJ (deixe em branco se não tiver):") || '';
             const id = gerarIdCliente(cnpj, nome);
-            
-            const cliData = {
-                nome: nome,
-                cnpj: cnpj,
-                ultima_att: new Date().toLocaleDateString('pt-BR')
-            };
-
-            await window.dbUpdate(window.dbRef(window.db, 'clientes/' + id), cliData);
+            const cliData = { nome: nome, cnpj: cnpj, ultima_att: new Date().toLocaleDateString('pt-BR') };
+            if (window._clientes && window._clientes[id]) await window.dbUpdate(window.dbRef(window.db, 'clientes/' + id), cliData);
+            else await window.dbSet(window.dbRef(window.db, 'clientes/' + id), cliData);
             abrirCRM(id);
         }
 
         function renderClientesTable() {
-            const tbody = document.getElementById('lista-clientes-body');
-            if(!tbody) return;
+            const tbody = document.getElementById('lista-clientes-body'); if(!tbody) return;
             const isAdmin = isAdministrator();
-            
-            const html = Object.entries(window._clientes).map(([id, c]) => `
-                <tr>
-                    <td><strong>${escapeHtml(c.nome)}</strong></td>
-                    <td>${escapeHtml(c.cnpj || '-')}</td>
-                    <td>${escapeHtml(c.cidade || '-')}</td>
-                    <td>${escapeHtml(c.tel || c.email || '-')}</td>
-                    <td>
-                        <div style="display:flex; gap:6px;">
-                            <button class="btn-table" onclick="abrirCRM('${id}')">Ver Ficha</button>
-                            ${isAdmin ? `<button class="btn-icon-remove" onclick="f_del_cliente('${id}')" title="Excluir Ficha"><i class="fa fa-trash"></i></button>` : ''}
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
+            const html = Object.entries(window._clientes).map(([id, c]) => `<tr><td><strong>${escapeHtml(c.nome)}</strong></td><td>${escapeHtml(c.cnpj || '-')}</td><td>${escapeHtml(c.cidade || '-')}</td><td>${escapeHtml(c.tel || c.email || '-')}</td><td><div style="display:flex; gap:6px;"><button class="btn-table" onclick="abrirCRM('${id}')">Ver Ficha</button>${isAdmin ? `<button class="btn-icon-remove" onclick="f_del_cliente('${id}')" title="Excluir"><i class="fa fa-trash"></i></button>` : ''}</div></td></tr>`).join('');
             tbody.innerHTML = html || '<tr><td colspan="5">Nenhum cliente cadastrado.</td></tr>';
         }
 
         window.f_del_cliente = async function(id) {
             if(!isAdministrator()) return alert('Sem permissão.');
-            if(!confirm('ATENÇÃO: Deseja realmente excluir este cliente e TODAS as suas anotações? As propostas dele continuarão existindo no sistema, mas perderão o vínculo com a ficha CRM.')) return;
+            if(!confirm('ATENÇÃO: Deseja realmente excluir este cliente e TODAS as suas anotações? As propostas continuarão existindo.')) return;
             await window.dbRemove(window.dbRef(window.db, 'clientes/' + id));
             if(window._activeCliId === id) fecharCRM();
         }
 
         function abrirCRM(id) {
-            const c = window._clientes[id];
-            if(!c) return;
-            window._activeCliId = id;
-            document.getElementById('crm-detalhe').hidden = false;
-            document.getElementById('crm-nome').textContent = c.nome;
-            document.getElementById('crm-meta').textContent = `CNPJ: ${c.cnpj || '-'} | Cidade: ${c.cidade || '-'} | Contato: ${c.tel || '-'}`;
-            
-            renderNotasCRM(id);
-            atualizarTabelaCRM(id);
-            document.getElementById('crm-detalhe').scrollIntoView({ behavior: 'smooth' });
+            const c = window._clientes[id]; if(!c) return;
+            window._activeCliId = id; document.getElementById('crm-detalhe').hidden = false; document.getElementById('crm-nome').textContent = c.nome; document.getElementById('crm-meta').textContent = `CNPJ: ${c.cnpj || '-'} | Cidade: ${c.cidade || '-'} | Contato: ${c.tel || '-'}`;
+            renderNotasCRM(id); atualizarTabelaCRM(id); document.getElementById('crm-detalhe').scrollIntoView({ behavior: 'smooth' });
         }
-
-        function fecharCRM() {
-            window._activeCliId = null;
-            document.getElementById('crm-detalhe').hidden = true;
-        }
+        function fecharCRM() { window._activeCliId = null; document.getElementById('crm-detalhe').hidden = true; }
 
         window.renderNotasCRM = function(cliId) {
-            const c = window._clientes[cliId];
-            const listEl = document.getElementById('crm-notas-list');
-            if (!c || !c.notas) {
-                listEl.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:20px; font-style:italic;">Nenhuma anotação vinculada a este cliente.</div>';
-                return;
-            }
-            
-            const isAdmin = isAdministrator();
-            const notasArray = Object.entries(c.notas).map(([notaId, n]) => ({notaId, ...n})).sort((a,b) => b.timestamp - a.timestamp);
-            
-            listEl.innerHTML = notasArray.map(n => `
-                <div class="nota-bubble">
-                    <div class="nota-meta">
-                        <span><strong><i class="fa fa-user" style="margin-right:4px;"></i>${escapeHtml(n.usuario).toUpperCase()}</strong></span>
-                        <div style="display:flex; align-items:center; gap:8px;">
-                            <span>${escapeHtml(n.data)}</span>
-                            ${isAdmin ? `<button class="btn-del-nota" onclick="f_del_nota_crm('${cliId}', '${n.notaId}')" title="Excluir anotação"><i class="fa fa-trash"></i></button>` : ''}
-                        </div>
-                    </div>
-                    <div class="nota-texto">${escapeHtml(n.texto)}</div>
-                </div>
-            `).join('');
+            const c = window._clientes[cliId]; const listEl = document.getElementById('crm-notas-list');
+            if (!c || !c.notas) { listEl.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:20px; font-style:italic;">Nenhuma anotação vinculada a este cliente.</div>'; return; }
+            const isAdmin = isAdministrator(); const notasArray = Object.entries(c.notas).map(([notaId, n]) => ({notaId, ...n})).sort((a,b) => b.timestamp - a.timestamp);
+            listEl.innerHTML = notasArray.map(n => `<div class="nota-bubble"><div class="nota-meta"><span><strong><i class="fa fa-user" style="margin-right:4px;"></i>${escapeHtml(n.usuario).toUpperCase()}</strong></span><div style="display:flex; align-items:center; gap:8px;"><span>${escapeHtml(n.data)}</span>${isAdmin ? `<button class="btn-del-nota" onclick="f_del_nota_crm('${cliId}', '${n.notaId}')" title="Excluir"><i class="fa fa-trash"></i></button>` : ''}</div></div><div class="nota-texto">${escapeHtml(n.texto)}</div></div>`).join('');
         }
 
-        window.f_del_nota_crm = async function(cliId, notaId) {
-            if(!isAdministrator()) return;
-            if(!confirm('Excluir esta anotação permanentemente?')) return;
-            await window.dbRemove(window.dbRef(window.db, `clientes/${cliId}/notas/${notaId}`));
-        }
-
+        window.f_del_nota_crm = async function(cliId, notaId) { if(!isAdministrator() || !confirm('Excluir anotação?')) return; await window.dbRemove(window.dbRef(window.db, `clientes/${cliId}/notas/${notaId}`)); }
         window.adicionarNotaCRM = async function() {
-            if(!window._activeCliId) return;
-            const textarea = document.getElementById('crm-nova-nota');
-            const texto = textarea.value.trim();
-            if(!texto) return alert('A nota não pode estar vazia.');
-
-            const user = sessionStorage.getItem('saj_user') || 'Desconhecido';
-            const agora = new Date();
-            
-            const nota = {
-                texto: texto,
-                usuario: user,
-                data: agora.toLocaleString('pt-BR'),
-                timestamp: agora.getTime()
-            };
-
-            const notasRef = window.dbRef(window.db, 'clientes/' + window._activeCliId + '/notas');
-            await window.dbPush(notasRef, nota);
-            
-            textarea.value = '';
+            if(!window._activeCliId) return; const textarea = document.getElementById('crm-nova-nota'); const texto = textarea.value.trim(); if(!texto) return alert('A nota não pode estar vazia.');
+            const agora = new Date(); const nota = { texto: texto, usuario: sessionStorage.getItem('saj_user') || 'Desconhecido', data: agora.toLocaleString('pt-BR'), timestamp: agora.getTime() };
+            await window.dbPush(window.dbRef(window.db, 'clientes/' + window._activeCliId + '/notas'), nota); textarea.value = '';
         }
 
         function atualizarTabelaCRM(cliId) {
             const tbody = document.getElementById('crm-historico-body');
             const propostasCli = Object.values(window._propostas).filter(p => p.cliId === cliId || gerarIdCliente(p.cnpj, p.cli) === cliId).reverse();
+            if(propostasCli.length === 0) { tbody.innerHTML = '<tr><td>Nenhuma proposta vinculada.</td></tr>'; return; }
             
-            if(propostasCli.length === 0) {
-                tbody.innerHTML = '<tr><td>Nenhuma proposta vinculada.</td></tr>'; return;
-            }
-            
-            tbody.innerHTML = propostasCli.map(p => `
+            tbody.innerHTML = propostasCli.map(p => {
+                let osInfo = '';
+                if(p.propostaStatus === 'aprovado') {
+                    if(p.osUserSeparacao || p.osUserDespacho) {
+                        osInfo = `<div style="margin-top:6px; font-size:0.7rem; color:var(--text-muted); background:#f8fafc; padding:6px; border-radius:4px; border:1px solid var(--border);">`;
+                        if(p.osUserSeparacao) osInfo += `<div><i class="fa fa-box-open" style="color:var(--accent);"></i> Separação: <b>${escapeHtml(p.osUserSeparacao).toUpperCase()}</b> (${escapeHtml(p.osDataSeparacao)})</div>`;
+                        if(p.osUserDespacho) osInfo += `<div style="margin-top:2px;"><i class="fa fa-truck" style="color:var(--success);"></i> Despacho: <b>${escapeHtml(p.osUserDespacho).toUpperCase()}</b> (${escapeHtml(p.osDataDespacho)})</div>`;
+                        osInfo += `</div>`;
+                    } else {
+                        osInfo = `<div style="margin-top:6px; font-size:0.7rem; color:var(--warning);"><i class="fa fa-clock"></i> OS Pendente de Separação</div>`;
+                    }
+                }
+
+                return `
                 <tr>
                     <td style="font-size:0.8125rem;">
-                        <strong>#${p.id}</strong> - ${p.data}<br>
-                        <span style="color:var(--primary); font-weight:600;">R$ ${p.total}</span> 
-                        <span class="status-badge status-${p.propostaStatus}" style="font-size:0.6rem; padding:2px 6px;">${p.propostaStatus}</span>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span><strong>#${p.id}</strong> - ${p.data}</span>
+                            <span class="status-badge status-${p.propostaStatus}" style="font-size:0.6rem; padding:2px 6px;">${p.propostaStatus}</span>
+                        </div>
+                        <div style="color:var(--primary); font-weight:600; margin-top:4px;">R$ ${p.total}</div> 
+                        ${osInfo}
                     </td>
-                    <td style="text-align:right;"><button class="btn-icon-edit" onclick="abrirGerenciar('${p.id}', 'clientes')"><i class="fa fa-eye"></i></button></td>
+                    <td style="text-align:right; vertical-align:top;"><button class="btn-icon-edit" onclick="abrirGerenciar('${p.id}', 'clientes')" title="Ver Proposta"><i class="fa fa-eye"></i></button></td>
                 </tr>
-            `).join('');
+            `}).join('');
         }
 
-        // ================= GERAÇÃO DE PROPOSTA E CADASTRO AUTO DE CLIENTE =================
+        // ================= GERAÇÃO DE PROPOSTA =================
         window.f_gerar_visual = async function() {
             const items = Array.from(document.querySelectorAll('#items-body tr')).map(tr => {
-                const sel = tr.querySelector('.i-prod');
-                const isCustom = sel.value === 'custom';
-                const desc = isCustom ? tr.querySelector('.i-d-custom').value : (sel.options[sel.selectedIndex]?.text || '');
+                const sel = tr.querySelector('.i-prod'); const isCustom = sel.value === 'custom'; const desc = isCustom ? tr.querySelector('.i-d-custom').value : (sel.options[sel.selectedIndex]?.text || '');
                 return { q: tr.querySelector('.i-q').value, prodId: sel.value, desc: desc, preco: tr.querySelector('.i-preco').value, subtotal: tr.querySelector('.v-sub').textContent };
             }).filter(i => i.desc.trim() !== '' || i.preco !== '0,00');
 
             if(items.length === 0) return alert('Adicione ao menos um item na proposta.');
-            
-            const nomeCli = document.getElementById('f-cli').value.trim();
-            if(!nomeCli) return alert('A Razão Social ou Nome do cliente é obrigatório para cadastrar.');
+            const nomeCli = document.getElementById('f-cli').value.trim(); if(!nomeCli) return alert('A Razão Social ou Nome do cliente é obrigatório para cadastrar.');
 
-            const btnSalvar = document.getElementById('btn-gerar-proposta');
-            const textoOriginal = btnSalvar.innerHTML;
-            btnSalvar.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Salvando no Sistema...';
-            btnSalvar.disabled = true;
+            const btnSalvar = document.getElementById('btn-gerar-proposta'); const textoOriginal = btnSalvar.innerHTML;
+            btnSalvar.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Salvando no Sistema...'; btnSalvar.disabled = true;
 
-            const cnpjCli = document.getElementById('f-cnpj').value.trim();
-            const cliId = gerarIdCliente(cnpjCli, nomeCli);
-
-            const data = {
-                id: document.getElementById('f-id').value,
-                cliId: cliId,
-                cli: nomeCli,
-                cnpj: cnpjCli,
-                end: document.getElementById('f-end').value,
-                bairro: document.getElementById('f-bairro').value,
-                cidade: document.getElementById('f-cidade').value,
-                total: document.getElementById('f-total').value,
-                email: document.getElementById('f-email').value,
-                tel: document.getElementById('f-tel').value,
-                obs: document.getElementById('f-obs').value,
-                data: new Date().toLocaleDateString('pt-BR'),
-                items, 
-                propostaStatus: 'pendente'
-            };
+            const cnpjCli = document.getElementById('f-cnpj').value.trim(); const cliId = gerarIdCliente(cnpjCli, nomeCli);
+            const data = { id: document.getElementById('f-id').value, cliId: cliId, cli: nomeCli, cnpj: cnpjCli, end: document.getElementById('f-end').value, bairro: document.getElementById('f-bairro').value, cidade: document.getElementById('f-cidade').value, total: document.getElementById('f-total').value, email: document.getElementById('f-email').value, tel: document.getElementById('f-tel').value, obs: document.getElementById('f-obs').value, data: new Date().toLocaleDateString('pt-BR'), items, propostaStatus: 'pendente' };
             
             try {
-                const cliData = { 
-                    nome: nomeCli, 
-                    cnpj: cnpjCli, 
-                    end: data.end, 
-                    bairro: data.bairro, 
-                    cidade: data.cidade, 
-                    email: data.email, 
-                    tel: data.tel, 
-                    ultima_att: data.data 
-                };
-                
-                // Grava a proposta e o cliente na nuvem de forma imediata (upsert)
-                await Promise.all([
-                    window.dbSet(window.dbRef(window.db, 'propostas/' + data.id), data),
-                    window.dbUpdate(window.dbRef(window.db, 'clientes/' + cliId), cliData)
-                ]);
+                const cliData = { nome: nomeCli, cnpj: cnpjCli, end: data.end, bairro: data.bairro, cidade: data.cidade, email: data.email, tel: data.tel, ultima_att: data.data };
+                await Promise.all([ window.dbSet(window.dbRef(window.db, 'propostas/' + data.id), data), window.dbUpdate(window.dbRef(window.db, 'clientes/' + cliId), cliData) ]);
+                fillPreviewFromData(data); window._previewOrigin = 'form'; showScreen('screen-preview');
+            } catch (err) { alert("Erro ao salvar os dados! Verifique sua conexão com a internet."); } finally { btnSalvar.innerHTML = textoOriginal; btnSalvar.disabled = false; }
+        }
 
-                fillPreviewFromData(data);
-                window._previewOrigin = 'form';
-                showScreen('screen-preview');
+        // ================= ORDEM DE SERVIÇO COM AUTORIZAÇÃO E CHECKBOXES =================
+        function renderOS(obj) {
+            const tbody = document.getElementById('os-content-body');
+            if (!obj) { tbody.innerHTML = '<tr><td colspan="5">Vazio.</td></tr>'; return; }
+            const aprovadas = Object.values(obj).filter(p => p.propostaStatus === 'aprovado');
+            if (aprovadas.length === 0) { tbody.innerHTML = '<tr><td colspan="5">Nenhuma Ordem de Serviço (Aguardando Aprovação de Propostas).</td></tr>'; return; }
+
+            // Ordenação Kanban: Pendente e Separando no topo, Despachados por último
+            aprovadas.sort((a,b) => {
+                const pesos = { 'pendente': 1, 'separando': 2, 'despachado': 3 };
+                const pesoA = pesos[a.osStatus || 'pendente'];
+                const pesoB = pesos[b.osStatus || 'pendente'];
+                if(pesoA !== pesoB) return pesoA - pesoB;
+                return b.id - a.id; 
+            });
+
+            tbody.innerHTML = aprovadas.map(p => {
+                const statusOs = p.osStatus || 'pendente';
+                let label = 'Pendente'; if(statusOs === 'separando') label = 'Em Separação'; if(statusOs === 'despachado') label = 'Despachado';
+                return `<tr><td>${p.data}</td><td><strong>#${p.id}</strong></td><td>${escapeHtml(p.cli)}</td><td><span class="status-badge status-os-${statusOs}">${label}</span></td><td><button class="btn-table" onclick="abrirVisaoOS('${p.id}')"><i class="fa fa-boxes-packing"></i> Gerenciar OS</button></td></tr>`;
+            }).join('');
+        }
+
+        window.abrirVisaoOS = async function(id) {
+            const p = window._propostas[id]; if(!p) return;
+            window._previewPropostaId = String(p.id);
+            
+            document.getElementById('pos-id').textContent = p.id; document.getElementById('pos-data').textContent = p.data; document.getElementById('pos-cli').textContent = p.cli || ''; document.getElementById('pos-contato').textContent = `${p.email || ''} | ${p.tel || ''}`;
+            const endCompleto = [p.end, p.bairro, p.cidade].filter(Boolean).join(', '); document.getElementById('pos-end').textContent = endCompleto || 'Endereço não informado';
+
+            const statusOs = p.osStatus || 'pendente';
+            const isDespachado = statusOs === 'despachado';
+
+            document.getElementById('pos-items').innerHTML = (p.items || []).map((i, index) => {
+                const checked = (p.osChecks && p.osChecks[index]) ? 'checked' : '';
+                const disabled = isDespachado ? 'disabled' : '';
+                return `<tr><td class="col-num" style="font-size:1.1rem;">${escapeHtml(i.q)}</td><td style="font-size:1rem; font-weight:500;">${escapeHtml(i.desc)}</td><td style="text-align:center;"><input type="checkbox" class="check-os" onchange="salvarCheckOS(${index}, this.checked)" ${checked} ${disabled}></td></tr>`;
+            }).join('');
+
+            const nomeSeparador = p.osUserSeparacao ? escapeHtml(p.osUserSeparacao).toUpperCase() : '___________________________';
+            const dataSeparacao = p.osDataSeparacao ? `<br><small style="color:var(--text-muted);">${escapeHtml(p.osDataSeparacao)}</small>` : '';
+            
+            const nomeDespachante = p.osUserDespacho ? escapeHtml(p.osUserDespacho).toUpperCase() : '___________________________';
+            const dataDespacho = p.osDataDespacho ? `<br><small style="color:var(--text-muted);">${escapeHtml(p.osDataDespacho)}</small>` : '';
+            
+            document.getElementById('pos-footer-separador').innerHTML = `<strong>Separado por:</strong> <span style="color:var(--primary);">${nomeSeparador}</span>${dataSeparacao}`;
+            document.getElementById('pos-footer-despacho').innerHTML = `<strong>Despachado por:</strong> <span style="color:var(--primary);">${nomeDespachante}</span>${dataDespacho}`;
+
+            document.getElementById('btn-os-separar').hidden = (statusOs !== 'pendente');
+            document.getElementById('btn-os-despachar').hidden = (statusOs !== 'separando');
+
+            showScreen('screen-preview-os');
+        }
+
+        window.salvarCheckOS = async function(index, isChecked) {
+            const id = window._previewPropostaId; if(!id) return;
+            await window.dbUpdate(window.dbRef(window.db, `propostas/${id}/osChecks`), { [index]: isChecked });
+        }
+
+        window.iniciarAutorizacaoOS = function(novoStatus) {
+            window._pendingOsStatus = novoStatus;
+            
+            let acaoMsg = novoStatus === 'separando' ? 'INICIAR A SEPARAÇÃO' : 'MARCAR COMO DESPACHADO';
+            document.getElementById('os-auth-msg').innerHTML = `Digite sua senha para confirmar a ação de <br><strong style="color:var(--primary);">${acaoMsg}</strong>.`;
+            document.getElementById('os-auth-senha').value = '';
+            document.getElementById('modal-auth-os').style.display = 'flex';
+        }
+
+        window.fecharModalAuthOS = function() {
+            document.getElementById('modal-auth-os').style.display = 'none';
+            window._pendingOsStatus = null;
+        }
+
+        window.confirmarAuthOS = async function() {
+            const btnConfirm = document.getElementById('btn-confirm-os');
+            const originalText = btnConfirm.innerHTML;
+            
+            try {
+                const senha = document.getElementById('os-auth-senha').value.trim();
+                if(!senha) return alert('Por favor, digite sua senha.');
+
+                btnConfirm.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Validando...';
+                btnConfirm.disabled = true;
+
+                const userLogado = sessionStorage.getItem('saj_user');
+                const snapUser = await window.dbGet(window.dbRef(window.db, 'usuarios/' + userLogado));
                 
-            } catch (err) {
-                console.error("Erro no salvamento: ", err);
-                alert("Erro ao salvar os dados! Verifique sua conexão com a internet.");
+                if(!snapUser.exists() || snapUser.val().pass !== senha) {
+                    alert('Senha incorreta! Autorização negada.');
+                    return; 
+                }
+
+                const id = window._previewPropostaId;
+                if(!id || !window._pendingOsStatus) return;
+
+                const updates = { osStatus: window._pendingOsStatus };
+                
+                if(window._pendingOsStatus === 'separando') {
+                    updates.osUserSeparacao = userLogado;
+                    updates.osDataSeparacao = new Date().toLocaleString('pt-BR');
+                } else if(window._pendingOsStatus === 'despachado') {
+                    updates.osUserDespacho = userLogado;
+                    updates.osDataDespacho = new Date().toLocaleString('pt-BR');
+                }
+
+                const statusSalvo = window._pendingOsStatus; 
+
+                await window.dbUpdate(window.dbRef(window.db, 'propostas/' + id), updates);
+                
+                fecharModalAuthOS(); 
+                
+                alert('Sucesso! Status alterado para: ' + statusSalvo.toUpperCase());
+                showScreen('screen-os'); 
+                
+            } catch(e) {
+                console.error(e);
+                alert('Erro na conexão: ' + e.message);
             } finally {
-                btnSalvar.innerHTML = textoOriginal;
-                btnSalvar.disabled = false;
+                btnConfirm.innerHTML = originalText;
+                btnConfirm.disabled = false;
             }
         }
 
         // ================= RELATÓRIOS E DASHBOARD =================
         function f_gerar_relatorio() {
-            const dataIni = document.getElementById('filtro-data-ini').value;
-            const dataFim = document.getElementById('filtro-data-fim').value;
-            const status = document.getElementById('filtro-status').value;
-            
-            const ini = dataIni ? new Date(dataIni + 'T00:00:00') : new Date('2000-01-01');
-            const fim = dataFim ? new Date(dataFim + 'T23:59:59') : new Date('2100-01-01');
-
-            let filtradas = Object.values(window._propostas).filter(p => {
-                const pd = convertDateStr(p.data);
-                const passData = pd >= ini && pd <= fim;
-                const passStatus = status === 'todos' || p.propostaStatus === status;
-                return passData && passStatus;
-            });
-
-            let totalRev = 0, maxSale = 0;
-            filtradas.forEach(p => {
-                const v = parseDinheiro(p.total);
-                totalRev += v;
-                if(v > maxSale) maxSale = v;
-            });
+            const dataIni = document.getElementById('filtro-data-ini').value; const dataFim = document.getElementById('filtro-data-fim').value; const status = document.getElementById('filtro-status').value;
+            const ini = dataIni ? new Date(dataIni + 'T00:00:00') : new Date('2000-01-01'); const fim = dataFim ? new Date(dataFim + 'T23:59:59') : new Date('2100-01-01');
+            let filtradas = Object.values(window._propostas).filter(p => { const pd = convertDateStr(p.data); return (pd >= ini && pd <= fim) && (status === 'todos' || p.propostaStatus === status); });
+            let totalRev = 0, maxSale = 0; filtradas.forEach(p => { const v = parseDinheiro(p.total); totalRev += v; if(v > maxSale) maxSale = v; });
             const avg = filtradas.length > 0 ? totalRev / filtradas.length : 0;
-
-            document.getElementById('bi-receita').textContent = 'R$ ' + formatDinheiro(totalRev);
-            document.getElementById('bi-qtd').textContent = filtradas.length;
-            document.getElementById('bi-ticket').textContent = 'R$ ' + formatDinheiro(avg);
-            document.getElementById('bi-maior').textContent = 'R$ ' + formatDinheiro(maxSale);
-
+            document.getElementById('bi-receita').textContent = 'R$ ' + formatDinheiro(totalRev); document.getElementById('bi-qtd').textContent = filtradas.length; document.getElementById('bi-ticket').textContent = 'R$ ' + formatDinheiro(avg); document.getElementById('bi-maior').textContent = 'R$ ' + formatDinheiro(maxSale);
             const tbody = document.getElementById('relatorio-content');
-            if(filtradas.length === 0) {
-                tbody.innerHTML = '<div style="padding:16px; text-align:center; color:var(--text-muted);">Nenhum dado encontrado para os filtros selecionados.</div>';
-                return;
-            }
-
-            const htmlTable = `<table class="history-table">
-                <thead><tr><th>Data</th><th>Nº</th><th>Cliente</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
-                <tbody>${filtradas.sort((a,b) => convertDateStr(b.data) - convertDateStr(a.data)).map(p => `
-                    <tr>
-                        <td>${p.data}</td>
-                        <td><strong>#${p.id}</strong></td>
-                        <td>${escapeHtml(p.cli)}</td>
-                        <td>R$ ${p.total}</td>
-                        <td><span class="status-badge status-${p.propostaStatus === 'aprovado'?'aprovado':(p.propostaStatus === 'pendente'?'pendente':'todas')}">${p.propostaStatus}</span></td>
-                        <td><button class="btn-table" onclick="abrirGerenciar('${p.id}', 'relatorios')">Ver</button></td>
-                    </tr>
-                `).join('')}</tbody></table>`;
-            
-            tbody.innerHTML = htmlTable;
+            if(filtradas.length === 0) { tbody.innerHTML = '<div style="padding:16px; text-align:center; color:var(--text-muted);">Nenhum dado encontrado para os filtros selecionados.</div>'; return; }
+            tbody.innerHTML = `<table class="history-table"><thead><tr><th>Data</th><th>Nº</th><th>Cliente</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead><tbody>${filtradas.sort((a,b) => convertDateStr(b.data) - convertDateStr(a.data)).map(p => `<tr><td>${p.data}</td><td><strong>#${p.id}</strong></td><td>${escapeHtml(p.cli)}</td><td>R$ ${p.total}</td><td><span class="status-badge status-${p.propostaStatus === 'aprovado'?'aprovado':(p.propostaStatus === 'pendente'?'pendente':'todas')}">${p.propostaStatus}</span></td><td><button class="btn-table" onclick="abrirGerenciar('${p.id}', 'relatorios')">Ver</button></td></tr>`).join('')}</tbody></table>`;
         }
 
         // ================= TABELAS HISTÓRICO PADRÃO =================
         function renderHistory(obj) {
-            const hPend = document.getElementById('history-content');
-            const hAppr = document.getElementById('approved-content');
+            const hPend = document.getElementById('history-content'); const hAppr = document.getElementById('approved-content');
             if (!obj) { hPend.innerHTML = hAppr.innerHTML = 'Nenhuma proposta.'; return; }
             const list = Object.values(obj).reverse();
-
-            const buildT = (arr, origin) => {
-                if (!arr.length) return 'Vazio.';
-                return `<table class="history-table">
-                    <thead><tr><th>Data</th><th>#ID</th><th>Cliente</th><th>Valor</th><th>Ações</th></tr></thead>
-                    <tbody>${arr.map(p => `<tr><td>${p.data}</td><td><strong>#${p.id}</strong></td><td>${escapeHtml(p.cli)}</td><td>R$ ${p.total}</td>
-                        <td><button class="btn-table" onclick="abrirGerenciar('${p.id}', '${origin}')">Visualizar</button></td></tr>`).join('')}</tbody></table>`;
-            };
-            hPend.innerHTML = buildT(list.filter(p => p.propostaStatus === 'pendente'), 'history');
-            hAppr.innerHTML = buildT(list.filter(p => p.propostaStatus === 'aprovado'), 'approved');
+            const buildT = (arr, origin) => { if (!arr.length) return 'Vazio.'; return `<table class="history-table"><thead><tr><th>Data</th><th>#ID</th><th>Cliente</th><th>Valor</th><th>Ações</th></tr></thead><tbody>${arr.map(p => `<tr><td>${p.data}</td><td><strong>#${p.id}</strong></td><td>${escapeHtml(p.cli)}</td><td>R$ ${p.total}</td><td><button class="btn-table" onclick="abrirGerenciar('${p.id}', '${origin}')">Visualizar</button></td></tr>`).join('')}</tbody></table>`; };
+            hPend.innerHTML = buildT(list.filter(p => p.propostaStatus === 'pendente'), 'history'); hAppr.innerHTML = buildT(list.filter(p => p.propostaStatus === 'aprovado'), 'approved');
         }
 
         // ================= ITENS E PRODUTOS (MANUTENÇÃO) =================
         async function f_salvar_produto() {
-            const perms = JSON.parse(sessionStorage.getItem('saj_perms') || '{}');
-            if (!perms.prod) return alert('Você não tem permissão para gerenciar produtos.');
-            const idForm = document.getElementById('prod-id').value;
-            const nome = document.getElementById('prod-nome').value.trim();
-            if(!nome) return alert('Digite o nome do produto');
+            const perms = JSON.parse(sessionStorage.getItem('saj_perms') || '{}'); if (!perms.prod) return alert('Sem permissão.');
+            const idForm = document.getElementById('prod-id').value; const nome = document.getElementById('prod-nome').value.trim(); if(!nome) return alert('Digite o nome');
             const id = idForm ? idForm : ('prod_' + Date.now());
-            await window.dbSet(window.dbRef(window.db, 'produtos/' + id), { nome, marca: document.getElementById('prod-marca').value.trim(), modelo: document.getElementById('prod-modelo').value.trim(), ncm: document.getElementById('prod-ncm').value.trim(), preco: document.getElementById('prod-preco').value.trim() || '0,00' });
-            f_cancelar_edicao_produto();
+            await window.dbSet(window.dbRef(window.db, 'produtos/' + id), { nome, marca: document.getElementById('prod-marca').value.trim(), modelo: document.getElementById('prod-modelo').value.trim(), ncm: document.getElementById('prod-ncm').value.trim(), preco: document.getElementById('prod-preco').value.trim() || '0,00' }); f_cancelar_edicao_produto();
         }
-        function f_editar_produto(id) {
-            const p = window._produtos[id]; if(!p) return;
-            document.getElementById('prod-id').value = id; document.getElementById('prod-nome').value = p.nome || ''; document.getElementById('prod-marca').value = p.marca || ''; document.getElementById('prod-modelo').value = p.modelo || ''; document.getElementById('prod-ncm').value = p.ncm || ''; document.getElementById('prod-preco').value = p.preco || '';
-            document.getElementById('btn-salvar-prod').textContent = 'Atualizar'; document.getElementById('btn-cancelar-prod').style.display = 'inline-flex'; document.getElementById('screen-produtos').scrollIntoView();
-        }
-        function f_cancelar_edicao_produto() {
-            ['id','nome','marca','modelo','ncm','preco'].forEach(k => document.getElementById('prod-'+k).value = '');
-            document.getElementById('btn-salvar-prod').textContent = 'Salvar Produto'; document.getElementById('btn-cancelar-prod').style.display = 'none';
-        }
+        function f_editar_produto(id) { const p = window._produtos[id]; if(!p) return; document.getElementById('prod-id').value = id; ['nome','marca','modelo','ncm','preco'].forEach(k => document.getElementById('prod-'+k).value = p[k] || ''); document.getElementById('btn-salvar-prod').textContent = 'Atualizar'; document.getElementById('btn-cancelar-prod').style.display = 'inline-flex'; document.getElementById('screen-produtos').scrollIntoView(); }
+        function f_cancelar_edicao_produto() { ['id','nome','marca','modelo','ncm','preco'].forEach(k => document.getElementById('prod-'+k).value = ''); document.getElementById('btn-salvar-prod').textContent = 'Salvar Produto'; document.getElementById('btn-cancelar-prod').style.display = 'none'; }
         async function f_del_produto(id) { if(confirm('Excluir?')) await window.dbRemove(window.dbRef(window.db, 'produtos/' + id)); }
-
-        function renderProdutosTable() {
-            const tbody = document.getElementById('lista-produtos-body'); if(!tbody) return;
-            const perms = JSON.parse(sessionStorage.getItem('saj_perms') || '{}');
-            tbody.innerHTML = Object.entries(window._produtos).map(([id, p]) => `<tr><td>${escapeHtml(p.nome)}</td><td>${escapeHtml(p.marca||'-')}</td><td>${escapeHtml(p.modelo||'-')}</td><td>${escapeHtml(p.ncm||'-')}</td><td style="text-align:right">R$ ${p.preco}</td><td>${perms.prod ? `<div style="display:flex; gap:6px;"><button class="btn-icon-edit" onclick="f_editar_produto('${id}')"><i class="fa fa-pen"></i></button><button class="btn-icon-remove" onclick="f_del_produto('${id}')"><i class="fa fa-trash"></i></button></div>` : '-'}</td></tr>`).join('') || '<tr><td colspan="6">Vazio</td></tr>';
-        }
+        function renderProdutosTable() { const tbody = document.getElementById('lista-produtos-body'); if(!tbody) return; const perms = JSON.parse(sessionStorage.getItem('saj_perms') || '{}'); tbody.innerHTML = Object.entries(window._produtos).map(([id, p]) => `<tr><td>${escapeHtml(p.nome)}</td><td>${escapeHtml(p.marca||'-')}</td><td>${escapeHtml(p.modelo||'-')}</td><td>${escapeHtml(p.ncm||'-')}</td><td style="text-align:right">R$ ${p.preco}</td><td>${perms.prod ? `<div style="display:flex; gap:6px;"><button class="btn-icon-edit" onclick="f_editar_produto('${id}')"><i class="fa fa-pen"></i></button><button class="btn-icon-remove" onclick="f_del_produto('${id}')"><i class="fa fa-trash"></i></button></div>` : '-'}</td></tr>`).join('') || '<tr><td colspan="6">Vazio</td></tr>'; }
 
         function addItemRow(q = 1, prodId = '', customDesc = '', preco = '0,00', subtotal = '0,00') {
-            const tr = document.getElementById('items-body').insertRow();
-            let optionsHtml = `<option value="">Selecione...</option><option value="custom">-- Outro (Digitar manualmente) --</option>`;
+            const tr = document.getElementById('items-body').insertRow(); let optionsHtml = `<option value="">Selecione...</option><option value="custom">-- Outro (Digitar manualmente) --</option>`;
             Object.entries(window._produtos).forEach(([id, p]) => { optionsHtml += `<option value="${id}">${escapeHtml([p.nome, p.marca, p.modelo].filter(Boolean).join(' - '))}</option>`; });
             tr.innerHTML = `<td><input type="number" class="i-q" value="${q}" min="1" oninput="calcLinha(this)"></td><td><select class="i-prod" onchange="mudouProduto(this)">${optionsHtml}</select><input type="text" class="i-d-custom" value="${escapeHtml(customDesc)}" style="display:none; margin-top:5px;"></td><td><input type="text" class="i-preco" value="${preco}" oninput="maskMoney(this); calcLinha(this)"></td><td class="t-subtotal">R$ <span class="v-sub">${subtotal}</span></td><td><button class="btn-icon-remove" onclick="removerLinha(this)"><i class="fa fa-times"></i></button></td>`;
-            const sel = tr.querySelector('.i-prod');
-            if (prodId && prodId !== 'custom') sel.value = prodId; else if (customDesc) { sel.value = 'custom'; tr.querySelector('.i-d-custom').style.display = 'block'; }
+            const sel = tr.querySelector('.i-prod'); if (prodId && prodId !== 'custom') sel.value = prodId; else if (customDesc) { sel.value = 'custom'; tr.querySelector('.i-d-custom').style.display = 'block'; }
         }
         function removerLinha(btn) { btn.closest('tr').remove(); calcTotalProposta(); }
-        function atualizarSelectsProdutos() {
-            document.querySelectorAll('.i-prod').forEach(sel => {
-                const valAtual = sel.value; let html = `<option value="">Selecione...</option><option value="custom">-- Outro --</option>`;
-                Object.entries(window._produtos).forEach(([id, p]) => { html += `<option value="${id}">${escapeHtml([p.nome, p.marca, p.modelo].filter(Boolean).join(' - '))}</option>`; });
-                sel.innerHTML = html; if(valAtual && (window._produtos[valAtual] || valAtual === 'custom')) sel.value = valAtual;
-            });
-        }
-        function mudouProduto(sel) {
-            const tr = sel.closest('tr'); const customInput = tr.querySelector('.i-d-custom'); const precoInput = tr.querySelector('.i-preco');
-            if (sel.value === 'custom') customInput.style.display = 'block'; else { customInput.style.display = 'none'; customInput.value = ''; if (sel.value && window._produtos[sel.value]) precoInput.value = window._produtos[sel.value].preco; }
-            calcLinha(sel);
-        }
-        function calcLinha(el) {
-            const tr = el.closest('tr');
-            const sub = (parseFloat(tr.querySelector('.i-q').value) || 0) * parseDinheiro(tr.querySelector('.i-preco').value);
-            tr.querySelector('.v-sub').textContent = formatDinheiro(sub); calcTotalProposta();
-        }
-        function calcTotalProposta() {
-            let total = 0; document.querySelectorAll('#items-body tr').forEach(tr => { total += (parseFloat(tr.querySelector('.i-q').value) || 0) * parseDinheiro(tr.querySelector('.i-preco').value); });
-            document.getElementById('f-total').value = formatDinheiro(total);
-        }
+        function atualizarSelectsProdutos() { document.querySelectorAll('.i-prod').forEach(sel => { const valAtual = sel.value; let html = `<option value="">Selecione...</option><option value="custom">-- Outro --</option>`; Object.entries(window._produtos).forEach(([id, p]) => { html += `<option value="${id}">${escapeHtml([p.nome, p.marca, p.modelo].filter(Boolean).join(' - '))}</option>`; }); sel.innerHTML = html; if(valAtual && (window._produtos[valAtual] || valAtual === 'custom')) sel.value = valAtual; }); }
+        function mudouProduto(sel) { const tr = sel.closest('tr'); const customInput = tr.querySelector('.i-d-custom'); const precoInput = tr.querySelector('.i-preco'); if (sel.value === 'custom') customInput.style.display = 'block'; else { customInput.style.display = 'none'; customInput.value = ''; if (sel.value && window._produtos[sel.value]) precoInput.value = window._produtos[sel.value].preco; } calcLinha(sel); }
+        function calcLinha(el) { const tr = el.closest('tr'); const sub = (parseFloat(tr.querySelector('.i-q').value) || 0) * parseDinheiro(tr.querySelector('.i-preco').value); tr.querySelector('.v-sub').textContent = formatDinheiro(sub); calcTotalProposta(); }
+        function calcTotalProposta() { let total = 0; document.querySelectorAll('#items-body tr').forEach(tr => { total += (parseFloat(tr.querySelector('.i-q').value) || 0) * parseDinheiro(tr.querySelector('.i-preco').value); }); document.getElementById('f-total').value = formatDinheiro(total); }
 
         // ================= CONTROLE DE TELAS E PREVIEW =================
         function showScreen(id) {
             const perms = JSON.parse(sessionStorage.getItem('saj_perms') || '{}');
-            const reqPerms = { 'screen-form': 'nova', 'screen-clientes': 'cli', 'screen-produtos': 'prod', 'screen-history': 'pend', 'screen-approved': 'aprov', 'screen-relatorios': 'relat', 'screen-users': 'user' };
-            if (reqPerms[id] && perms[reqPerms[id]] === false) return alert('Você não tem permissão para acessar esta aba.');
+            const reqPerms = { 'screen-form': 'nova', 'screen-clientes': 'cli', 'screen-produtos': 'prod', 'screen-history': 'pend', 'screen-approved': 'aprov', 'screen-os': 'os', 'screen-relatorios': 'relat', 'screen-users': 'user' };
+            if (reqPerms[id] && perms[reqPerms[id]] === false) return alert('Sem permissão para esta aba.');
             
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active-link'));
-            const navMap = { 'screen-form': 'nav-new', 'screen-clientes': 'nav-clientes', 'screen-produtos': 'nav-produtos', 'screen-history': 'nav-history-pend', 'screen-approved': 'nav-approved', 'screen-relatorios': 'nav-relatorios', 'screen-users': 'menu-users' };
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active-link'));
+            const navMap = { 'screen-form': 'nav-new', 'screen-clientes': 'nav-clientes', 'screen-produtos': 'nav-produtos', 'screen-history': 'nav-history-pend', 'screen-approved': 'nav-approved', 'screen-os': 'nav-os', 'screen-relatorios': 'nav-relatorios', 'screen-users': 'menu-users' };
             if(navMap[id]) document.getElementById(navMap[id]).classList.add('active-link');
-
             if(id === 'screen-relatorios') f_gerar_relatorio();
         }
 
-        function voltarDaPreview() {
-            if(window._previewOrigin === 'clientes') showScreen('screen-clientes');
-            else if(window._previewOrigin === 'relatorios') showScreen('screen-relatorios');
-            else if(window._previewOrigin === 'history') showScreen('screen-history');
-            else if(window._previewOrigin === 'approved') showScreen('screen-approved');
-            else showScreen('screen-form');
-        }
+        function voltarDaPreview() { const map = {'clientes':'screen-clientes', 'relatorios':'screen-relatorios', 'history':'screen-history', 'approved':'screen-approved'}; showScreen(map[window._previewOrigin] || 'screen-form'); }
 
         function fillPreviewFromData(data) {
             document.getElementById('p-id').textContent = data.id; document.getElementById('p-cli').textContent = data.cli || ''; document.getElementById('p-cnpj').textContent = data.cnpj || ''; document.getElementById('p-end').textContent = [data.end, data.bairro, data.cidade].filter(Boolean).join(', '); document.getElementById('p-contato').textContent = `${data.email || ''} | ${data.tel || ''}`; document.getElementById('p-total').textContent = data.total || '0,00'; document.getElementById('p-data').textContent = data.data || ''; document.getElementById('p-obs').textContent = data.obs || '';
             document.getElementById('p-items').innerHTML = (data.items || []).map(i => `<tr><td class="col-num">${escapeHtml(i.q)}</td><td>${escapeHtml(i.desc)}</td><td class="col-val">R$ ${escapeHtml(i.preco)}</td><td class="col-val">R$ ${escapeHtml(i.subtotal)}</td></tr>`).join('');
-            window._previewPropostaId = String(data.id);
-            const perms = JSON.parse(sessionStorage.getItem('saj_perms') || '{}');
-            document.getElementById('btn-excluir-proposta').hidden = !(perms.aprov || perms.user);
-            document.getElementById('btn-aprovar-proposta').hidden = !((perms.aprov || perms.user) && data.propostaStatus !== 'aprovado');
+            window._previewPropostaId = String(data.id); const perms = JSON.parse(sessionStorage.getItem('saj_perms') || '{}');
+            document.getElementById('btn-excluir-proposta').hidden = !(perms.aprov || perms.user); document.getElementById('btn-aprovar-proposta').hidden = !((perms.aprov || perms.user) && data.propostaStatus !== 'aprovado');
         }
 
-        async function reabrir(id) {
-            const p = window._propostas[id]; if (!p) return;
-            document.getElementById('f-id').value = p.id; ['cli', 'cnpj', 'end', 'bairro', 'cidade', 'email', 'tel', 'obs'].forEach(k => document.getElementById('f-'+k).value = p[k] || '');
-            document.getElementById('items-body').innerHTML = ''; (p.items || []).forEach(i => addItemRow(i.q, i.prodId, i.desc, i.preco, i.subtotal)); calcTotalProposta();
-            showScreen('screen-form');
-        }
-
-        async function abrirGerenciar(id, origin = 'history') {
-            const p = window._propostas[id]; if(!p) return;
-            window._previewOrigin = origin; fillPreviewFromData(p); showScreen('screen-preview');
-        }
-        async function f_aprovar_proposta() { await window.dbUpdate(window.dbRef(window.db, 'propostas/' + window._previewPropostaId), { propostaStatus: 'aprovado' }); voltarDaPreview(); }
+        async function reabrir(id) { const p = window._propostas[id]; if (!p) return; document.getElementById('f-id').value = p.id; ['cli', 'cnpj', 'end', 'bairro', 'cidade', 'email', 'tel', 'obs'].forEach(k => document.getElementById('f-'+k).value = p[k] || ''); document.getElementById('items-body').innerHTML = ''; (p.items || []).forEach(i => addItemRow(i.q, i.prodId, i.desc, i.preco, i.subtotal)); calcTotalProposta(); showScreen('screen-form'); }
+        async function abrirGerenciar(id, origin = 'history') { const p = window._propostas[id]; if(!p) return; window._previewOrigin = origin; fillPreviewFromData(p); showScreen('screen-preview'); }
+        
+        async function f_aprovar_proposta() { await window.dbUpdate(window.dbRef(window.db, 'propostas/' + window._previewPropostaId), { propostaStatus: 'aprovado', osStatus: 'pendente' }); voltarDaPreview(); }
         async function excluirPropostaAtual() { if (confirm('Excluir proposta?')) { await window.dbRemove(window.dbRef(window.db, 'propostas/' + window._previewPropostaId)); voltarDaPreview(); } }
 
         async function buscarCNPJ(cnpj) {
-            const clean = cnpj.replace(/\D/g, ''); 
-            if (clean.length !== 14) { alert('CNPJ inválido. Digite os 14 números.'); return; }
-            try {
-                const btnBusca = document.getElementById('btn-busca-cnpj');
-                if(btnBusca) btnBusca.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
-
-                const r = await fetch(`https://publica.cnpj.ws/cnpj/${clean}`);
-                if(!r.ok) throw new Error('Falha');
-                const d = await r.json();
-                
-                document.getElementById('f-cli').value = d.razao_social || ''; const est = d.estabelecimento || {};
-                document.getElementById('f-end').value = [est.logradouro, est.numero].filter(Boolean).join(', '); 
-                document.getElementById('f-bairro').value = est.bairro || ''; document.getElementById('f-cidade').value = est.cidade ? est.cidade.nome : '';
-                if(btnBusca) btnBusca.innerHTML = '<i class="fa fa-search"></i>';
-            } catch (e) { 
-                alert('Erro ao buscar CNPJ. Verifique se o número está correto.'); 
-                const btnBusca = document.getElementById('btn-busca-cnpj');
-                if(btnBusca) btnBusca.innerHTML = '<i class="fa fa-search"></i>';
-            }
+            const clean = cnpj.replace(/\D/g, ''); if (clean.length !== 14) { alert('CNPJ inválido. Digite os 14 números.'); return; }
+            try { const btnBusca = document.getElementById('btn-busca-cnpj'); if(btnBusca) btnBusca.innerHTML = '<i class="fa fa-spinner fa-spin"></i>'; const r = await fetch(`https://publica.cnpj.ws/cnpj/${clean}`); if(!r.ok) throw new Error('Falha'); const d = await r.json(); document.getElementById('f-cli').value = d.razao_social || ''; const est = d.estabelecimento || {}; document.getElementById('f-end').value = [est.logradouro, est.numero].filter(Boolean).join(', '); document.getElementById('f-bairro').value = est.bairro || ''; document.getElementById('f-cidade').value = est.cidade ? est.cidade.nome : ''; if(btnBusca) btnBusca.innerHTML = '<i class="fa fa-search"></i>'; } catch (e) { alert('Erro ao buscar CNPJ.'); const btnBusca = document.getElementById('btn-busca-cnpj'); if(btnBusca) btnBusca.innerHTML = '<i class="fa fa-search"></i>'; }
         }
 
-        // ================= GESTÃO DE USUÁRIOS E PERMISSÕES =================
-        function renderUsers(obj) {
-            const el = document.getElementById('users-list-complex'); if (!obj) { el.innerHTML = 'Vazio.'; return; }
-            el.innerHTML = Object.values(obj).map(u => `<div class="user-row ${u.status === 'pendente' ? 'user-row--pending' : ''}"><div><strong>${escapeHtml(String(u.user).toUpperCase())}</strong><span class="${u.perfil === 'administrador' ? 'badge-perfil-adm' : 'badge-perfil-op'}">${u.perfil||'operador'}</span><br><span class="status-badge status-${u.status}">${u.status}</span></div><div class="user-row-actions"><button class="btn-edit-user" onclick="abrirEdicaoUsuario('${escapeHtml(u.user)}')">Editar</button>${u.status === 'pendente' ? `<button class="btn-approve" onclick="f_aprovar_u('${escapeHtml(u.user)}')">Liberar</button>` : ''}<button class="btn-delete-user" onclick="f_del_user('${escapeHtml(u.user)}')">Excluir</button></div></div>`).join('');
-        }
-        async function f_aprovar_u(u) { await window.dbUpdate(window.dbRef(window.db, 'usuarios/' + u), { status: 'aprovado', perfil: 'operador', permissoes: { nova: true, cli: true, prod: false, pend: true, aprov: true, relat: false, user: false } }); }
+        // ================= GESTÃO DE USUÁRIOS =================
+        function renderUsers(obj) { const el = document.getElementById('users-list-complex'); if (!obj) { el.innerHTML = 'Vazio.'; return; } el.innerHTML = Object.values(obj).map(u => `<div class="user-row ${u.status === 'pendente' ? 'user-row--pending' : ''}"><div><strong>${escapeHtml(String(u.user).toUpperCase())}</strong><span class="${u.perfil === 'administrador' ? 'badge-perfil-adm' : 'badge-perfil-op'}">${u.perfil||'operador'}</span><br><span class="status-badge status-${u.status}">${u.status}</span></div><div class="user-row-actions"><button class="btn-edit-user" onclick="abrirEdicaoUsuario('${escapeHtml(u.user)}')">Editar</button>${u.status === 'pendente' ? `<button class="btn-approve" onclick="f_aprovar_u('${escapeHtml(u.user)}')">Liberar</button>` : ''}<button class="btn-delete-user" onclick="f_del_user('${escapeHtml(u.user)}')">Excluir</button></div></div>`).join(''); }
+        async function f_aprovar_u(u) { await window.dbUpdate(window.dbRef(window.db, 'usuarios/' + u), { status: 'aprovado', perfil: 'operador', permissoes: { nova: true, cli: true, prod: false, pend: true, aprov: true, os: false, relat: false, user: false } }); }
         async function f_del_user(u) { if (confirm('Excluir?')) await window.dbRemove(window.dbRef(window.db, 'usuarios/' + u)); }
-        async function abrirEdicaoUsuario(login) {
-            const snap = await window.dbGet(window.dbRef(window.db, 'usuarios/' + login)); const u = snap.val();
-            document.getElementById('user-edit-panel').hidden = false; document.getElementById('edit-user-login').value = login; document.getElementById('edit-user-display').textContent = login.toUpperCase(); document.getElementById('edit-user-status').value = u.status || 'pendente'; document.getElementById('edit-user-perfil').value = u.perfil || 'operador'; document.getElementById('edit-user-pass').value = '';
-            const isAdmin = u.perfil === 'administrador'; const p = u.permissoes || { nova: true, cli: isAdmin, prod: isAdmin, pend: true, aprov: true, relat: isAdmin, user: isAdmin };
-            ['nova','cli','prod','pend','aprov','relat','user'].forEach(k => document.getElementById('perm-'+k).checked = (p[k] !== false));
-            document.getElementById('user-edit-panel').scrollIntoView({ behavior: 'smooth' });
-        }
+        async function abrirEdicaoUsuario(login) { const snap = await window.dbGet(window.dbRef(window.db, 'usuarios/' + login)); const u = snap.val(); document.getElementById('user-edit-panel').hidden = false; document.getElementById('edit-user-login').value = login; document.getElementById('edit-user-display').textContent = login.toUpperCase(); document.getElementById('edit-user-status').value = u.status || 'pendente'; document.getElementById('edit-user-perfil').value = u.perfil || 'operador'; document.getElementById('edit-user-pass').value = ''; const isAdmin = u.perfil === 'administrador'; const p = u.permissoes || { nova: true, cli: isAdmin, prod: isAdmin, pend: true, aprov: true, os: isAdmin, relat: isAdmin, user: isAdmin }; ['nova','cli','prod','pend','aprov','os','relat','user'].forEach(k => document.getElementById('perm-'+k).checked = (p[k] !== false)); document.getElementById('user-edit-panel').scrollIntoView({ behavior: 'smooth' }); }
         function fecharEdicaoUsuario() { document.getElementById('user-edit-panel').hidden = true; }
-        async function salvarEdicaoUsuario() {
-            const login = document.getElementById('edit-user-login').value; const newPass = document.getElementById('edit-user-pass').value.trim();
-            const permissoes = {}; ['nova','cli','prod','pend','aprov','relat','user'].forEach(k => permissoes[k] = document.getElementById('perm-'+k).checked);
-            const updates = { status: document.getElementById('edit-user-status').value, perfil: document.getElementById('edit-user-perfil').value, permissoes };
-            if (newPass) updates.pass = newPass; 
-            await window.dbUpdate(window.dbRef(window.db, 'usuarios/' + login), updates); fecharEdicaoUsuario();
-        }
+        async function salvarEdicaoUsuario() { const login = document.getElementById('edit-user-login').value; const newPass = document.getElementById('edit-user-pass').value.trim(); const permissoes = {}; ['nova','cli','prod','pend','aprov','os','relat','user'].forEach(k => permissoes[k] = document.getElementById('perm-'+k).checked); const updates = { status: document.getElementById('edit-user-status').value, perfil: document.getElementById('edit-user-perfil').value, permissoes }; if (newPass) updates.pass = newPass; await window.dbUpdate(window.dbRef(window.db, 'usuarios/' + login), updates); fecharEdicaoUsuario(); }
 
         // ================= AUTENTICAÇÃO E INIT =================
         function toggleLogin(box) { ['login', 'register', 'wait'].forEach(b => document.getElementById('box-'+b).hidden = box !== b); }
-        async function f_login() {
-            const u = document.getElementById('l-user').value.toLowerCase().trim(); const p = document.getElementById('l-pass').value.trim();
-            const snap = await window.dbGet(window.dbRef(window.db, 'usuarios/' + u)); if (!snap.exists() || snap.val().pass !== p) return alert('Credenciais inválidas.');
-            const d = snap.val(); if (d.status !== 'aprovado' && !['admin', 'lucas'].includes(u)) return toggleLogin('wait');
-            
-            let perms = d.permissoes;
-            if (!perms) { const a = d.perfil === 'administrador'; perms = { nova: true, cli: a, prod: a, pend: true, aprov: true, relat: a, user: a }; }
-            if (['admin', 'lucas'].includes(u)) perms = { nova: true, cli: true, prod: true, pend: true, aprov: true, relat: true, user: true };
-
-            sessionStorage.setItem('saj_user', u); sessionStorage.setItem('saj_perfil', d.perfil || 'operador'); sessionStorage.setItem('saj_perms', JSON.stringify(perms)); location.reload();
-        }
+        async function f_login() { const u = document.getElementById('l-user').value.toLowerCase().trim(); const p = document.getElementById('l-pass').value.trim(); const snap = await window.dbGet(window.dbRef(window.db, 'usuarios/' + u)); if (!snap.exists() || snap.val().pass !== p) return alert('Credenciais inválidas.'); const d = snap.val(); if (d.status !== 'aprovado' && !['admin', 'lucas'].includes(u)) return toggleLogin('wait'); let perms = d.permissoes; if (!perms) { const a = d.perfil === 'administrador'; perms = { nova: true, cli: a, prod: a, pend: true, aprov: true, os: a, relat: a, user: a }; } if (['admin', 'lucas'].includes(u)) perms = { nova: true, cli: true, prod: true, pend: true, aprov: true, os: true, relat: true, user: true }; sessionStorage.setItem('saj_user', u); sessionStorage.setItem('saj_perfil', d.perfil || 'operador'); sessionStorage.setItem('saj_perms', JSON.stringify(perms)); location.reload(); }
         function f_logout() { sessionStorage.clear(); location.reload(); }
-
-        function isAdministrator() { 
-            const u = sessionStorage.getItem('saj_user');
-            return sessionStorage.getItem('saj_perfil') === 'administrador' || ['admin', 'lucas'].includes(u); 
-        }
+        function isAdministrator() { const u = sessionStorage.getItem('saj_user'); return sessionStorage.getItem('saj_perfil') === 'administrador' || ['admin', 'lucas'].includes(u); }
 
         window.onload = () => {
             const u = sessionStorage.getItem('saj_user');
@@ -974,28 +906,25 @@
                 document.getElementById('user-tag').textContent = u.toUpperCase(); document.getElementById('f-id').value = Math.floor(1000 + Math.random() * 9000);
                 
                 const perms = JSON.parse(sessionStorage.getItem('saj_perms') || '{}');
-                ['nova','cli','produtos','history-pend','approved','relatorios'].forEach(k => {
-                    let map = {'nova':'nova', 'cli':'clientes', 'produtos':'produtos', 'history-pend':'history-pend', 'approved':'approved', 'relatorios':'relatorios'};
-                    const el = document.getElementById('nav-' + k); if(el) el.hidden = !perms[map[k] === 'clientes' ? 'cli' : map[k] === 'history-pend' ? 'pend' : map[k] === 'approved' ? 'aprov' : map[k] === 'relatorios' ? 'relat' : map[k] === 'produtos' ? 'prod' : 'nova'];
+                ['nova','cli','produtos','history-pend','approved','os','relatorios'].forEach(k => {
+                    let map = {'nova':'nova', 'cli':'clientes', 'produtos':'produtos', 'history-pend':'history-pend', 'approved':'approved', 'os':'os', 'relatorios':'relatorios'};
+                    const el = document.getElementById('nav-' + k); 
+                    if(el) el.hidden = !perms[map[k] === 'clientes' ? 'cli' : map[k] === 'history-pend' ? 'pend' : map[k] === 'approved' ? 'aprov' : map[k] === 'relatorios' ? 'relat' : map[k] === 'produtos' ? 'prod' : map[k] === 'os' ? 'os' : 'nova'];
                 });
                 document.getElementById('menu-users').hidden = !perms.user;
 
                 if (!perms.nova) {
                     document.getElementById('screen-form').classList.remove('active');
-                    if(perms.cli) showScreen('screen-clientes'); else if(perms.prod) showScreen('screen-produtos'); else if(perms.pend) showScreen('screen-history'); else if(perms.aprov) showScreen('screen-approved'); else if(perms.relat) showScreen('screen-relatorios'); else if(perms.user) showScreen('screen-users');
+                    if(perms.cli) showScreen('screen-clientes'); else if(perms.prod) showScreen('screen-produtos'); else if(perms.pend) showScreen('screen-history'); else if(perms.aprov) showScreen('screen-approved'); else if(perms.os) showScreen('screen-os'); else if(perms.relat) showScreen('screen-relatorios'); else if(perms.user) showScreen('screen-users');
                 }
                 addItemRow();
-
-                const hoje = new Date();
-                const dia1 = new Date(hoje.getFullYear(), hoje.getMonth(), 1).toISOString().split('T')[0];
-                const ultimoDia = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).toISOString().split('T')[0];
-                document.getElementById('filtro-data-ini').value = dia1;
-                document.getElementById('filtro-data-fim').value = ultimoDia;
+                const hoje = new Date(); const dia1 = new Date(hoje.getFullYear(), hoje.getMonth(), 1).toISOString().split('T')[0]; const ultimoDia = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).toISOString().split('T')[0];
+                document.getElementById('filtro-data-ini').value = dia1; document.getElementById('filtro-data-fim').value = ultimoDia;
             }
         };
         
-        // Exportando explicitamente funções de UI para o escopo global para garantir que onclick funcione perfeitamente
-        window.f_gerar_visual = f_gerar_visual; window.fecharEdicaoUsuario = fecharEdicaoUsuario; window.salvarEdicaoUsuario = salvarEdicaoUsuario; window.abrirEdicaoUsuario = abrirEdicaoUsuario; window.f_aprovar_u = f_aprovar_u; window.f_del_user = f_del_user; window.f_editar_produto = f_editar_produto; window.f_cancelar_edicao_produto = f_cancelar_edicao_produto; window.abrirCRM = abrirCRM; window.fecharCRM = fecharCRM; window.f_gerar_relatorio = f_gerar_relatorio; window.abrirGerenciar = abrirGerenciar; window.buscarCNPJ = buscarCNPJ;
+        // Exportando as funções pro HTML conseguir usar sem bugs
+        window.f_gerar_visual = f_gerar_visual; window.fecharEdicaoUsuario = fecharEdicaoUsuario; window.salvarEdicaoUsuario = salvarEdicaoUsuario; window.abrirEdicaoUsuario = abrirEdicaoUsuario; window.f_aprovar_u = f_aprovar_u; window.f_del_user = f_del_user; window.f_editar_produto = f_editar_produto; window.f_cancelar_edicao_produto = f_cancelar_edicao_produto; window.abrirCRM = abrirCRM; window.fecharCRM = fecharCRM; window.f_gerar_relatorio = f_gerar_relatorio; window.abrirGerenciar = abrirGerenciar; window.buscarCNPJ = buscarCNPJ; window.salvarCheckOS = salvarCheckOS; window.iniciarAutorizacaoOS = iniciarAutorizacaoOS; window.fecharModalAuthOS = fecharModalAuthOS; window.confirmarAuthOS = confirmarAuthOS; window.abrirVisaoOS = abrirVisaoOS;
     </script>
 </body>
 </html>
