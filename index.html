@@ -184,12 +184,13 @@
         .status-badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; }
         .status-pendente { background: #fef3c7; color: #92400e; }
         .status-aprovado { background: #dcfce7; color: #166534; }
-        .status-todas { background: #e2e8f0; color: #475569; }
         
-        /* Status OS - Cores de Kanban */
+        /* Status Transporte/OS */
         .status-os-pendente { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; font-weight: 700; padding: 4px 8px; border-radius: 999px; font-size: 0.6875rem; text-transform: uppercase;}
         .status-os-separando { background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe; font-weight: 700; padding: 4px 8px; border-radius: 999px; font-size: 0.6875rem; text-transform: uppercase;}
-        .status-os-despachado { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; font-weight: 700; padding: 4px 8px; border-radius: 999px; font-size: 0.6875rem; text-transform: uppercase;}
+        .status-os-despachado { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; font-weight: 700; padding: 4px 8px; border-radius: 999px; font-size: 0.6875rem; text-transform: uppercase;}
+        .status-os-a_caminho { background: #fef08a; color: #b45309; border: 1px solid #fde047; font-weight: 700; padding: 4px 8px; border-radius: 999px; font-size: 0.6875rem; text-transform: uppercase;}
+        .status-os-entregue { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; font-weight: 700; padding: 4px 8px; border-radius: 999px; font-size: 0.6875rem; text-transform: uppercase;}
 
         .perm-check-label { text-transform:none; font-weight:500; display:flex; align-items:center; gap:6px; cursor:pointer; color:var(--text); }
         .crm-panel { background: #fafafa; border: 1px solid var(--border); padding: 20px; border-radius: var(--radius-md); margin-bottom: 20px; }
@@ -199,8 +200,20 @@
         .nota-meta { font-size: 0.6875rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; border-bottom: 1px solid #f1f5f9; padding-bottom: 4px; }
         .nota-texto { font-size: 0.8125rem; color: var(--text); white-space: pre-wrap; line-height: 1.5; }
 
-        /* Estilo Checkbox Nativo OS */
         .check-os { width: 22px; height: 22px; cursor: pointer; accent-color: var(--accent); }
+
+        /* Estilos Tela do Motorista */
+        .driver-container { max-width: 600px; margin: 0 auto; padding: 20px; background: #fff; min-height: 100dvh; }
+        .driver-header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px dashed var(--border); }
+        .driver-status { font-size: 1.2rem; font-weight: 800; padding: 8px 16px; border-radius: 8px; display: inline-block; margin-bottom: 10px; }
+        .driver-info-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .driver-info-title { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; }
+        .driver-info-text { font-size: 1.1rem; font-weight: 600; color: var(--primary); margin-bottom: 16px; }
+        .driver-btn { width: 100%; padding: 16px; font-size: 1.1rem; font-weight: 700; border-radius: 12px; margin-bottom: 12px; display: flex; justify-content: center; align-items: center; gap: 10px; border: none; cursor: pointer; transition: transform 0.1s; }
+        .driver-btn:active { transform: scale(0.98); }
+        .driver-btn-rota { background: #f59e0b; color: #fff; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); }
+        .driver-btn-entregue { background: var(--success); color: #fff; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3); }
+        .driver-btn-mapa { background: var(--accent); color: #fff; }
 
         @media print {
             .no-print { display: none !important; }
@@ -214,6 +227,43 @@
 </head>
 <body>
     
+    <div id="screen-driver" class="screen" style="background:var(--bg);">
+        <div class="driver-container">
+            <div class="driver-header">
+                <img src="https://i.ibb.co/WNbXMgmb/Captura-de-tela-2026-05-12-143019.png" alt="SAJTEC" style="height: 50px; margin-bottom: 16px;">
+                <h1 style="margin:0; font-size: 1.5rem; color:var(--primary);">App do Entregador</h1>
+                <p style="margin:4px 0 0 0; color:var(--text-muted);">Pedido <strong id="drv-id">#---</strong></p>
+            </div>
+
+            <div style="text-align: center;">
+                <div id="drv-status-badge" class="driver-status status-os-despachado">Aguardando Saída</div>
+            </div>
+
+            <div class="driver-info-box">
+                <div class="driver-info-title">Cliente Destino</div>
+                <div class="driver-info-text" id="drv-cli">Carregando...</div>
+                
+                <div class="driver-info-title">Telefone de Contato</div>
+                <div class="driver-info-text" id="drv-tel">...</div>
+
+                <div class="driver-info-title">Endereço de Entrega</div>
+                <div class="driver-info-text" id="drv-end" style="margin-bottom:0;">...</div>
+            </div>
+
+            <button class="driver-btn driver-btn-mapa" onclick="abrirGPS()"><i class="fa fa-map-location-dot"></i> Abrir no GPS</button>
+            
+            <div style="margin-top: 30px;" id="drv-actions">
+                <button class="driver-btn driver-btn-rota" id="btn-drv-rota" onclick="motoristaAcao('a_caminho')"><i class="fa fa-motorcycle"></i> Sair para Entrega</button>
+                <button class="driver-btn driver-btn-entregue" id="btn-drv-entregue" onclick="motoristaAcao('entregue')" style="display:none;"><i class="fa fa-check-circle"></i> Confirmar Entrega</button>
+            </div>
+            
+            <div id="drv-finished" style="display:none; text-align:center; padding: 20px; color: var(--success); font-weight:700; font-size:1.2rem;">
+                <i class="fa fa-circle-check" style="font-size:3rem; margin-bottom:10px;"></i><br>
+                Entrega Concluída!
+            </div>
+        </div>
+    </div>
+
     <div id="modal-auth-os" class="modal-overlay">
         <div class="modal-box">
             <h2 class="auth-title" style="margin-top:0;">Autorização de OS</h2>
@@ -264,7 +314,8 @@
                 <button class="nav-link" id="nav-produtos" onclick="showScreen('screen-produtos')" hidden><i class="fa fa-box"></i> Produtos</button>
                 <button class="nav-link" id="nav-history-pend" onclick="showScreen('screen-history')" hidden><i class="fa fa-clock"></i> Pendentes</button>
                 <button class="nav-link" id="nav-approved" onclick="showScreen('screen-approved')" hidden><i class="fa fa-check-circle"></i> Aprovadas</button>
-                <button class="nav-link" id="nav-os" onclick="showScreen('screen-os')" hidden><i class="fa fa-truck-fast"></i> Ordem de Serviço</button>
+                <button class="nav-link" id="nav-os" onclick="showScreen('screen-os')" hidden><i class="fa fa-boxes-packing"></i> Expedição (OS)</button>
+                <button class="nav-link" id="nav-transporte" onclick="showScreen('screen-transporte')" hidden><i class="fa fa-truck-fast"></i> Transporte</button>
                 <button class="nav-link" id="nav-relatorios" onclick="showScreen('screen-relatorios')" hidden><i class="fa fa-chart-bar"></i> Relatórios</button>
                 <button class="nav-link" id="menu-users" onclick="showScreen('screen-users')" hidden><i class="fa fa-users-cog"></i> Usuários</button>
             </nav>
@@ -295,9 +346,7 @@
                         <div class="form-grid-2">
                             <div>
                                 <label style="font-size:0.75rem; color:var(--text); font-weight:700; margin-bottom:8px; display:block;">Histórico de Interações</label>
-                                
                                 <div id="crm-notas-list" style="background:#f1f5f9; border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px; height:200px; overflow-y:auto; margin-bottom:12px;"></div>
-                                
                                 <div style="background:#fff; border:1px solid var(--border); padding:12px; border-radius:var(--radius-sm);">
                                     <textarea id="crm-nova-nota" rows="2" placeholder="Nova anotação (ex: Contato via WhatsApp, envio de catálogo...)" style="margin-bottom:8px;"></textarea>
                                     <button class="btn btn-primary" style="width:100%; padding:8px;" onclick="adicionarNotaCRM()"><i class="fa fa-plus"></i> Anexar à Ficha</button>
@@ -445,7 +494,7 @@
                             
                             <div style="margin-top:40px; border-top:1px dashed #cbd5e1; padding-top:20px; display:flex; justify-content:space-between; font-size:0.875rem;">
                                 <div id="pos-footer-separador"><strong>Separado por:</strong> ___________________________</div>
-                                <div id="pos-footer-despacho"><strong>Despachado por:</strong> ___________________________</div>
+                                <div id="pos-footer-data"><strong>Data de Expedição:</strong> ___/___/20__</div>
                             </div>
                         </div>
                     </article>
@@ -457,11 +506,25 @@
             
             <div id="screen-os" class="screen">
                 <div class="card">
-                    <h2 class="page-title"><i class="fa fa-truck-fast"></i> Gestão de Expedição (Ordem de Serviço)</h2>
+                    <h2 class="page-title"><i class="fa fa-boxes-packing"></i> Gestão de Expedição (Separação)</h2>
+                    <p style="color:var(--text-muted); font-size:0.875rem; margin-top:-10px;">Ordens aguardando separação ou em andamento.</p>
                     <div class="items-table-wrap">
                         <table class="history-table">
                             <thead><tr><th>Data Aprov.</th><th>#Pedido</th><th>Cliente</th><th>Status OS</th><th>Ações</th></tr></thead>
                             <tbody id="os-content-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="screen-transporte" class="screen">
+                <div class="card">
+                    <h2 class="page-title"><i class="fa fa-truck-fast"></i> Logística e Transporte</h2>
+                    <p style="color:var(--text-muted); font-size:0.875rem; margin-top:-10px;">Monitoramento de pedidos despachados e em rota de entrega.</p>
+                    <div class="items-table-wrap">
+                        <table class="history-table">
+                            <thead><tr><th>Data Despacho</th><th>#Pedido</th><th>Cliente</th><th>Status Entrega</th><th>Link do Motorista</th></tr></thead>
+                            <tbody id="transporte-content-body"></tbody>
                         </table>
                     </div>
                 </div>
@@ -515,6 +578,7 @@
                                 <label class="perm-check-label"><input type="checkbox" id="perm-pend"> Pendentes</label>
                                 <label class="perm-check-label"><input type="checkbox" id="perm-aprov"> Aprovadas</label>
                                 <label class="perm-check-label"><input type="checkbox" id="perm-os"> Ordem de Serviço</label>
+                                <label class="perm-check-label"><input type="checkbox" id="perm-transp"> Transporte</label>
                                 <label class="perm-check-label"><input type="checkbox" id="perm-relat"> Relatórios</label>
                                 <label class="perm-check-label"><input type="checkbox" id="perm-user"> Usuários</label>
                             </div>
@@ -541,9 +605,18 @@
         
         onValue(ref(db, 'propostas'), snap => {
             window._propostas = snap.val() || {};
-            renderHistory(window._propostas);
-            renderOS(window._propostas);
-            if(window._activeCliId) atualizarTabelaCRM(window._activeCliId);
+            
+            // Verifica se é a visão do motorista
+            const urlParams = new URLSearchParams(window.location.search);
+            const entregaId = urlParams.get('entrega');
+            if (entregaId) {
+                renderTelaMotorista(entregaId);
+            } else {
+                renderHistory(window._propostas);
+                renderOS(window._propostas);
+                renderTransporte(window._propostas);
+                if(window._activeCliId) atualizarTabelaCRM(window._activeCliId);
+            }
         });
         
         onValue(ref(db, 'clientes'), snap => {
@@ -596,7 +669,7 @@
         function renderClientesTable() {
             const tbody = document.getElementById('lista-clientes-body'); if(!tbody) return;
             const isAdmin = isAdministrator();
-            const html = Object.entries(window._clientes).map(([id, c]) => `<tr><td><strong>${escapeHtml(c.nome)}</strong></td><td>${escapeHtml(c.cnpj || '-')}</td><td>${escapeHtml(c.cidade || '-')}</td><td>${escapeHtml(c.tel || c.email || '-')}</td><td><div style="display:flex; gap:6px;"><button class="btn-table" onclick="abrirCRM('${id}')">Ver Ficha</button>${isAdmin ? `<button class="btn-icon-remove" onclick="f_del_cliente('${id}')" title="Excluir"><i class="fa fa-trash"></i></button>` : ''}</div></td></tr>`).join('');
+            const html = Object.entries(window._clientes).map(([id, c]) => `<tr><td><strong>${escapeHtml(c.nome)}</strong></td><td>${escapeHtml(c.cnpj || '-')}</td><td>${escapeHtml(c.cidade || '-')}</td><td>${escapeHtml(c.tel || c.email || '-')}</td><td><div style="display:flex; gap:6px;"><button class="btn-table" onclick="abrirCRM('${id}')">Ver Ficha</button>${isAdmin ? `<button class="btn-icon-remove" onclick="f_del_cliente('${id}')" title="Excluir Ficha"><i class="fa fa-trash"></i></button>` : ''}</div></td></tr>`).join('');
             tbody.innerHTML = html || '<tr><td colspan="5">Nenhum cliente cadastrado.</td></tr>';
         }
 
@@ -684,26 +757,55 @@
             } catch (err) { alert("Erro ao salvar os dados! Verifique sua conexão com a internet."); } finally { btnSalvar.innerHTML = textoOriginal; btnSalvar.disabled = false; }
         }
 
-        // ================= ORDEM DE SERVIÇO COM AUTORIZAÇÃO E CHECKBOXES =================
+        // ================= ORDEM DE SERVIÇO E TRANSPORTE =================
         function renderOS(obj) {
             const tbody = document.getElementById('os-content-body');
             if (!obj) { tbody.innerHTML = '<tr><td colspan="5">Vazio.</td></tr>'; return; }
-            const aprovadas = Object.values(obj).filter(p => p.propostaStatus === 'aprovado');
-            if (aprovadas.length === 0) { tbody.innerHTML = '<tr><td colspan="5">Nenhuma Ordem de Serviço (Aguardando Aprovação de Propostas).</td></tr>'; return; }
+            
+            // Mostra na aba de OS apenas o que NÃO foi despachado
+            const osAtivas = Object.values(obj).filter(p => p.propostaStatus === 'aprovado' && p.osStatus !== 'despachado' && p.osStatus !== 'a_caminho' && p.osStatus !== 'entregue');
+            
+            if (osAtivas.length === 0) { tbody.innerHTML = '<tr><td colspan="5">Nenhuma Ordem de Serviço pendente de separação.</td></tr>'; return; }
 
-            // Ordenação Kanban: Pendente e Separando no topo, Despachados por último
-            aprovadas.sort((a,b) => {
-                const pesos = { 'pendente': 1, 'separando': 2, 'despachado': 3 };
+            // Ordenação Kanban: Separando no topo, Pendente embaixo
+            osAtivas.sort((a,b) => {
+                const pesos = { 'separando': 1, 'pendente': 2 };
                 const pesoA = pesos[a.osStatus || 'pendente'];
                 const pesoB = pesos[b.osStatus || 'pendente'];
                 if(pesoA !== pesoB) return pesoA - pesoB;
                 return b.id - a.id; 
             });
 
-            tbody.innerHTML = aprovadas.map(p => {
+            tbody.innerHTML = osAtivas.map(p => {
                 const statusOs = p.osStatus || 'pendente';
-                let label = 'Pendente'; if(statusOs === 'separando') label = 'Em Separação'; if(statusOs === 'despachado') label = 'Despachado';
+                let label = statusOs === 'separando' ? 'Em Separação' : 'Pendente';
                 return `<tr><td>${p.data}</td><td><strong>#${p.id}</strong></td><td>${escapeHtml(p.cli)}</td><td><span class="status-badge status-os-${statusOs}">${label}</span></td><td><button class="btn-table" onclick="abrirVisaoOS('${p.id}')"><i class="fa fa-boxes-packing"></i> Gerenciar OS</button></td></tr>`;
+            }).join('');
+        }
+
+        function renderTransporte(obj) {
+            const tbody = document.getElementById('transporte-content-body');
+            if (!tbody || !obj) return;
+            
+            // Mostra na aba Transporte o que já saiu da Expedição
+            const emTransporte = Object.values(obj).filter(p => p.propostaStatus === 'aprovado' && (p.osStatus === 'despachado' || p.osStatus === 'a_caminho' || p.osStatus === 'entregue'));
+            
+            if (emTransporte.length === 0) { tbody.innerHTML = '<tr><td colspan="5">Nenhuma entrega em andamento.</td></tr>'; return; }
+
+            emTransporte.sort((a,b) => {
+                const pesos = { 'despachado': 1, 'a_caminho': 2, 'entregue': 3 };
+                const pesoA = pesos[a.osStatus];
+                const pesoB = pesos[b.osStatus];
+                if(pesoA !== pesoB) return pesoA - pesoB;
+                return b.id - a.id; 
+            });
+
+            tbody.innerHTML = emTransporte.map(p => {
+                const statusOs = p.osStatus;
+                let label = 'Despachado'; if(statusOs === 'a_caminho') label = 'A Caminho'; if(statusOs === 'entregue') label = 'Entregue';
+                const dataShow = p.dataEntrega ? p.dataEntrega.split(' ')[0] : (p.osDataDespacho ? p.osDataDespacho.split(' ')[0] : '-');
+                
+                return `<tr><td>${dataShow}</td><td><strong>#${p.id}</strong></td><td>${escapeHtml(p.cli)}</td><td><span class="status-badge status-os-${statusOs}">${label}</span></td><td><button class="btn-table" onclick="copiarLinkMotorista('${p.id}')"><i class="fa fa-link"></i> Link do Motorista</button></td></tr>`;
             }).join('');
         }
 
@@ -715,7 +817,7 @@
             const endCompleto = [p.end, p.bairro, p.cidade].filter(Boolean).join(', '); document.getElementById('pos-end').textContent = endCompleto || 'Endereço não informado';
 
             const statusOs = p.osStatus || 'pendente';
-            const isDespachado = statusOs === 'despachado';
+            const isDespachado = statusOs === 'despachado' || statusOs === 'a_caminho' || statusOs === 'entregue';
 
             document.getElementById('pos-items').innerHTML = (p.items || []).map((i, index) => {
                 const checked = (p.osChecks && p.osChecks[index]) ? 'checked' : '';
@@ -724,13 +826,10 @@
             }).join('');
 
             const nomeSeparador = p.osUserSeparacao ? escapeHtml(p.osUserSeparacao).toUpperCase() : '___________________________';
-            const dataSeparacao = p.osDataSeparacao ? `<br><small style="color:var(--text-muted);">${escapeHtml(p.osDataSeparacao)}</small>` : '';
+            const dataDespacho = p.osDataDespacho ? escapeHtml(p.osDataDespacho) : '___/___/20__';
             
-            const nomeDespachante = p.osUserDespacho ? escapeHtml(p.osUserDespacho).toUpperCase() : '___________________________';
-            const dataDespacho = p.osDataDespacho ? `<br><small style="color:var(--text-muted);">${escapeHtml(p.osDataDespacho)}</small>` : '';
-            
-            document.getElementById('pos-footer-separador').innerHTML = `<strong>Separado por:</strong> <span style="color:var(--primary);">${nomeSeparador}</span>${dataSeparacao}`;
-            document.getElementById('pos-footer-despacho').innerHTML = `<strong>Despachado por:</strong> <span style="color:var(--primary);">${nomeDespachante}</span>${dataDespacho}`;
+            document.getElementById('pos-footer-separador').innerHTML = `<strong>Separado por:</strong> <span style="color:var(--primary);">${nomeSeparador}</span>`;
+            document.getElementById('pos-footer-data').innerHTML = `<strong>Data de Expedição:</strong> <span style="color:var(--primary);">${dataDespacho}</span>`;
 
             document.getElementById('btn-os-separar').hidden = (statusOs !== 'pendente');
             document.getElementById('btn-os-despachar').hidden = (statusOs !== 'separando');
@@ -745,7 +844,6 @@
 
         window.iniciarAutorizacaoOS = function(novoStatus) {
             window._pendingOsStatus = novoStatus;
-            
             let acaoMsg = novoStatus === 'separando' ? 'INICIAR A SEPARAÇÃO' : 'MARCAR COMO DESPACHADO';
             document.getElementById('os-auth-msg').innerHTML = `Digite sua senha para confirmar a ação de <br><strong style="color:var(--primary);">${acaoMsg}</strong>.`;
             document.getElementById('os-auth-senha').value = '';
@@ -790,13 +888,18 @@
                 }
 
                 const statusSalvo = window._pendingOsStatus; 
-
                 await window.dbUpdate(window.dbRef(window.db, 'propostas/' + id), updates);
                 
                 fecharModalAuthOS(); 
                 
-                alert('Sucesso! Status alterado para: ' + statusSalvo.toUpperCase());
-                showScreen('screen-os'); 
+                // Redireciona corretamente: se despachou, vai pra Transporte. Se separou, fica na OS.
+                if(statusSalvo === 'despachado') {
+                    alert('Sucesso! OS Despachada. Ela foi transferida para a aba Transporte.');
+                    showScreen('screen-transporte');
+                } else {
+                    alert('Sucesso! Status alterado para: ' + statusSalvo.toUpperCase());
+                    showScreen('screen-os'); 
+                }
                 
             } catch(e) {
                 console.error(e);
@@ -805,6 +908,97 @@
                 btnConfirm.innerHTML = originalText;
                 btnConfirm.disabled = false;
             }
+        }
+
+        window.copiarLinkMotorista = function(id) {
+            const url = window.location.origin + window.location.pathname + '?entrega=' + id;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('Link copiado com sucesso!\nEnvie no WhatsApp do motorista:\n\n' + url);
+            }).catch(err => {
+                alert('Erro ao copiar link. Copie manualmente: ' + url);
+            });
+        }
+
+        // ================= TELA DO MOTORISTA =================
+        window.renderTelaMotorista = function(id) {
+            // Esconde TUDO do sistema padrão
+            document.getElementById('screen-login').classList.remove('active');
+            document.getElementById('app-main').style.display = 'none';
+            document.body.style.background = 'var(--bg)';
+            
+            // Mostra a tela do motorista
+            const screenDriver = document.getElementById('screen-driver');
+            screenDriver.classList.add('active');
+
+            const p = window._propostas[id];
+            if(!p) {
+                screenDriver.innerHTML = '<div style="text-align:center; padding:50px;">Pedido não encontrado ou ID inválido.</div>';
+                return;
+            }
+
+            window._driverPropostaId = id;
+            
+            document.getElementById('drv-id').textContent = '#' + p.id;
+            document.getElementById('drv-cli').textContent = p.cli || '-';
+            document.getElementById('drv-tel').textContent = p.tel || 'Não informado';
+            
+            const endCompleto = [p.end, p.bairro, p.cidade].filter(Boolean).join(', ');
+            document.getElementById('drv-end').textContent = endCompleto || 'Endereço não informado';
+            window._driverEndereco = endCompleto;
+
+            const badge = document.getElementById('drv-status-badge');
+            const btnRota = document.getElementById('btn-drv-rota');
+            const btnEntregue = document.getElementById('btn-drv-entregue');
+            const divFinished = document.getElementById('drv-finished');
+            const divActions = document.getElementById('drv-actions');
+
+            const status = p.osStatus || 'pendente';
+            
+            if(status === 'entregue') {
+                badge.className = 'driver-status status-os-entregue';
+                badge.textContent = 'Entrega Concluída';
+                divActions.style.display = 'none';
+                divFinished.style.display = 'block';
+            } else if (status === 'a_caminho') {
+                badge.className = 'driver-status status-os-a_caminho';
+                badge.textContent = 'Em Rota de Entrega';
+                btnRota.style.display = 'none';
+                btnEntregue.style.display = 'flex';
+                divActions.style.display = 'block';
+                divFinished.style.display = 'none';
+            } else {
+                badge.className = 'driver-status status-os-despachado';
+                badge.textContent = 'Aguardando Saída';
+                btnRota.style.display = 'flex';
+                btnEntregue.style.display = 'none';
+                divActions.style.display = 'block';
+                divFinished.style.display = 'none';
+            }
+        }
+
+        window.abrirGPS = function() {
+            if(window._driverEndereco) {
+                const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(window._driverEndereco)}`;
+                window.open(url, '_blank');
+            } else {
+                alert('Endereço não disponível.');
+            }
+        }
+
+        window.motoristaAcao = async function(novoStatus) {
+            const id = window._driverPropostaId;
+            if(!id) return;
+
+            const msg = novoStatus === 'a_caminho' ? 'Confirmar que está saindo para entrega?' : 'Confirmar que o pedido foi entregue ao cliente?';
+            if(!confirm(msg)) return;
+
+            const updates = { osStatus: novoStatus };
+            if(novoStatus === 'entregue') {
+                updates.dataEntrega = new Date().toLocaleString('pt-BR');
+            }
+
+            await window.dbUpdate(window.dbRef(window.db, 'propostas/' + id), updates);
+            // Firebase real-time onValue vai triggar renderTelaMotorista novamente atualizando o visual sozinho
         }
 
         // ================= RELATÓRIOS E DASHBOARD =================
@@ -842,7 +1036,7 @@
         function renderProdutosTable() { const tbody = document.getElementById('lista-produtos-body'); if(!tbody) return; const perms = JSON.parse(sessionStorage.getItem('saj_perms') || '{}'); tbody.innerHTML = Object.entries(window._produtos).map(([id, p]) => `<tr><td>${escapeHtml(p.nome)}</td><td>${escapeHtml(p.marca||'-')}</td><td>${escapeHtml(p.modelo||'-')}</td><td>${escapeHtml(p.ncm||'-')}</td><td style="text-align:right">R$ ${p.preco}</td><td>${perms.prod ? `<div style="display:flex; gap:6px;"><button class="btn-icon-edit" onclick="f_editar_produto('${id}')"><i class="fa fa-pen"></i></button><button class="btn-icon-remove" onclick="f_del_produto('${id}')"><i class="fa fa-trash"></i></button></div>` : '-'}</td></tr>`).join('') || '<tr><td colspan="6">Vazio</td></tr>'; }
 
         function addItemRow(q = 1, prodId = '', customDesc = '', preco = '0,00', subtotal = '0,00') {
-            const tr = document.getElementById('items-body').insertRow(); let optionsHtml = `<option value="">Selecione...</option><option value="custom">-- Outro (Digitar manualmente) --</option>`;
+            const tr = document.getElementById('items-body').insertRow(); let optionsHtml = `<option value="">Selecione...</option><option value="custom">-- Outro --</option>`;
             Object.entries(window._produtos).forEach(([id, p]) => { optionsHtml += `<option value="${id}">${escapeHtml([p.nome, p.marca, p.modelo].filter(Boolean).join(' - '))}</option>`; });
             tr.innerHTML = `<td><input type="number" class="i-q" value="${q}" min="1" oninput="calcLinha(this)"></td><td><select class="i-prod" onchange="mudouProduto(this)">${optionsHtml}</select><input type="text" class="i-d-custom" value="${escapeHtml(customDesc)}" style="display:none; margin-top:5px;"></td><td><input type="text" class="i-preco" value="${preco}" oninput="maskMoney(this); calcLinha(this)"></td><td class="t-subtotal">R$ <span class="v-sub">${subtotal}</span></td><td><button class="btn-icon-remove" onclick="removerLinha(this)"><i class="fa fa-times"></i></button></td>`;
             const sel = tr.querySelector('.i-prod'); if (prodId && prodId !== 'custom') sel.value = prodId; else if (customDesc) { sel.value = 'custom'; tr.querySelector('.i-d-custom').style.display = 'block'; }
@@ -856,11 +1050,11 @@
         // ================= CONTROLE DE TELAS E PREVIEW =================
         function showScreen(id) {
             const perms = JSON.parse(sessionStorage.getItem('saj_perms') || '{}');
-            const reqPerms = { 'screen-form': 'nova', 'screen-clientes': 'cli', 'screen-produtos': 'prod', 'screen-history': 'pend', 'screen-approved': 'aprov', 'screen-os': 'os', 'screen-relatorios': 'relat', 'screen-users': 'user' };
+            const reqPerms = { 'screen-form': 'nova', 'screen-clientes': 'cli', 'screen-produtos': 'prod', 'screen-history': 'pend', 'screen-approved': 'aprov', 'screen-os': 'os', 'screen-transporte': 'transp', 'screen-relatorios': 'relat', 'screen-users': 'user' };
             if (reqPerms[id] && perms[reqPerms[id]] === false) return alert('Sem permissão para esta aba.');
             
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active-link'));
-            const navMap = { 'screen-form': 'nav-new', 'screen-clientes': 'nav-clientes', 'screen-produtos': 'nav-produtos', 'screen-history': 'nav-history-pend', 'screen-approved': 'nav-approved', 'screen-os': 'nav-os', 'screen-relatorios': 'nav-relatorios', 'screen-users': 'menu-users' };
+            const navMap = { 'screen-form': 'nav-new', 'screen-clientes': 'nav-clientes', 'screen-produtos': 'nav-produtos', 'screen-history': 'nav-history-pend', 'screen-approved': 'nav-approved', 'screen-os': 'nav-os', 'screen-transporte': 'nav-transporte', 'screen-relatorios': 'nav-relatorios', 'screen-users': 'menu-users' };
             if(navMap[id]) document.getElementById(navMap[id]).classList.add('active-link');
             if(id === 'screen-relatorios') f_gerar_relatorio();
         }
@@ -887,15 +1081,15 @@
 
         // ================= GESTÃO DE USUÁRIOS =================
         function renderUsers(obj) { const el = document.getElementById('users-list-complex'); if (!obj) { el.innerHTML = 'Vazio.'; return; } el.innerHTML = Object.values(obj).map(u => `<div class="user-row ${u.status === 'pendente' ? 'user-row--pending' : ''}"><div><strong>${escapeHtml(String(u.user).toUpperCase())}</strong><span class="${u.perfil === 'administrador' ? 'badge-perfil-adm' : 'badge-perfil-op'}">${u.perfil||'operador'}</span><br><span class="status-badge status-${u.status}">${u.status}</span></div><div class="user-row-actions"><button class="btn-edit-user" onclick="abrirEdicaoUsuario('${escapeHtml(u.user)}')">Editar</button>${u.status === 'pendente' ? `<button class="btn-approve" onclick="f_aprovar_u('${escapeHtml(u.user)}')">Liberar</button>` : ''}<button class="btn-delete-user" onclick="f_del_user('${escapeHtml(u.user)}')">Excluir</button></div></div>`).join(''); }
-        async function f_aprovar_u(u) { await window.dbUpdate(window.dbRef(window.db, 'usuarios/' + u), { status: 'aprovado', perfil: 'operador', permissoes: { nova: true, cli: true, prod: false, pend: true, aprov: true, os: false, relat: false, user: false } }); }
+        async function f_aprovar_u(u) { await window.dbUpdate(window.dbRef(window.db, 'usuarios/' + u), { status: 'aprovado', perfil: 'operador', permissoes: { nova: true, cli: true, prod: false, pend: true, aprov: true, os: false, transp: false, relat: false, user: false } }); }
         async function f_del_user(u) { if (confirm('Excluir?')) await window.dbRemove(window.dbRef(window.db, 'usuarios/' + u)); }
-        async function abrirEdicaoUsuario(login) { const snap = await window.dbGet(window.dbRef(window.db, 'usuarios/' + login)); const u = snap.val(); document.getElementById('user-edit-panel').hidden = false; document.getElementById('edit-user-login').value = login; document.getElementById('edit-user-display').textContent = login.toUpperCase(); document.getElementById('edit-user-status').value = u.status || 'pendente'; document.getElementById('edit-user-perfil').value = u.perfil || 'operador'; document.getElementById('edit-user-pass').value = ''; const isAdmin = u.perfil === 'administrador'; const p = u.permissoes || { nova: true, cli: isAdmin, prod: isAdmin, pend: true, aprov: true, os: isAdmin, relat: isAdmin, user: isAdmin }; ['nova','cli','prod','pend','aprov','os','relat','user'].forEach(k => document.getElementById('perm-'+k).checked = (p[k] !== false)); document.getElementById('user-edit-panel').scrollIntoView({ behavior: 'smooth' }); }
+        async function abrirEdicaoUsuario(login) { const snap = await window.dbGet(window.dbRef(window.db, 'usuarios/' + login)); const u = snap.val(); document.getElementById('user-edit-panel').hidden = false; document.getElementById('edit-user-login').value = login; document.getElementById('edit-user-display').textContent = login.toUpperCase(); document.getElementById('edit-user-status').value = u.status || 'pendente'; document.getElementById('edit-user-perfil').value = u.perfil || 'operador'; document.getElementById('edit-user-pass').value = ''; const isAdmin = u.perfil === 'administrador'; const p = u.permissoes || { nova: true, cli: isAdmin, prod: isAdmin, pend: true, aprov: true, os: isAdmin, transp: isAdmin, relat: isAdmin, user: isAdmin }; ['nova','cli','prod','pend','aprov','os','transp','relat','user'].forEach(k => document.getElementById('perm-'+k).checked = (p[k] !== false)); document.getElementById('user-edit-panel').scrollIntoView({ behavior: 'smooth' }); }
         function fecharEdicaoUsuario() { document.getElementById('user-edit-panel').hidden = true; }
-        async function salvarEdicaoUsuario() { const login = document.getElementById('edit-user-login').value; const newPass = document.getElementById('edit-user-pass').value.trim(); const permissoes = {}; ['nova','cli','prod','pend','aprov','os','relat','user'].forEach(k => permissoes[k] = document.getElementById('perm-'+k).checked); const updates = { status: document.getElementById('edit-user-status').value, perfil: document.getElementById('edit-user-perfil').value, permissoes }; if (newPass) updates.pass = newPass; await window.dbUpdate(window.dbRef(window.db, 'usuarios/' + login), updates); fecharEdicaoUsuario(); }
+        async function salvarEdicaoUsuario() { const login = document.getElementById('edit-user-login').value; const newPass = document.getElementById('edit-user-pass').value.trim(); const permissoes = {}; ['nova','cli','prod','pend','aprov','os','transp','relat','user'].forEach(k => permissoes[k] = document.getElementById('perm-'+k).checked); const updates = { status: document.getElementById('edit-user-status').value, perfil: document.getElementById('edit-user-perfil').value, permissoes }; if (newPass) updates.pass = newPass; await window.dbUpdate(window.dbRef(window.db, 'usuarios/' + login), updates); fecharEdicaoUsuario(); }
 
         // ================= AUTENTICAÇÃO E INIT =================
         function toggleLogin(box) { ['login', 'register', 'wait'].forEach(b => document.getElementById('box-'+b).hidden = box !== b); }
-        async function f_login() { const u = document.getElementById('l-user').value.toLowerCase().trim(); const p = document.getElementById('l-pass').value.trim(); const snap = await window.dbGet(window.dbRef(window.db, 'usuarios/' + u)); if (!snap.exists() || snap.val().pass !== p) return alert('Credenciais inválidas.'); const d = snap.val(); if (d.status !== 'aprovado' && !['admin', 'lucas'].includes(u)) return toggleLogin('wait'); let perms = d.permissoes; if (!perms) { const a = d.perfil === 'administrador'; perms = { nova: true, cli: a, prod: a, pend: true, aprov: true, os: a, relat: a, user: a }; } if (['admin', 'lucas'].includes(u)) perms = { nova: true, cli: true, prod: true, pend: true, aprov: true, os: true, relat: true, user: true }; sessionStorage.setItem('saj_user', u); sessionStorage.setItem('saj_perfil', d.perfil || 'operador'); sessionStorage.setItem('saj_perms', JSON.stringify(perms)); location.reload(); }
+        async function f_login() { const u = document.getElementById('l-user').value.toLowerCase().trim(); const p = document.getElementById('l-pass').value.trim(); const snap = await window.dbGet(window.dbRef(window.db, 'usuarios/' + u)); if (!snap.exists() || snap.val().pass !== p) return alert('Credenciais inválidas.'); const d = snap.val(); if (d.status !== 'aprovado' && !['admin', 'lucas'].includes(u)) return toggleLogin('wait'); let perms = d.permissoes; if (!perms) { const a = d.perfil === 'administrador'; perms = { nova: true, cli: a, prod: a, pend: true, aprov: true, os: a, transp: a, relat: a, user: a }; } if (['admin', 'lucas'].includes(u)) perms = { nova: true, cli: true, prod: true, pend: true, aprov: true, os: true, transp: true, relat: true, user: true }; sessionStorage.setItem('saj_user', u); sessionStorage.setItem('saj_perfil', d.perfil || 'operador'); sessionStorage.setItem('saj_perms', JSON.stringify(perms)); location.reload(); }
         function f_logout() { sessionStorage.clear(); location.reload(); }
         function isAdministrator() { const u = sessionStorage.getItem('saj_user'); return sessionStorage.getItem('saj_perfil') === 'administrador' || ['admin', 'lucas'].includes(u); }
 
@@ -906,16 +1100,18 @@
                 document.getElementById('user-tag').textContent = u.toUpperCase(); document.getElementById('f-id').value = Math.floor(1000 + Math.random() * 9000);
                 
                 const perms = JSON.parse(sessionStorage.getItem('saj_perms') || '{}');
-                ['nova','cli','produtos','history-pend','approved','os','relatorios'].forEach(k => {
-                    let map = {'nova':'nova', 'cli':'clientes', 'produtos':'produtos', 'history-pend':'history-pend', 'approved':'approved', 'os':'os', 'relatorios':'relatorios'};
+                ['nova','cli','produtos','history-pend','approved','os','transporte','relatorios'].forEach(k => {
+                    let map = {'nova':'nova', 'cli':'clientes', 'produtos':'produtos', 'history-pend':'history-pend', 'approved':'approved', 'os':'os', 'transporte':'transporte', 'relatorios':'relatorios'};
                     const el = document.getElementById('nav-' + k); 
-                    if(el) el.hidden = !perms[map[k] === 'clientes' ? 'cli' : map[k] === 'history-pend' ? 'pend' : map[k] === 'approved' ? 'aprov' : map[k] === 'relatorios' ? 'relat' : map[k] === 'produtos' ? 'prod' : map[k] === 'os' ? 'os' : 'nova'];
+                    if(el) el.hidden = !perms[map[k] === 'clientes' ? 'cli' : map[k] === 'history-pend' ? 'pend' : map[k] === 'approved' ? 'aprov' : map[k] === 'relatorios' ? 'relat' : map[k] === 'produtos' ? 'prod' : map[k] === 'os' ? 'os' : map[k] === 'transporte' ? 'transp' : 'nova'];
                 });
                 document.getElementById('menu-users').hidden = !perms.user;
 
-                if (!perms.nova) {
+                // Não checa aba nova na load se for tela do motorista
+                const urlParams = new URLSearchParams(window.location.search);
+                if (!urlParams.get('entrega') && !perms.nova) {
                     document.getElementById('screen-form').classList.remove('active');
-                    if(perms.cli) showScreen('screen-clientes'); else if(perms.prod) showScreen('screen-produtos'); else if(perms.pend) showScreen('screen-history'); else if(perms.aprov) showScreen('screen-approved'); else if(perms.os) showScreen('screen-os'); else if(perms.relat) showScreen('screen-relatorios'); else if(perms.user) showScreen('screen-users');
+                    if(perms.cli) showScreen('screen-clientes'); else if(perms.prod) showScreen('screen-produtos'); else if(perms.pend) showScreen('screen-history'); else if(perms.aprov) showScreen('screen-approved'); else if(perms.os) showScreen('screen-os'); else if(perms.transp) showScreen('screen-transporte'); else if(perms.relat) showScreen('screen-relatorios'); else if(perms.user) showScreen('screen-users');
                 }
                 addItemRow();
                 const hoje = new Date(); const dia1 = new Date(hoje.getFullYear(), hoje.getMonth(), 1).toISOString().split('T')[0]; const ultimoDia = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).toISOString().split('T')[0];
@@ -923,8 +1119,8 @@
             }
         };
         
-        // Exportando as funções pro HTML conseguir usar sem bugs
-        window.f_gerar_visual = f_gerar_visual; window.fecharEdicaoUsuario = fecharEdicaoUsuario; window.salvarEdicaoUsuario = salvarEdicaoUsuario; window.abrirEdicaoUsuario = abrirEdicaoUsuario; window.f_aprovar_u = f_aprovar_u; window.f_del_user = f_del_user; window.f_editar_produto = f_editar_produto; window.f_cancelar_edicao_produto = f_cancelar_edicao_produto; window.abrirCRM = abrirCRM; window.fecharCRM = fecharCRM; window.f_gerar_relatorio = f_gerar_relatorio; window.abrirGerenciar = abrirGerenciar; window.buscarCNPJ = buscarCNPJ; window.salvarCheckOS = salvarCheckOS; window.iniciarAutorizacaoOS = iniciarAutorizacaoOS; window.fecharModalAuthOS = fecharModalAuthOS; window.confirmarAuthOS = confirmarAuthOS; window.abrirVisaoOS = abrirVisaoOS;
+        // Exportando as funções para o HTML
+        window.f_gerar_visual = f_gerar_visual; window.fecharEdicaoUsuario = fecharEdicaoUsuario; window.salvarEdicaoUsuario = salvarEdicaoUsuario; window.abrirEdicaoUsuario = abrirEdicaoUsuario; window.f_aprovar_u = f_aprovar_u; window.f_del_user = f_del_user; window.f_editar_produto = f_editar_produto; window.f_cancelar_edicao_produto = f_cancelar_edicao_produto; window.abrirCRM = abrirCRM; window.fecharCRM = fecharCRM; window.f_gerar_relatorio = f_gerar_relatorio; window.abrirGerenciar = abrirGerenciar; window.buscarCNPJ = buscarCNPJ; window.salvarCheckOS = salvarCheckOS; window.iniciarAutorizacaoOS = iniciarAutorizacaoOS; window.fecharModalAuthOS = fecharModalAuthOS; window.confirmarAuthOS = confirmarAuthOS; window.abrirVisaoOS = abrirVisaoOS; window.copiarLinkMotorista = copiarLinkMotorista; window.motoristaAcao = motoristaAcao; window.abrirGPS = abrirGPS; window.renderTelaMotorista = renderTelaMotorista;
     </script>
 </body>
 </html>
