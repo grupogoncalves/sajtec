@@ -430,7 +430,7 @@
 
                     <div class="form-grid-2" style="align-items: flex-start;">
                         <div class="field"><label>Observações</label><textarea id="f-obs" rows="3"></textarea></div>
-                        <div class="field"><label>Total Automático (R$)</label><input type="text" id="f-total" readonly style="font-weight: bold; font-size: 1.2rem; color: var(--primary);"></div>
+                        <div class="field"><label>Total (R$)</label><input type="text" id="f-total" style="font-weight: bold; font-size: 1.2rem; color: var(--primary);" oninput="maskMoney(this)"></div>
                     </div>
                     
                     <button type="button" class="btn btn-primary" id="btn-gerar-proposta" onclick="f_gerar_visual()">Gerar Proposta e Cadastrar Cliente</button>
@@ -457,7 +457,7 @@
                                 <div class="p-client-card p-client-card--alt"><div class="p-kv"><span class="p-kv-label">Endereço</span><span class="p-kv-value" id="p-end"></span></div><div class="p-kv"><span class="p-kv-label">Contato</span><span class="p-kv-value" id="p-contato"></span></div></div>
                             </div>
                             <div class="p-table-wrap">
-                                <table class="p-table"><thead><tr><th class="col-num">Qtd</th><th>Descrição</th><th class="col-val">Val. Unit.</th><th class="col-val">Subtotal</th></tr></thead><tbody id="p-items"></tbody></table>
+                                <table class="p-table"><thead><tr><th class="col-num">Qtd</th><th>Descrição</th></tr></thead><tbody id="p-items"></tbody></table>
                             </div>
                             <div class="p-total-wrap"><div class="p-total-box"><small>Total estimado</small><strong>R$ <span id="p-total"></span></strong></div></div>
                             <div class="p-obs-box" id="p-obs"></div>
@@ -636,7 +636,7 @@
         window._previewPropostaId = null; window._activeCliId = null; window._previewOrigin = 'form';
         window._pendingOsStatus = null;
 
-        function escapeHtml(s) { return s == null ? '' : String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+        function escapeHtml(s) { return s == null ? '' : String(s).replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>').replace(/"/g, '"'); }
         function parseDinheiro(str) { return parseFloat((str||'0').replace(/\./g, '').replace(',', '.')) || 0; }
         function formatDinheiro(num) { return num.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
         function maskMoney(i) { let v = i.value.replace(/\D/g, ''); v = (v / 100).toFixed(2) + ''; i.value = v.replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.'); }
@@ -1063,7 +1063,7 @@
 
         function fillPreviewFromData(data) {
             document.getElementById('p-id').textContent = data.id; document.getElementById('p-cli').textContent = data.cli || ''; document.getElementById('p-cnpj').textContent = data.cnpj || ''; document.getElementById('p-end').textContent = [data.end, data.bairro, data.cidade].filter(Boolean).join(', '); document.getElementById('p-contato').textContent = `${data.email || ''} | ${data.tel || ''}`; document.getElementById('p-total').textContent = data.total || '0,00'; document.getElementById('p-data').textContent = data.data || ''; document.getElementById('p-obs').textContent = data.obs || '';
-            document.getElementById('p-items').innerHTML = (data.items || []).map(i => `<tr><td class="col-num">${escapeHtml(i.q)}</td><td>${escapeHtml(i.desc)}</td><td class="col-val">R$ ${escapeHtml(i.preco)}</td><td class="col-val">R$ ${escapeHtml(i.subtotal)}</td></tr>`).join('');
+            document.getElementById('p-items').innerHTML = (data.items || []).map(i => `<tr><td class="col-num">${escapeHtml(i.q)}</td><td>${escapeHtml(i.desc)}</td></tr>`).join('');
             window._previewPropostaId = String(data.id); const perms = JSON.parse(sessionStorage.getItem('saj_perms') || '{}');
             document.getElementById('btn-excluir-proposta').hidden = !(perms.aprov || perms.user); document.getElementById('btn-aprovar-proposta').hidden = !((perms.aprov || perms.user) && data.propostaStatus !== 'aprovado');
         }
